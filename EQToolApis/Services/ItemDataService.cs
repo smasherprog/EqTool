@@ -81,6 +81,12 @@ namespace EQToolApis.Services
 
         private const string PlaceholderImage = "/Content/Images/Item_.png";
 
+        // Every spell scroll shares one in-game icon, but imglst.dat only lists a
+        // subset of them by name, so the rest used to fall through to the blank
+        // placeholder. Anything named "Spell: ..." gets the scroll icon directly.
+        private const string SpellScrollImage = "/Content/Images/Item_504.png";
+        private const string SpellNamePrefix = "Spell:";
+
         // imglst.dat's first column is an internal pigparse row id, NOT the in-game
         // item id that inventory dumps contain (e.g. Backpack is 476 in imglst.dat
         // but 17969 in game), so matching by id shows the wrong item's icon. The
@@ -93,6 +99,11 @@ namespace EQToolApis.Services
             }
 
             var trimmed = itemName.Trim();
+
+            if (trimmed.StartsWith(SpellNamePrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return SpellScrollImage;
+            }
 
             if (_imageByName.TryGetValue(trimmed, out var img))
             {
