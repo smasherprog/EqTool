@@ -21,10 +21,17 @@ namespace EQTool.Services.Handlers
             timerManager.OnLine(e.Line);
 
             var currentZone = activePlayer?.Player?.Zone;
+            var currentServer = activePlayer?.Player?.Server;
             foreach (var trigger in eQToolSettings.Triggers.Where(a => a.TriggerEnabled).ToList())
             {
                 // skip triggers restricted to a zone the player isn't currently in
                 if (!trigger.MatchesZone(currentZone))
+                {
+                    continue;
+                }
+
+                // skip triggers restricted to a server the player isn't on
+                if (!trigger.MatchesServer(currentServer))
                 {
                     continue;
                 }

@@ -1,35 +1,18 @@
-﻿using EQTool.Models;
-using EQTool.ViewModels;
-using EQTool.ViewModels.SpellWindow;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using EQTool.Models;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
+    // Announces "<player> FTE <npc>" (overlay text and/or TTS, per the player's FTE settings).
+    // The FTE %-rule countdown timers (96%/97%/Lodizal) that used to live here are now built-in
+    // triggers - see BuiltInTriggers.CreateFTE97Rule and friends.
     public class FTEHandler : BaseHandler
     {
         private readonly PigParseApi pigParseApi;
-        private readonly EQSpells spells;
-        private readonly SpellWindowViewModel spellWindowViewModel;
-        private readonly List<string> NintySevenPercentMobs = new List<string>()
-        {
-            "Zlandicar",
-            "Dozekar the Cursed",
-            "Lord Yelinak"
-        };
-        private readonly List<string> NintySixPercentMobs = new List<string>()
-        {
-            "Dozekar the Cursed",
-            "Lord Yelinak"
-        };
 
-        public FTEHandler(EQSpells spells, SpellWindowViewModel spellWindowViewModel, PigParseApi pigParseApi, BaseHandlerData baseHandlerData) : base(baseHandlerData)
+        public FTEHandler(PigParseApi pigParseApi, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.pigParseApi = pigParseApi;
-            this.spells = spells;
-            this.spellWindowViewModel = spellWindowViewModel;
             logEvents.FTEEvent += LogParser_FTEEvent;
         }
 
@@ -55,57 +38,6 @@ namespace EQTool.Services.Handlers
                     System.Threading.Thread.Sleep(3000);
                     logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = true });
                 });
-            }
-            var start = "--97% Rule--";
-            if (NintySevenPercentMobs.Contains(e.NPCName))
-            {
-                spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
-                var timeleft = 61;
-                if (NintySixPercentMobs.Contains(e.NPCName) && activePlayer.Player.Server == EQToolShared.Enums.Servers.Green)
-                {
-                    start = "--96% Rule--";
-                    timeleft = 91;
-                }
-
-                appDispatcher.DispatchUI(() =>
-                {
-                    spellWindowViewModel.TryAdd(new TimerViewModel
-                    {
-                        PercentLeft = 100,
-                        GroupName = CustomTimer.CustomerTime,
-                        Name = $"{start} {e.NPCName}",
-                        Rect = spell.Rect,
-                        Icon = spell.SpellIcon,
-                        TotalDuration = TimeSpan.FromSeconds(timeleft),
-                        TotalRemainingDuration = TimeSpan.FromSeconds(timeleft),
-                        UpdatedDateTime = DateTime.Now,
-                        ProgressBarColor = Brushes.Orchid
-                    }, true);
-                });
-            }
-            if (e.NPCName == "Lodizal")
-            {
-                spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
-                appDispatcher.DispatchUI(() =>
-                {
-                    spellWindowViewModel.TryAdd(new TimerViewModel
-                    {
-                        PercentLeft = 100,
-                        GroupName = CustomTimer.CustomerTime,
-                        Name = $"--5 Minute Rule-- {e.NPCName}",
-                        Rect = spell.Rect,
-                        Icon = spell.SpellIcon,
-                        TotalDuration = TimeSpan.FromMinutes(5),
-                        TotalRemainingDuration = TimeSpan.FromMinutes(5),
-                        UpdatedDateTime = DateTime.Now,
-                        ProgressBarColor = Brushes.Orchid
-                    });
-                });
-            }
-            if (NintySevenPercentMobs.Contains(e.NPCName))
-            {
-                doAlert = activePlayer?.Player?.FTETimerOverlay ?? false;
-
             }
         }
     }

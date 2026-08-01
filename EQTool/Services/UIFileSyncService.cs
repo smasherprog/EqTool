@@ -27,6 +27,8 @@ namespace EQTool.Services
     //   locally is restored (the backup use-case).
     // - Downloads set the written file's mtime to the server value and record it,
     //   so the watcher does not echo our own writes straight back up.
+    // - Successful uploads and downloads raise a tray balloon: filenames when
+    //   1-2 files, otherwise UI vs character file counts.
     public class UIFileSyncService : IDisposable
     {
         private const string BaseUrl = "https://pigparse.azurewebsites.net";
@@ -110,7 +112,13 @@ namespace EQTool.Services
             {
                 return;
             }
-            _ = Task.Factory.StartNew(() => UploadFile(e.FullPath, fileName, info));
+            _ = Task.Factory.StartNew(() =>
+            {
+                if (UploadFile(e.FullPath, fileName, info))
+                {
+                    ShowSyncNotification("Uploaded", new List<string> { fileName });
+                }
+            });
         }
 
         // ------- reconcile / backup -------
@@ -131,6 +139,7 @@ namespace EQTool.Services
 
             // PULL / RESTORE: bring down anything newer on the server, or anything
             // missing locally (backup restore to a fresh machine).
+            var downloaded = new List<string>();
             foreach (var meta in serverFiles)
             {
                 try
@@ -141,22 +150,25 @@ namespace EQTool.Services
                     }
                     var path = Path.Combine(dir, meta.FileName);
                     var localExists = File.Exists(path);
+                    var localfiletime = File.GetLastWriteTimeUtc(path).Add(Epsilon);
                     var shouldPull = !localExists ||
-                        meta.LastModifiedUtc > File.GetLastWriteTimeUtc(path).Add(Epsilon);
+                        meta.LastModifiedUtc > localfiletime;
                     if (!shouldPull)
                     {
                         continue;
                     }
                     var download = DownloadFile(meta.FileName);
-                    if (download != null && download.Contents != null)
+                    if (download != null && download.Contents != null && WriteDownloadedFile(path, download))
                     {
-                        WriteDownloadedFile(path, download);
+                        downloaded.Add(meta.FileName);
                     }
                 }
                 catch { }
             }
+            ShowSyncNotification("Downloaded", downloaded);
 
             // PUSH / SEED: upload local files newer than (or absent from) the server.
+            var uploaded = new List<string>();
             foreach (var localPath in EnumerateLocalPairFiles(dir))
             {
                 try
@@ -169,13 +181,14 @@ namespace EQTool.Services
                     var mtime = File.GetLastWriteTimeUtc(localPath);
                     var meta = serverFiles.FirstOrDefault(m => string.Equals(m.FileName, fileName, StringComparison.OrdinalIgnoreCase));
                     var shouldPush = meta == null || mtime > meta.LastModifiedUtc.Add(Epsilon);
-                    if (shouldPush)
+                    if (shouldPush && UploadFile(localPath, fileName, info))
                     {
-                        UploadFile(localPath, fileName, info);
+                        uploaded.Add(fileName);
                     }
                 }
                 catch { }
             }
+            ShowSyncNotification("Uploaded", uploaded);
         }
 
         private List<string> EnumerateLocalPairFiles(string dir)
@@ -196,7 +209,8 @@ namespace EQTool.Services
             }
         }
 
-        private void WriteDownloadedFile(string path, UIFileDownloadResponse download)
+        // Returns true when the file was actually written to disk.
+        private bool WriteDownloadedFile(string path, UIFileDownloadResponse download)
         {
             var key = Path.GetFileName(path).ToLowerInvariant();
             var watcherWasOn = _watcher != null && _watcher.EnableRaisingEvents;
@@ -209,13 +223,14 @@ namespace EQTool.Services
                 var directory = Path.GetDirectoryName(path);
                 if (!string.IsNullOrEmpty(directory))
                 {
-                    Directory.CreateDirectory(directory);
+                    _ = Directory.CreateDirectory(directory);
                 }
                 File.WriteAllText(path, download.Contents);
                 // Match the server mtime so future comparisons are correct and the
                 // watcher does not treat our own write as a new local change.
                 File.SetLastWriteTimeUtc(path, download.LastModifiedUtc);
                 _lastSyncedMtime[key] = download.LastModifiedUtc;
+                return true;
             }
             catch { }
             finally
@@ -225,32 +240,34 @@ namespace EQTool.Services
                     _watcher.EnableRaisingEvents = true;
                 }
             }
+            return false;
         }
 
         // ------- upload -------
 
-        private void UploadFile(string path, string fileName, UIFileNameInfo info)
+        // Returns true when the file was actually uploaded to the server.
+        private bool UploadFile(string path, string fileName, UIFileNameInfo info)
         {
             if (!IsEnabled)
             {
-                return;
+                return false;
             }
             try
             {
                 if (!File.Exists(path))
                 {
-                    return;
+                    return false;
                 }
                 var mtime = File.GetLastWriteTimeUtc(path);
                 var key = fileName.ToLowerInvariant();
                 if (_lastSyncedMtime.TryGetValue(key, out var known) && known == mtime)
                 {
-                    return; // unchanged since our last sync (duplicate event / echo)
+                    return false; // unchanged since our last sync (duplicate event / echo)
                 }
                 var text = ReadAllTextWithRetry(path);
                 if (text == null)
                 {
-                    return;
+                    return false;
                 }
 
                 var request = new UIFileUploadRequest
@@ -268,7 +285,41 @@ namespace EQTool.Services
                 if (response != null && response.IsSuccessStatusCode)
                 {
                     _lastSyncedMtime[key] = mtime;
+                    return true;
                 }
+            }
+            catch { }
+            return false;
+        }
+
+        // Tray balloon summarizing synced files ("Uploaded"/"Downloaded"): filenames
+        // when 1-2 files, otherwise UI vs character file counts.
+        private static void ShowSyncNotification(string verb, List<string> files)
+        {
+            if (files.Count == 0)
+            {
+                return;
+            }
+
+            string message;
+            if (files.Count <= 2)
+            {
+                message = verb + " " + string.Join(", ", files);
+            }
+            else
+            {
+                var uiCount = files.Count(f => UIFileName.TryParse(f, out var info) && info.IsUiLayoutFile);
+                var nonUiCount = files.Count - uiCount;
+                message = $"{verb} {uiCount} UI file{(uiCount == 1 ? "" : "s")} and {nonUiCount} character file{(nonUiCount == 1 ? "" : "s")}";
+            }
+
+            try
+            {
+                var app = App.Current as App;
+                _ = (app?.Dispatcher.BeginInvoke((Action)(() =>
+                {
+                    app.ShowBalloonTip(4000, "UI Files Synced", message, System.Windows.Forms.ToolTipIcon.Info);
+                })));
             }
             catch { }
         }

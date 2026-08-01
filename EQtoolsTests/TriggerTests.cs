@@ -426,6 +426,99 @@ namespace EQtoolsTests
             Assert.AreEqual("count=0", trigger.ExpandedDisplayText);
         }
 
+        // The FTE %-rule timers (ported from the old FTEHandler) live in the top-level Encounters
+        // folder, which is what makes SyncBuiltInTriggers seed them ENABLED for everyone.
+        [TestMethod]
+        public void FTERuleTriggersAreInTheEncountersFolderSoTheySeedEnabled()
+        {
+            var all = BuiltInTriggers.All();
+            var ids = new[]
+            {
+                BuiltInTriggers.FTE97RuleBuiltInId,
+                BuiltInTriggers.FTE97RuleGreenBuiltInId,
+                BuiltInTriggers.FTE96RuleGreenBuiltInId,
+                BuiltInTriggers.FTELodizalRuleBuiltInId,
+            };
+            foreach (var id in ids)
+            {
+                var trigger = all.FirstOrDefault(x => x.BuiltInId == id);
+                Assert.IsNotNull(trigger, $"Built-in '{id}' not found.");
+                Assert.AreEqual("Encounters", trigger.BuiltInFolder, $"Built-in '{id}' must be in the top-level Encounters folder so it is enabled by default.");
+            }
+
+            var settings = new EQToolSettings();
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            foreach (var id in ids)
+            {
+                Assert.IsTrue(settings.Triggers.Single(x => x.BuiltInId == id).TriggerEnabled, $"Built-in '{id}' should be seeded enabled.");
+            }
+        }
+
+        // The 97% rule outside Green: 61 second timer for all three rule mobs.
+        [TestMethod]
+        public void FTE97RuleMatchesRuleMobsAndRunsSixtyOneSeconds()
+        {
+            var trigger = BuiltInTriggers.CreateFTE97Rule();
+
+            Assert.IsTrue(trigger.Matches("Zlandicar engages Tzvia!"));
+            Assert.AreEqual("--97% Rule-- Zlandicar", trigger.Expand(trigger.Timer.TimerName));
+            Assert.IsTrue(trigger.Matches("Dozekar the Cursed engages Tzvia!"));
+            Assert.AreEqual("--97% Rule-- Dozekar the Cursed", trigger.Expand(trigger.Timer.TimerName));
+            Assert.IsTrue(trigger.Matches("Lord Yelinak engages Tzvia!"));
+
+            Assert.IsFalse(trigger.Matches("Cekenar engages Tzvia!"), "A non-rule mob's FTE should not fire.");
+            Assert.IsFalse(trigger.Matches("Bob shouts, 'Zlandicar engages Tzvia!'"), "Player chat quoting an FTE should not fire.");
+
+            Assert.AreEqual(61, trigger.Timer.Duration.TotalSeconds);
+            Assert.IsFalse(trigger.MatchesServer(EQToolShared.Enums.Servers.Green), "Dozekar/Yelinak use the 96% rule on Green, so the 97% rule trigger must not run there.");
+            Assert.IsTrue(trigger.MatchesServer(EQToolShared.Enums.Servers.Blue));
+            Assert.IsTrue(trigger.MatchesServer(EQToolShared.Enums.Servers.Red));
+            Assert.IsTrue(trigger.MatchesServer(EQToolShared.Enums.Servers.Quarm));
+        }
+
+        // On Green, Zlandicar keeps the 97% rule while Dozekar/Yelinak get the 91 second 96% rule.
+        [TestMethod]
+        public void FTEGreenRulesSplitZlandicarFromDozekarAndYelinak()
+        {
+            var green97 = BuiltInTriggers.CreateFTE97RuleGreen();
+            Assert.IsTrue(green97.Matches("Zlandicar engages Tzvia!"));
+            Assert.IsFalse(green97.Matches("Dozekar the Cursed engages Tzvia!"));
+            Assert.AreEqual(61, green97.Timer.Duration.TotalSeconds);
+            Assert.IsTrue(green97.MatchesServer(EQToolShared.Enums.Servers.Green));
+            Assert.IsFalse(green97.MatchesServer(EQToolShared.Enums.Servers.Blue));
+
+            var green96 = BuiltInTriggers.CreateFTE96RuleGreen();
+            Assert.IsTrue(green96.Matches("Dozekar the Cursed engages Tzvia!"));
+            Assert.AreEqual("--96% Rule-- Dozekar the Cursed", green96.Expand(green96.Timer.TimerName));
+            Assert.IsTrue(green96.Matches("Lord Yelinak engages Tzvia!"));
+            Assert.IsFalse(green96.Matches("Zlandicar engages Tzvia!"), "Zlandicar stays on the 97% rule on Green.");
+            Assert.AreEqual(91, green96.Timer.Duration.TotalSeconds);
+            Assert.IsTrue(green96.MatchesServer(EQToolShared.Enums.Servers.Green));
+            Assert.IsFalse(green96.MatchesServer(EQToolShared.Enums.Servers.Blue));
+        }
+
+        // Lodizal's 5 minute rule runs on every server.
+        [TestMethod]
+        public void FTELodizalRuleRunsFiveMinutesOnEveryServer()
+        {
+            var trigger = BuiltInTriggers.CreateFTELodizalRule();
+
+            Assert.IsTrue(trigger.Matches("Lodizal engages Tzvia!"));
+            Assert.AreEqual("--5 Minute Rule-- Lodizal", trigger.Expand(trigger.Timer.TimerName));
+            Assert.AreEqual(5, trigger.Timer.Duration.TotalMinutes);
+            Assert.IsTrue(trigger.MatchesServer(EQToolShared.Enums.Servers.Green));
+            Assert.IsTrue(trigger.MatchesServer(EQToolShared.Enums.Servers.Blue));
+            Assert.IsTrue(trigger.MatchesServer(null), "An unrestricted trigger fires even when the server is unknown.");
+        }
+
+        // A server-restricted trigger must not fire when the player's server is unknown.
+        [TestMethod]
+        public void ServerRestrictedTriggerDoesNotFireOnUnknownServer()
+        {
+            Assert.IsFalse(BuiltInTriggers.CreateFTE96RuleGreen().MatchesServer(null));
+            Assert.IsFalse(BuiltInTriggers.CreateFTE97Rule().MatchesServer(null));
+        }
+
         [TestMethod]
         public void CurrentContextTokenEscapesRegexMetacharacters()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace EQTool.Models
@@ -76,6 +77,16 @@ namespace EQTool.Models
         {
             return string.IsNullOrEmpty(Zone) ||
                 string.Equals(Zone, currentZone, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // Optional server restriction: when non-empty, the trigger only fires for characters on
+        // one of these servers (e.g. the Green-only FTE 96% rule). Null/empty = every server.
+        // Not exposed in the trigger editor; only built-in definitions set it.
+        public List<EQToolShared.Enums.Servers> Servers { get; set; }
+        public bool MatchesServer(EQToolShared.Enums.Servers? currentServer)
+        {
+            return Servers == null || Servers.Count == 0 ||
+                (currentServer.HasValue && Servers.Contains(currentServer.Value));
         }
 
         public bool? UseRegex { get; set; }

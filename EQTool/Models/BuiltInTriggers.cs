@@ -28,6 +28,10 @@ namespace EQTool.Models
                 CreateSpellWornOff(),
                 CreateEnteredZone(),
                 CreateDrowning(),
+                CreateFTE97Rule(),
+                CreateFTE97RuleGreen(),
+                CreateFTE96RuleGreen(),
+                CreateFTELodizalRule(),
 
                 // Spell/combat feedback triggers ported from the old hardcoded trigger list.
                 // These only show overlay text (no audio) but keep their original audio text so
@@ -315,6 +319,98 @@ namespace EQTool.Models
                     BarColor = "Orange",
                     IconName = "Dragon Roar",
                     ShowInOverlay = true
+                }
+            };
+        }
+
+        // The FTE %-rule timers, ported from the old FTEHandler (which still handles the FTE
+        // overlay/audio announcement itself). An "<npc> engages <player>!" shout on a rule mob
+        // starts a countdown approximating that server's engage rule. They live in the top-level
+        // Encounters folder, so they are seeded ENABLED for everyone (see
+        // EQToolSettingsLoad.SyncBuiltInTriggers). The 96%/97% split for Dozekar and Yelinak is
+        // server-dependent, so those triggers carry a server restriction (Trigger.Servers).
+        public const string FTE97RuleBuiltInId = "builtin:fte-97-rule";
+        public static Trigger CreateFTE97Rule()
+        {
+            var trigger = BuildFTERule(
+                FTE97RuleBuiltInId,
+                "FTE 97% Rule",
+                @"^(?<npc>Zlandicar|Dozekar the Cursed|Lord Yelinak) engages \w+!$",
+                "--97% Rule-- {npc}",
+                TimeSpan.FromSeconds(61));
+            trigger.Servers = new List<EQToolShared.Enums.Servers>
+            {
+                EQToolShared.Enums.Servers.Blue,
+                EQToolShared.Enums.Servers.Red,
+                EQToolShared.Enums.Servers.Quarm
+            };
+            trigger.Comments = "61 second 97% rule timer when Zlandicar, Dozekar the Cursed, or Lord Yelinak is FTEed. On Green, Dozekar and Yelinak use the 96% rule instead.";
+            return trigger;
+        }
+
+        public const string FTE97RuleGreenBuiltInId = "builtin:fte-97-rule-green";
+        public static Trigger CreateFTE97RuleGreen()
+        {
+            var trigger = BuildFTERule(
+                FTE97RuleGreenBuiltInId,
+                "FTE 97% Rule (Green)",
+                @"^(?<npc>Zlandicar) engages \w+!$",
+                "--97% Rule-- {npc}",
+                TimeSpan.FromSeconds(61));
+            trigger.Servers = new List<EQToolShared.Enums.Servers> { EQToolShared.Enums.Servers.Green };
+            trigger.Comments = "61 second 97% rule timer when Zlandicar is FTEed on Green.";
+            return trigger;
+        }
+
+        public const string FTE96RuleGreenBuiltInId = "builtin:fte-96-rule-green";
+        public static Trigger CreateFTE96RuleGreen()
+        {
+            var trigger = BuildFTERule(
+                FTE96RuleGreenBuiltInId,
+                "FTE 96% Rule (Green)",
+                @"^(?<npc>Dozekar the Cursed|Lord Yelinak) engages \w+!$",
+                "--96% Rule-- {npc}",
+                TimeSpan.FromSeconds(91));
+            trigger.Servers = new List<EQToolShared.Enums.Servers> { EQToolShared.Enums.Servers.Green };
+            trigger.Comments = "91 second 96% rule timer when Dozekar the Cursed or Lord Yelinak is FTEed on Green.";
+            return trigger;
+        }
+
+        public const string FTELodizalRuleBuiltInId = "builtin:fte-lodizal-5-minute-rule";
+        public static Trigger CreateFTELodizalRule()
+        {
+            var trigger = BuildFTERule(
+                FTELodizalRuleBuiltInId,
+                "FTE Lodizal 5 Minute Rule",
+                @"^(?<npc>Lodizal) engages \w+!$",
+                "--5 Minute Rule-- {npc}",
+                TimeSpan.FromMinutes(5));
+            trigger.Comments = "5 minute rule timer when Lodizal is FTEed.";
+            return trigger;
+        }
+
+        private static Trigger BuildFTERule(string builtInId, string name, string searchText, string timerName, TimeSpan duration)
+        {
+            return new Trigger
+            {
+                IsBuiltIn = true,
+                BuiltInId = builtInId,
+                BuiltInFolder = "Encounters",
+                TriggerEnabled = false,
+                TriggerId = Guid.NewGuid(),
+                TriggerName = name,
+                SearchText = searchText,
+                UseRegex = true,
+                Category = CategoryName,
+                Timer = new TriggerTimer
+                {
+                    TimerType = TimerType.CountDown,
+                    TimerName = timerName,
+                    Minutes = duration.Minutes,
+                    Seconds = duration.Seconds,
+                    RestartBehavior = TimerRestartBehavior.RestartTimer,
+                    BarColor = "Orchid",
+                    IconName = "Spirit of Wolf"
                 }
             };
         }

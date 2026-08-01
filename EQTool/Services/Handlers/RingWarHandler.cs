@@ -2,7 +2,6 @@
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
-using System.Linq;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
@@ -21,7 +20,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_RingWarEvent(object sender, RingWarEvent e)
         {
-            spells.AllSpells.TryGetValue("Disease Cloud", out var spell); 
+            _ = spells.AllSpells.TryGetValue("Disease Cloud", out var spell);
             var startingtime = 0;
             for (var round = 1; round <= 3; round++)
             {
@@ -44,7 +43,7 @@ namespace EQTool.Services.Handlers
                 startingtime += 300;
                 if (round == 3)
                 {
-                    startingtime += 4;
+                    startingtime += 9;
                 }
 
                 spellWindowViewModel.TryAdd(new TimerViewModel
