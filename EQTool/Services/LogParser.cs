@@ -20,7 +20,10 @@ namespace EQTool.Services
         private readonly List<IEqLogParser> eqLogParsers;
         private readonly LineParser lineParser;
         private readonly FileReader fileReader;
-        private bool Processing = false;
+        // 0 = idle, 1 = a batch is being read or parsed. Guarded with Interlocked because
+        // Poll fires on thread-pool threads; a plain check-then-set race would let two
+        // batches' slices interleave and parse log lines out of order.
+        private int Processing = 0;
         public DateTime LastYouActivity { get; private set; } = DateTime.Now.AddMonths(-1);
         public DateTime LastEntryDateTime { get; private set; } = DateTime.Now;
         private int LineCounter = 0;
@@ -155,11 +158,10 @@ namespace EQTool.Services
 
         private void Poll(object sender, EventArgs e)
         {
-            if (Processing)
+            if (System.Threading.Interlocked.CompareExchange(ref Processing, 1, 0) != 0)
             {
                 return;
             }
-            Processing = true;
             FindEq.LogFileInfo logfounddata = null;
             try
             {
@@ -168,12 +170,13 @@ namespace EQTool.Services
             catch { }
             if (logfounddata == null || !logfounddata.Found)
             {
-                Processing = false;
+                Processing = 0;
                 return;
             }
             settings.EqLogDirectory = logfounddata.Location;
             appDispatcher.DispatchUI(() =>
             {
+                List<string> linelist = null;
                 try
                 {
                     var playerchanged = activePlayer.Update();
@@ -188,11 +191,7 @@ namespace EQTool.Services
                         return;
                     }
 
-                    var linelist = fileReader.ReadNext(filepath);
-                    foreach (var line in linelist)
-                    {
-                        MainRun(line);
-                    }
+                    linelist = fileReader.ReadNext(filepath);
                 }
                 catch (Exception ex) when (!(ex is System.IO.IOException) && !(ex is UnauthorizedAccessException))
                 {
@@ -200,9 +199,44 @@ namespace EQTool.Services
                 }
                 finally
                 {
-                    Processing = false;
+                    if (linelist == null || linelist.Count == 0)
+                    {
+                        Processing = 0;
+                    }
+                }
+                if (linelist != null && linelist.Count > 0)
+                {
+                    ProcessLines(linelist, 0);
                 }
             });
+        }
+
+        // Parses the batch in slices, yielding the UI thread between slices at Background
+        // priority so rendering and input can run while a large backlog (zoning, log flush,
+        // raid spam) drains. One giant batch parsed in a single dispatcher operation froze
+        // every animation in the app for its whole duration. Processing stays true until the
+        // last slice so Poll cannot start an overlapping batch.
+        private const int MaxLinesPerDispatch = 25;
+        private void ProcessLines(List<string> lines, int start)
+        {
+            var end = Math.Min(start + MaxLinesPerDispatch, lines.Count);
+            try
+            {
+                for (var i = start; i < end; i++)
+                {
+                    MainRun(lines[i]);
+                }
+                if (end < lines.Count)
+                {
+                    appDispatcher.DispatchUIBackground(() => ProcessLines(lines, end));
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                App.LogUnhandledException(ex, "LogParser ProcessLines", activePlayer?.Player?.Server);
+            }
+            Processing = 0;
         }
 
         public void Dispose()

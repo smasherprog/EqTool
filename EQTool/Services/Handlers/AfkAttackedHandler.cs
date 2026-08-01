@@ -1,6 +1,5 @@
 using EQTool.Models;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
@@ -68,11 +67,10 @@ namespace EQTool.Services.Handlers
 
             if (overlay)
             {
-                _ = Task.Factory.StartNew(() =>
+                var text = $"AFK - You are being attacked by {attacker}";
+                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
+                _ = Task.Delay(3000).ContinueWith(t =>
                 {
-                    var text = $"AFK - You are being attacked by {attacker}";
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
-                    Thread.Sleep(3000);
                     logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
                 });
             }

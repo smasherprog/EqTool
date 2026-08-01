@@ -334,10 +334,9 @@ namespace EQTool.Services.Handlers
             var doOverlay = activePlayer?.Player?.BardCountTextAlert ?? false;
             if (doOverlay)
             {
-                _ = Task.Factory.StartNew(() =>
+                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = false });
+                _ = Task.Delay(3000).ContinueWith(t =>
                 {
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = false });
-                    Thread.Sleep(3000);
                     logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = true });
                 });
             }

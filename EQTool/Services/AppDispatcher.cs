@@ -7,6 +7,10 @@ namespace EQTool.Services
     public interface IAppDispatcher
     {
         void DispatchUI(Action action);
+        // Queues the action on the UI thread at Background priority (below rendering and
+        // input), even when already on the UI thread. Use to yield between slices of a
+        // long-running UI-thread job so the window stays responsive.
+        void DispatchUIBackground(Action action);
         void DebounceToUI(ref CancellationTokenSource debounceCancellationSource, int delay, Action action);
         void DebounceToUI(ref CancellationTokenSource debounceCancellationSource, int delay, Action action, Func<bool> shouldCancel);
     }
@@ -30,6 +34,18 @@ namespace EQTool.Services
                 {
                     App.Current.Dispatcher.Invoke(action);
                 }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void DispatchUIBackground(Action action)
+        {
+            try
+            {
+                _ = App.Current?.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, action);
             }
             catch
             {

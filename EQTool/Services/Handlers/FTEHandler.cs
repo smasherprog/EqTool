@@ -25,6 +25,8 @@ namespace EQTool.Services.Handlers
             var doAlert = activePlayer?.Player?.FTEOverlay ?? false;
             if (doAlert)
             {
+                // The guild lookup is a network call, so it stays on a worker thread; the
+                // reset is a timer continuation instead of parking that thread for 3s.
                 _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
                 {
                     var fteperson = pigParseApi.GetPlayerData(e.FTEPerson, activePlayer.Player.Server.Value);
@@ -35,8 +37,10 @@ namespace EQTool.Services.Handlers
                     }
 
                     logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = false });
-                    System.Threading.Thread.Sleep(3000);
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = true });
+                    _ = System.Threading.Tasks.Task.Delay(3000).ContinueWith(t =>
+                    {
+                        logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = true });
+                    });
                 });
             }
         }

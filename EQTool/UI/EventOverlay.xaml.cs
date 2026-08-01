@@ -21,7 +21,7 @@ namespace EQTool.UI
         public string TargetName { get; set; }
         public int ActiveAnimations { get; set; } = 0;
         public RowDefinition RowDefinition { get; set; }
-        public System.Timers.Timer CHTimer { get; set; }
+        public System.Windows.Threading.DispatcherTimer RemovalTimer { get; set; }
     }
 
     public class TimerBarData
@@ -43,6 +43,8 @@ namespace EQTool.UI
         private readonly List<TimerBarData> timerBarDatas = new List<TimerBarData>();
         private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
+        private readonly System.Windows.Threading.DispatcherTimer chWarningClearTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+        private readonly System.Windows.Threading.DispatcherTimer resizeChromeTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
 
         public EventOverlay(LogEvents logEvents, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, ConsoleViewModel consoleViewModel)
             : base(settings.OverlayWindowState, toolSettingsLoad, settings, consoleViewModel)
@@ -55,6 +57,21 @@ namespace EQTool.UI
             base.Init();
             Topmost = true;
             SaveState();
+            chWarningClearTimer.Tick += (s, e) =>
+            {
+                chWarningClearTimer.Stop();
+                CenterText.Text = string.Empty;
+                CenterText.Foreground = Brushes.Red;
+            };
+            resizeChromeTimer.Tick += (s, e) =>
+            {
+                if (Math.Abs((DateTime.Now - LastWindowInteraction).TotalSeconds) >= 10)
+                {
+                    resizeChromeTimer.Stop();
+                    WindowResizeChrome.ResizeBorderThickness = new Thickness(0);
+                    WindowBorder.BorderThickness = new Thickness(0, 0, 0, 0);
+                }
+            };
             logEvents.OverlayEvent += LogEvents_OverlayEvent;
             logEvents.CompleteHealEvent += LogParser_CHEvent;
             logEvents.TimerBarEvent += LogEvents_TimerBarEvent;
@@ -97,20 +114,10 @@ namespace EQTool.UI
                     var shouldwarn = CHService.ShouldWarnOfChain(chaindata, e);
                     if (shouldwarn)
                     {
-                        _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                        {
-                            appDispatcher.DispatchUI(() =>
-                            {
-                                CenterText.Text = "CH Chain Warning";
-                                CenterText.Foreground = Brushes.Red;
-                            });
-                            System.Threading.Thread.Sleep(1000 * 2);
-                            appDispatcher.DispatchUI(() =>
-                            {
-                                CenterText.Text = string.Empty;
-                                CenterText.Foreground = Brushes.Red;
-                            });
-                        });
+                        CenterText.Text = "CH Chain Warning";
+                        CenterText.Foreground = Brushes.Red;
+                        chWarningClearTimer.Stop();
+                        chWarningClearTimer.Start();
                     }
                 }
 
@@ -151,57 +158,53 @@ namespace EQTool.UI
                 storyboard.Completed += (s, ev) =>
                 {
                     chaindata.ActiveAnimations--;
-                    appDispatcher.DispatchUI(() =>
-                    {
-                        chaindata.Canvas.Children.Remove(textborder);
-                    });
+                    chaindata.Canvas.Children.Remove(textborder);
                     if (chaindata.ActiveAnimations <= 0)
                     {
-                        _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                        {
-                            System.Threading.Thread.Sleep(5000);
-                            appDispatcher.DispatchUI(() =>
-                            {
-                                if (chaindata.ActiveAnimations <= 0)
-                                {
-                                    var rowremoved = Grid.GetRow(chaindata.ChildrenInRow.FirstOrDefault());
-                                    Debug.WriteLine($"Removing Row {rowremoved}");
-                                    _ = chainDatas.Remove(chaindata);
-                                    foreach (var item in chaindata.ChildrenInRow)
-                                    {
-                                        ChainStackPanel.Children.Remove(item);
-                                    }
-                                    _ = ChainStackPanel.RowDefinitions.Remove(chaindata.RowDefinition);
-                                    foreach (var item in chainDatas)
-                                    {
-                                        foreach (var cell in item.ChildrenInRow)
-                                        {
-                                            var itemrow = Grid.GetRow(cell);
-                                            if (itemrow > rowremoved)
-                                            {
-                                                Debug.WriteLine($"Updating Row {itemrow} to {itemrow - 1}");
-                                                Grid.SetRow(cell, itemrow - 1);
-                                            }
-                                        }
-                                    }
-                                    foreach (var item in timerBarDatas)
-                                    {
-                                        foreach (var cell in item.ChildrenInRow)
-                                        {
-                                            var itemrow = Grid.GetRow(cell);
-                                            if (itemrow > rowremoved)
-                                            {
-                                                Grid.SetRow(cell, itemrow - 1);
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        });
+                        chaindata.RemovalTimer.Stop();
+                        chaindata.RemovalTimer.Start();
                     }
                 };
                 storyboard.Begin();
             });
+        }
+
+        private void RemoveChainRow(ChainOverlayData chaindata)
+        {
+            if (!chainDatas.Remove(chaindata))
+            {
+                return;
+            }
+            var rowremoved = Grid.GetRow(chaindata.ChildrenInRow.FirstOrDefault());
+            Debug.WriteLine($"Removing Row {rowremoved}");
+            foreach (var item in chaindata.ChildrenInRow)
+            {
+                ChainStackPanel.Children.Remove(item);
+            }
+            _ = ChainStackPanel.RowDefinitions.Remove(chaindata.RowDefinition);
+            foreach (var item in chainDatas)
+            {
+                foreach (var cell in item.ChildrenInRow)
+                {
+                    var itemrow = Grid.GetRow(cell);
+                    if (itemrow > rowremoved)
+                    {
+                        Debug.WriteLine($"Updating Row {itemrow} to {itemrow - 1}");
+                        Grid.SetRow(cell, itemrow - 1);
+                    }
+                }
+            }
+            foreach (var item in timerBarDatas)
+            {
+                foreach (var cell in item.ChildrenInRow)
+                {
+                    var itemrow = Grid.GetRow(cell);
+                    if (itemrow > rowremoved)
+                    {
+                        Grid.SetRow(cell, itemrow - 1);
+                    }
+                }
+            }
         }
 
         // Picks black or white for the countdown text drawn over a timer bar, whichever has the
@@ -401,7 +404,16 @@ namespace EQTool.UI
                 ChildrenInRow = new List<FrameworkElement>(),
                 TargetName = targetname,
                 ActiveAnimations = 1,
-                RowDefinition = new RowDefinition { MaxHeight = 30 }
+                RowDefinition = new RowDefinition { MaxHeight = 30 },
+                RemovalTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(5) }
+            };
+            chaindata.RemovalTimer.Tick += (s, e) =>
+            {
+                chaindata.RemovalTimer.Stop();
+                if (chaindata.ActiveAnimations <= 0)
+                {
+                    RemoveChainRow(chaindata);
+                }
             };
 
             chaindata.Canvas.IsHitTestVisible = false;
@@ -477,6 +489,12 @@ namespace EQTool.UI
                 logEvents.CompleteHealEvent -= LogParser_CHEvent;
                 logEvents.TimerBarEvent -= LogEvents_TimerBarEvent;
             }
+            chWarningClearTimer.Stop();
+            resizeChromeTimer.Stop();
+            foreach (var chaindata in chainDatas)
+            {
+                chaindata.RemovalTimer?.Stop();
+            }
 
             base.OnClosing(e);
         }
@@ -490,18 +508,8 @@ namespace EQTool.UI
 
         private void Grid_MouseLeave(object sender, MouseEventArgs e)
         {
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                while (Math.Abs((DateTime.Now - LastWindowInteraction).TotalSeconds) < 10)
-                {
-                    System.Threading.Thread.Sleep(1000 * 1);
-                }
-                appDispatcher.DispatchUI(() =>
-                {
-                    WindowResizeChrome.ResizeBorderThickness = new Thickness(0);
-                    WindowBorder.BorderThickness = new Thickness(0, 0, 0, 0);
-                });
-            });
+            resizeChromeTimer.Stop();
+            resizeChromeTimer.Start();
         }
     }
 }

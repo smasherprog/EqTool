@@ -32,10 +32,9 @@ namespace EQTool.Services
             {
                 var text = expand(output.DisplayText);
                 var color = TriggerColors.ToBrush(output.DisplayTextColor, Brushes.Red);
-                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = color, Reset = false });
+                _ = System.Threading.Tasks.Task.Delay(5000).ContinueWith(t =>
                 {
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = color, Reset = false });
-                    System.Threading.Thread.Sleep(5000);
                     logEvents.Handle(new OverlayEvent { Text = text, ForeGround = color, Reset = true });
                 });
             }

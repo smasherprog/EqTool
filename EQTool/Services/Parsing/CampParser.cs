@@ -20,9 +20,8 @@ namespace EQTool.Services.Parsing
             {
                 StillCamping = true;
                 Debug.WriteLine("CampEvent Start");
-                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                _ = System.Threading.Tasks.Task.Delay(1000 * 6).ContinueWith(t =>
                 {
-                    System.Threading.Thread.Sleep(1000 * 6);
                     if (StillCamping)
                     {
                         StillCamping = false;

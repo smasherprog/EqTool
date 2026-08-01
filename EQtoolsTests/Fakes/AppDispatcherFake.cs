@@ -12,6 +12,11 @@ namespace EQtoolsTests.Fakes
             action();
         }
 
+        public void DispatchUIBackground(Action action)
+        {
+            action();
+        }
+
         // We don't really wanna fake this stuff to be honest. I don't love having this code duplicated but it shouldn't ever change so it should be fine.
         public void DebounceToUI(ref CancellationTokenSource debounceCancellationSource, int delay, Action action) => DebounceToUI(ref debounceCancellationSource, delay, action, () => false);
         public void DebounceToUI(ref CancellationTokenSource debounceCancellationSource, int delay, Action action, Func<bool> shouldCancel)
