@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,16 +18,18 @@ namespace EQTool.Services
 {
     // Two-way sync + backup for the EverQuest per-character UI config file pair
     // ("UI_<name>_<server>.ini" and "<name>_<server>.ini"). Modeled on
-    // InventoryWatcherService. Everything is gated on the opt-in SyncUIFiles
-    // setting AND a Discord login (the server also enforces the login). Nothing
-    // runs otherwise.
+    // InventoryWatcherService. Background sync is gated on the opt-in SyncUIFiles
+    // setting AND a Discord login; manual actions need only the login (the server
+    // enforces it as well).
     //
-    // - FileSystemWatcher uploads a file whenever it changes on disk.
-    // - SyncNow() (startup + the "Sync Now" button) reconciles every server file
-    //   for every character: newer-wins in both directions, and any file missing
-    //   locally is restored (the backup use-case).
-    // - Downloads set the written file's mtime to the server value and record it,
-    //   so the watcher does not echo our own writes straight back up.
+    // - A FileSystemWatcher uploads a file when it changes on disk.
+    // - SyncNow() (startup + the "Sync Now" button) reconciles every file both
+    //   ways: newer wins, and anything missing locally is restored (the backup
+    //   use-case).
+    // - Every upload and download records a hash of the contents it synced, and
+    //   content already matching that hash is skipped. That single guard covers
+    //   the burst of watcher events Windows raises for one save, re-saves that
+    //   changed nothing, and the echo of our own downloaded writes.
     // - Successful uploads and downloads raise a tray balloon: filenames when
     //   1-2 files, otherwise UI vs character file counts.
     public class UIFileSyncService : IDisposable
@@ -34,19 +37,24 @@ namespace EQTool.Services
         private const string BaseUrl = "https://pigparse.azurewebsites.net";
         // mtime comparisons tolerate small clock differences between machines.
         private static readonly TimeSpan Epsilon = TimeSpan.FromSeconds(2);
+        // How long to let a save settle before reading it: EQ rewrites an ini in
+        // several flushes and the first watcher event arrives mid-write.
+        private const int SettleMilliseconds = 1500;
 
         private readonly EQToolSettings _settings;
-        private readonly LoggingService _loggingService;
         private readonly HttpClient _httpClient = new HttpClient();
-        // file name (lower-cased) -> last mtime we uploaded or downloaded; used to
-        // suppress duplicate FileSystemWatcher events and download echoes.
-        private readonly ConcurrentDictionary<string, DateTime> _lastSyncedMtime = new ConcurrentDictionary<string, DateTime>();
+        // file name (lower-cased) -> hash of the contents we last synced.
+        private readonly ConcurrentDictionary<string, string> _syncedHash = new ConcurrentDictionary<string, string>();
+        // Uploads run one at a time so the hash guard is read and recorded without
+        // another event for the same file slipping in between.
+        private readonly object _uploadLock = new object();
+        // 0/1: one reconcile at a time.
+        private int _syncing;
         private FileSystemWatcher _watcher;
 
-        public UIFileSyncService(EQToolSettings settings, LoggingService loggingService)
+        public UIFileSyncService(EQToolSettings settings)
         {
             _settings = settings;
-            _loggingService = loggingService;
         }
 
         // Logged in with Discord - required for any server call (upload/list/download/delete).
@@ -54,13 +62,14 @@ namespace EQTool.Services
             !string.IsNullOrEmpty(_settings.DiscordId) &&
             !string.IsNullOrEmpty(_settings.DiscordApiToken);
 
-        // Automatic sync is enabled: the opt-in toggle gates only the background behavior
-        // (watcher uploads + startup pull). Manual actions (Sync Now / Refresh / per-character
+        // The opt-in toggle gates only the background behavior (watcher uploads +
+        // startup pull). Manual actions (Sync Now / Refresh / per-character
         // right-click) work whenever logged in, regardless of the toggle.
         private bool IsEnabled => _settings.SyncUIFiles && IsLoggedIn;
 
         public void Start()
         {
+            Dispose();
             var dir = GetEffectiveDirectory();
             if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
             {
@@ -73,47 +82,44 @@ namespace EQTool.Services
                 _watcher.Changed += OnFileChanged;
             }
 
-            // Automatic startup pull only when the opt-in toggle is on (and logged in).
-            // Runs off-thread so InitStuff is not blocked.
+            // Automatic startup pull only when the opt-in toggle is on (and logged
+            // in). Runs off-thread so InitStuff is not blocked.
             if (IsEnabled)
             {
-                _ = Task.Factory.StartNew(() =>
-                {
-                    try { SyncNow(); }
-                    catch { }
-                });
+                RunInBackground(SyncNow);
             }
         }
 
         public void UpdateDirectory()
         {
-            Dispose();
-            Start();
+            Start(); // Start() tears down the previous watcher first
+        }
+
+        public void Dispose()
+        {
+            _watcher?.Dispose();
+            _watcher = null;
         }
 
         private string GetEffectiveDirectory()
         {
             var root = _settings.DefaultEqDirectory;
-            if (string.IsNullOrEmpty(root))
-            {
-                return null;
-            }
-            return FindEq.GetEffectiveUiDirectory(root);
+            return string.IsNullOrEmpty(root) ? null : FindEq.GetEffectiveUiDirectory(root);
         }
 
         private void OnFileChanged(object sender, FileSystemEventArgs e)
         {
-            if (!IsEnabled)
+            if (!IsEnabled || !UIFileName.TryParse(e.FullPath, out var info))
             {
                 return;
             }
             var fileName = Path.GetFileName(e.FullPath);
-            if (!UIFileName.TryParse(fileName, out var info))
+            RunInBackground(() =>
             {
-                return;
-            }
-            _ = Task.Factory.StartNew(() =>
-            {
+                // One save arrives as several events. They all wait out the settle
+                // period, the first one through uploads, and the rest match the
+                // recorded hash and do nothing - so one save, one balloon.
+                Thread.Sleep(SettleMilliseconds);
                 if (UploadFile(e.FullPath, fileName, info))
                 {
                     ShowSyncNotification("Uploaded", new List<string> { fileName });
@@ -123,72 +129,88 @@ namespace EQTool.Services
 
         // ------- reconcile / backup -------
 
+        // Reconciles every file in both directions. Calls that arrive while one is
+        // already running (startup pull vs. the "Sync Now" button) return instead
+        // of doing the whole thing twice.
         public void SyncNow()
         {
-            if (!IsLoggedIn)
+            if (!IsLoggedIn || Interlocked.CompareExchange(ref _syncing, 1, 0) != 0)
             {
                 return;
             }
-            var dir = GetEffectiveDirectory();
-            if (string.IsNullOrEmpty(dir))
+            try
             {
-                return;
+                var dir = GetEffectiveDirectory();
+                if (string.IsNullOrEmpty(dir))
+                {
+                    return;
+                }
+                var serverFiles = GetServerFiles();
+                ShowSyncNotification("Downloaded", Pull(dir, serverFiles));
+                ShowSyncNotification("Uploaded", Push(dir, serverFiles));
             }
+            finally
+            {
+                _ = Interlocked.Exchange(ref _syncing, 0);
+            }
+        }
 
-            var serverFiles = GetServerFiles();
-
-            // PULL / RESTORE: bring down anything newer on the server, or anything
-            // missing locally (backup restore to a fresh machine).
+        // Brings down anything newer on the server, plus anything missing locally
+        // (the restore-to-a-fresh-machine case). Returns the files written.
+        private List<string> Pull(string dir, List<UIFileMetadata> serverFiles)
+        {
             var downloaded = new List<string>();
             foreach (var meta in serverFiles)
             {
                 try
                 {
-                    if (string.IsNullOrWhiteSpace(meta.FileName) || !UIFileName.IsUiPairFile(meta.FileName))
+                    if (!UIFileName.IsUiPairFile(meta.FileName))
                     {
                         continue;
                     }
                     var path = Path.Combine(dir, meta.FileName);
-                    var localExists = File.Exists(path);
-                    var localfiletime = File.GetLastWriteTimeUtc(path).Add(Epsilon);
-                    var shouldPull = !localExists ||
-                        meta.LastModifiedUtc > localfiletime;
-                    if (!shouldPull)
+                    if (File.Exists(path) && meta.LastModifiedUtc <= File.GetLastWriteTimeUtc(path).Add(Epsilon))
                     {
-                        continue;
+                        continue; // local copy is current
                     }
                     var download = DownloadFile(meta.FileName);
-                    if (download != null && download.Contents != null && WriteDownloadedFile(path, download))
+                    if (download?.Contents != null && WriteDownloadedFile(path, download))
                     {
                         downloaded.Add(meta.FileName);
                     }
                 }
                 catch { }
             }
-            ShowSyncNotification("Downloaded", downloaded);
+            return downloaded;
+        }
 
-            // PUSH / SEED: upload local files newer than (or absent from) the server.
+        // Uploads local files newer than (or absent from) the server. Returns the
+        // files uploaded.
+        private List<string> Push(string dir, List<UIFileMetadata> serverFiles)
+        {
             var uploaded = new List<string>();
-            foreach (var localPath in EnumerateLocalPairFiles(dir))
+            foreach (var path in EnumerateLocalPairFiles(dir))
             {
                 try
                 {
-                    var fileName = Path.GetFileName(localPath);
+                    var fileName = Path.GetFileName(path);
                     if (!UIFileName.TryParse(fileName, out var info))
                     {
                         continue;
                     }
-                    var mtime = File.GetLastWriteTimeUtc(localPath);
                     var meta = serverFiles.FirstOrDefault(m => string.Equals(m.FileName, fileName, StringComparison.OrdinalIgnoreCase));
-                    var shouldPush = meta == null || mtime > meta.LastModifiedUtc.Add(Epsilon);
-                    if (shouldPush && UploadFile(localPath, fileName, info))
+                    if (meta != null && File.GetLastWriteTimeUtc(path) <= meta.LastModifiedUtc.Add(Epsilon))
+                    {
+                        continue; // server copy is current
+                    }
+                    if (UploadFile(path, fileName, info))
                     {
                         uploaded.Add(fileName);
                     }
                 }
                 catch { }
             }
-            ShowSyncNotification("Uploaded", uploaded);
+            return uploaded;
         }
 
         private List<string> EnumerateLocalPairFiles(string dir)
@@ -209,87 +231,107 @@ namespace EQTool.Services
             }
         }
 
-        // Returns true when the file was actually written to disk.
-        private bool WriteDownloadedFile(string path, UIFileDownloadResponse download)
-        {
-            var key = Path.GetFileName(path).ToLowerInvariant();
-            var watcherWasOn = _watcher != null && _watcher.EnableRaisingEvents;
-            try
-            {
-                if (watcherWasOn)
-                {
-                    _watcher.EnableRaisingEvents = false;
-                }
-                var directory = Path.GetDirectoryName(path);
-                if (!string.IsNullOrEmpty(directory))
-                {
-                    _ = Directory.CreateDirectory(directory);
-                }
-                File.WriteAllText(path, download.Contents);
-                // Match the server mtime so future comparisons are correct and the
-                // watcher does not treat our own write as a new local change.
-                File.SetLastWriteTimeUtc(path, download.LastModifiedUtc);
-                _lastSyncedMtime[key] = download.LastModifiedUtc;
-                return true;
-            }
-            catch { }
-            finally
-            {
-                if (watcherWasOn && _watcher != null)
-                {
-                    _watcher.EnableRaisingEvents = true;
-                }
-            }
-            return false;
-        }
+        // ------- upload / download -------
 
-        // ------- upload -------
-
-        // Returns true when the file was actually uploaded to the server.
+        // Returns true when the file was actually uploaded. Only a login is
+        // required: the watcher checks the SyncUIFiles toggle before calling, and
+        // manual actions work whenever logged in.
         private bool UploadFile(string path, string fileName, UIFileNameInfo info)
         {
-            if (!IsEnabled)
+            if (!IsLoggedIn || !File.Exists(path))
             {
                 return false;
             }
             try
             {
-                if (!File.Exists(path))
+                lock (_uploadLock)
                 {
-                    return false;
-                }
-                var mtime = File.GetLastWriteTimeUtc(path);
-                var key = fileName.ToLowerInvariant();
-                if (_lastSyncedMtime.TryGetValue(key, out var known) && known == mtime)
-                {
-                    return false; // unchanged since our last sync (duplicate event / echo)
-                }
-                var text = ReadAllTextWithRetry(path);
-                if (text == null)
-                {
-                    return false;
-                }
+                    var mtime = File.GetLastWriteTimeUtc(path);
+                    var text = ReadAllTextWithRetry(path);
+                    if (text == null)
+                    {
+                        return false;
+                    }
+                    var key = fileName.ToLowerInvariant();
+                    var hash = ComputeHash(text);
+                    if (_syncedHash.TryGetValue(key, out var synced) && synced == hash)
+                    {
+                        // Already on the server: a duplicate watcher event, a save
+                        // that changed nothing, or our own downloaded write.
+                        return false;
+                    }
 
-                var request = new UIFileUploadRequest
-                {
-                    FileName = fileName,
-                    PlayerName = info.PlayerName,
-                    Server = info.Server,
-                    LastModifiedUtc = mtime,
-                    Contents = text
-                };
-
-                var json = JsonConvert.SerializeObject(request);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = Send(HttpMethod.Post, BaseUrl + "/api/uifile/upload", content);
-                if (response != null && response.IsSuccessStatusCode)
-                {
-                    _lastSyncedMtime[key] = mtime;
+                    var request = new UIFileUploadRequest
+                    {
+                        FileName = fileName,
+                        PlayerName = info.PlayerName,
+                        Server = info.Server,
+                        LastModifiedUtc = mtime,
+                        Contents = text
+                    };
+                    var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                    var response = Send(HttpMethod.Post, BaseUrl + "/api/uifile/upload", content);
+                    if (response == null || !response.IsSuccessStatusCode)
+                    {
+                        return false;
+                    }
+                    _syncedHash[key] = hash;
                     return true;
                 }
             }
             catch { }
             return false;
+        }
+
+        // Returns true when the file was written to disk. The watcher deliberately
+        // stays on: the hash recorded here is what keeps our own write from
+        // echoing straight back up.
+        private bool WriteDownloadedFile(string path, UIFileDownloadResponse download)
+        {
+            try
+            {
+                var directory = Path.GetDirectoryName(path);
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    _ = Directory.CreateDirectory(directory);
+                }
+                _syncedHash[Path.GetFileName(path).ToLowerInvariant()] = ComputeHash(download.Contents);
+                File.WriteAllText(path, download.Contents);
+                // Match the server mtime so newer-wins comparisons stay correct.
+                File.SetLastWriteTimeUtc(path, download.LastModifiedUtc);
+                return true;
+            }
+            catch { }
+            return false;
+        }
+
+        private static string ComputeHash(string text)
+        {
+            using (var sha = SHA256.Create())
+            {
+                return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(text ?? string.Empty)));
+            }
+        }
+
+        private static string ReadAllTextWithRetry(string path)
+        {
+            // EQ may still hold the file open briefly while saving it.
+            for (var attempt = 0; attempt < 3; attempt++)
+            {
+                try
+                {
+                    return File.ReadAllText(path);
+                }
+                catch (IOException)
+                {
+                    Thread.Sleep(250);
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+            return null;
         }
 
         // Tray balloon summarizing synced files ("Uploaded"/"Downloaded"): filenames
@@ -324,25 +366,13 @@ namespace EQTool.Services
             catch { }
         }
 
-        private static string ReadAllTextWithRetry(string path)
+        private static void RunInBackground(Action work)
         {
-            // EQ may still hold the file open briefly while saving it.
-            for (var attempt = 0; attempt < 3; attempt++)
+            _ = Task.Factory.StartNew(() =>
             {
-                try
-                {
-                    return File.ReadAllText(path);
-                }
-                catch (IOException)
-                {
-                    Thread.Sleep(250);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            return null;
+                try { work(); }
+                catch { }
+            });
         }
 
         // ------- management API surface (used by the UI Sync settings tab) -------
@@ -353,17 +383,7 @@ namespace EQTool.Services
             {
                 return new List<UIFileMetadata>();
             }
-            try
-            {
-                var response = Send(HttpMethod.Get, BaseUrl + "/api/uifile/list");
-                if (response != null && response.IsSuccessStatusCode)
-                {
-                    var json = response.Content.ReadAsStringAsync().Result;
-                    return JsonConvert.DeserializeObject<List<UIFileMetadata>>(json) ?? new List<UIFileMetadata>();
-                }
-            }
-            catch { }
-            return new List<UIFileMetadata>();
+            return SendJson<List<UIFileMetadata>>(BaseUrl + "/api/uifile/list") ?? new List<UIFileMetadata>();
         }
 
         // Local UI pair files present on disk (parsed to player/server). Does not
@@ -387,47 +407,47 @@ namespace EQTool.Services
             {
                 return false;
             }
-            try
-            {
-                var url = BaseUrl + "/api/uifile/delete?fileName=" + Uri.EscapeDataString(fileName);
-                var response = Send(HttpMethod.Delete, url);
-                return response != null && response.IsSuccessStatusCode;
-            }
-            catch { }
-            return false;
+            var response = Send(HttpMethod.Delete, BaseUrl + "/api/uifile/delete?fileName=" + Uri.EscapeDataString(fileName));
+            return response != null && response.IsSuccessStatusCode;
         }
 
         private UIFileDownloadResponse DownloadFile(string fileName)
         {
+            return SendJson<UIFileDownloadResponse>(BaseUrl + "/api/uifile/download?fileName=" + Uri.EscapeDataString(fileName));
+        }
+
+        // ------- http -------
+
+        // Returns null when the call failed; every caller treats that as failure,
+        // so nothing above this line needs its own try/catch around HTTP.
+        private HttpResponseMessage Send(HttpMethod method, string url, HttpContent content = null)
+        {
             try
             {
-                var url = BaseUrl + "/api/uifile/download?fileName=" + Uri.EscapeDataString(fileName);
-                var response = Send(HttpMethod.Get, url);
-                if (response != null && response.IsSuccessStatusCode)
+                var request = new HttpRequestMessage(method, url)
                 {
-                    var json = response.Content.ReadAsStringAsync().Result;
-                    return JsonConvert.DeserializeObject<UIFileDownloadResponse>(json);
-                }
+                    Content = content
+                };
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _settings.DiscordApiToken);
+                return _httpClient.SendAsync(request).Result;
             }
             catch { }
             return null;
         }
 
-        private HttpResponseMessage Send(HttpMethod method, string url, HttpContent content = null)
+        private T SendJson<T>(string url) where T : class
         {
-            var request = new HttpRequestMessage(method, url);
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _settings.DiscordApiToken);
-            if (content != null)
+            var response = Send(HttpMethod.Get, url);
+            if (response == null || !response.IsSuccessStatusCode)
             {
-                request.Content = content;
+                return null;
             }
-            return _httpClient.SendAsync(request).Result;
-        }
-
-        public void Dispose()
-        {
-            _watcher?.Dispose();
-            _watcher = null;
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().Result);
+            }
+            catch { }
+            return null;
         }
     }
 }
