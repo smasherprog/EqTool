@@ -42,12 +42,13 @@ namespace EQTool.ViewModels
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         private readonly EQToolSettings toolSettings;
-
-        public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings toolSettings, PetViewModel petViewModel)
+        private readonly IAppDispatcher appDispatcher;
+        public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings toolSettings, PetViewModel petViewModel, IAppDispatcher appDispatcher)
         {
             this.toolSettings = toolSettings;
             ActivePlayer = activePlayer;
             PetViewModel = petViewModel;
+            this.appDispatcher = appDispatcher;
             for (var i = 12; i < 72; i++)
             {
                 FontSizes.Add(i);
@@ -96,7 +97,7 @@ namespace EQTool.ViewModels
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", toolSettings.SpellWindowState.Opacity.Value);
                 OnPropertyChanged();
             }
-        } 
+        }
 
         public bool ShowRing8RollTime
         {
@@ -408,7 +409,7 @@ namespace EQTool.ViewModels
 
         public void Update()
         {
-            _ = ActivePlayer.Update();
+            _ = ActivePlayer.Update(appDispatcher);
             OnPropertyChanged(nameof(ActivePlayer));
             OnPropertyChanged(nameof(PetViewModel));
             OnPropertyChanged(nameof(HasCharName));
@@ -417,7 +418,7 @@ namespace EQTool.ViewModels
 
         public void RefreshUIFiles()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            appDispatcher.DispatchUI(() =>
             {
                 UIFiles.Clear();
                 if (!Directory.Exists(toolSettings.DefaultEqDirectory))

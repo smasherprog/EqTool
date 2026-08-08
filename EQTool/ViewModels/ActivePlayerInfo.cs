@@ -48,7 +48,7 @@ namespace EQTool.ViewModels
             return p;
         }
 
-        public bool Update()
+        public bool Update(IAppDispatcher appDispatcher)
         {
             var playerchanged = false;
             try
@@ -62,48 +62,49 @@ namespace EQTool.ViewModels
                 var loggedincharlogfile = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly)
                     .OrderByDescending(a => a.LastWriteTime)
                     .FirstOrDefault();
-
-                if (loggedincharlogfile != null)
+                appDispatcher.DispatchUI(() =>
                 {
-                    var parseinfo = GetInfoFromString(loggedincharlogfile.Name);
-                    var tempplayer = players.FirstOrDefault(a => a.Name == parseinfo.Name);
-                    LogFileName = loggedincharlogfile.FullName;
-
-                    if (tempplayer == null)
+                    if (loggedincharlogfile != null)
                     {
-                        players.Add(parseinfo);
+                        var parseinfo = GetInfoFromString(loggedincharlogfile.Name);
+                        var tempplayer = players.FirstOrDefault(a => a.Name == parseinfo.Name);
+                        LogFileName = loggedincharlogfile.FullName;
+
+                        if (tempplayer == null)
+                        {
+                            players.Add(parseinfo);
+                        }
+                        else
+                        {
+                            tempplayer.Server = parseinfo.Server;
+                        }
+                        if (Player != null && tempplayer != Player)
+                        {
+                            logEvents.Handle(new BeforePlayerChangedEvent { TimeStamp = DateTime.Now });
+                        }
+                        playerchanged = tempplayer != Player;
+                        if (tempplayer == null)
+                        {
+                            tempplayer = parseinfo;
+                        }
+                        Player = tempplayer;
+                        if (Player != null)
+                        {
+                            Player.LastUpdate = DateTime.Now;
+                        }
                     }
                     else
                     {
-                        tempplayer.Server = parseinfo.Server;
+                        Player = null;
                     }
-                    if (Player != null && tempplayer != Player)
+                    if (playerchanged && Player != null)
                     {
-                        logEvents.Handle(new BeforePlayerChangedEvent { TimeStamp = DateTime.Now });
+                        logEvents.Handle(new AfterPlayerChangedEvent { TimeStamp = DateTime.Now });
                     }
-                    playerchanged = tempplayer != Player;
-                    if (tempplayer == null)
-                    {
-                        tempplayer = parseinfo;
-                    }
-                    Player = tempplayer;
-                    if (Player != null)
-                    {
-                        Player.LastUpdate = DateTime.Now;
-                    }
-                }
-                else
-                {
-                    Player = null;
-                }
+                });
             }
             catch
             {
-
-            }
-            if (playerchanged && Player != null)
-            {
-                logEvents.Handle(new AfterPlayerChangedEvent { TimeStamp = DateTime.Now });
 
             }
             return playerchanged;

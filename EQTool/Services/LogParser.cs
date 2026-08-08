@@ -162,81 +162,70 @@ namespace EQTool.Services
             {
                 return;
             }
-            FindEq.LogFileInfo logfounddata = null;
             try
             {
-                logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
-            }
-            catch { }
-            if (logfounddata == null || !logfounddata.Found)
-            {
-                Processing = 0;
-                return;
-            }
-            settings.EqLogDirectory = logfounddata.Location;
-            appDispatcher.DispatchUI(() =>
-            {
-                List<string> linelist = null;
+                FindEq.LogFileInfo logfounddata = null;
                 try
                 {
-                    var playerchanged = activePlayer.Update();
-                    if (playerchanged)
-                    {
-                        toolSettingsLoad.Save(settings);
-                    }
-                    var filepath = activePlayer.LogFileName;
-                    if (string.IsNullOrWhiteSpace(filepath))
-                    {
-                        Debug.WriteLine($"No playerfile found!");
-                        return;
-                    }
-
-                    linelist = fileReader.ReadNext(filepath);
+                    logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
                 }
-                catch (Exception ex) when (!(ex is System.IO.IOException) && !(ex is UnauthorizedAccessException))
+                catch { }
+                if (logfounddata == null || !logfounddata.Found)
                 {
-                    App.LogUnhandledException(ex, "LogParser DispatchUI", activePlayer?.Player?.Server);
-                }
-                finally
-                {
-                    if (linelist == null || linelist.Count == 0)
-                    {
-                        Processing = 0;
-                    }
-                }
-                if (linelist != null && linelist.Count > 0)
-                {
-                    ProcessLines(linelist, 0);
-                }
-            });
-        }
-
-        // Parses the batch in slices, yielding the UI thread between slices at Background
-        // priority so rendering and input can run while a large backlog (zoning, log flush,
-        // raid spam) drains. One giant batch parsed in a single dispatcher operation froze
-        // every animation in the app for its whole duration. Processing stays true until the
-        // last slice so Poll cannot start an overlapping batch.
-        private const int MaxLinesPerDispatch = 25;
-        private void ProcessLines(List<string> lines, int start)
-        {
-            var end = Math.Min(start + MaxLinesPerDispatch, lines.Count);
-            try
-            {
-                for (var i = start; i < end; i++)
-                {
-                    MainRun(lines[i]);
-                }
-                if (end < lines.Count)
-                {
-                    appDispatcher.DispatchUIBackground(() => ProcessLines(lines, end));
                     return;
                 }
+
+                settings.EqLogDirectory = logfounddata.Location;
+                UpdatePlayer();
+                var filepath = activePlayer.LogFileName;
+                if (string.IsNullOrWhiteSpace(filepath))
+                {
+                    return;
+                }
+                var linelist = new List<string>();
+
+                try
+                {
+                    linelist = fileReader.ReadNext(filepath);
+                }
+                catch (Exception ex)
+                {
+                    if (!(ex is System.IO.IOException) && !(ex is UnauthorizedAccessException))
+                    {
+                        App.LogUnhandledException(ex, "LogParser DispatchUI", activePlayer.Player?.Server);
+                    }
+                }
+
+                var chunks = linelist
+                  .Select((item, index) => new { item, index })
+                  .GroupBy(x => x.index / 25)
+                  .Select(g => g.Select(x => x.item).ToList())
+                  .ToList();
+
+                foreach (var chunk in chunks)
+                {
+                    appDispatcher.DispatchUI(() =>
+                    {
+                        foreach (var line in chunk)
+                        {
+                            MainRun(line);
+                        }
+                    });
+                }
             }
-            catch (Exception ex)
+            finally
             {
-                App.LogUnhandledException(ex, "LogParser ProcessLines", activePlayer?.Player?.Server);
+                Processing = 0;
             }
-            Processing = 0;
+        }
+
+        private void UpdatePlayer()
+        {
+            var playerchanged = activePlayer.Update(appDispatcher);
+            if (playerchanged)
+            {
+                toolSettingsLoad.Save(settings);
+            }
         }
 
         public void Dispose()

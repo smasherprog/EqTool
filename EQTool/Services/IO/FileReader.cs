@@ -14,11 +14,9 @@ namespace EQTool.Services.IO
     {
         private string LastLogFilename = string.Empty;
         private long? LastLogReadOffset { get; set; } = null;
-        private readonly LogEvents logEvents;
 
-        public FileReader(LogEvents logEvents)
+        public FileReader()
         {
-            this.logEvents = logEvents;
         }
 
         public List<string> ReadNext(string filepath)
