@@ -1,5 +1,6 @@
 ﻿using EQTool.ViewModels;
 using EQToolShared.Enums;
+using EQToolShared.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Media.Media3D;
-using EQToolShared.Extensions;
 
 namespace EQTool.Services.Map
 {
@@ -16,7 +16,7 @@ namespace EQTool.Services.Map
     {
         private readonly LoggingService loggingService;
         private readonly ActivePlayer activePlayer;
-        private const string CurrentMapVersion = "cachedmaps_3";
+        private const string CurrentMapVersion = "cachedmaps_4";
         public MapLoad(LoggingService loggingService, ActivePlayer activePlayer)
         {
             this.loggingService = loggingService;
