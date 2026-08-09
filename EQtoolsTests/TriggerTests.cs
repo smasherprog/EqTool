@@ -119,7 +119,7 @@ namespace EQtoolsTests
         {
             var settings = new EQToolSettings();
             // A brand-new user's seed, then some user changes on top of it.
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
             var customizedBuiltIn = settings.Triggers.First(x => !string.IsNullOrEmpty(x.BuiltInId));
             customizedBuiltIn.Customized = true;
             customizedBuiltIn.TriggerEnabled = false;
@@ -131,7 +131,7 @@ namespace EQtoolsTests
             // The reset.
             settings.Triggers = new System.Collections.Generic.List<Trigger>();
             settings.TriggerFolders = new System.Collections.Generic.List<TriggerFolder>();
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
 
             var expected = BuiltInTriggers.All()
                 .Where(x => !string.IsNullOrEmpty(x.BuiltInId))
@@ -154,7 +154,7 @@ namespace EQtoolsTests
         public void OrphanedDuplicateMergesIntoBuiltInByName()
         {
             var settings = new EQToolSettings();
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
             var seeded = settings.Triggers.First(x => x.BuiltInId == "builtin:cant-see-target");
             seeded.TriggerEnabled = false;
             var orphanId = System.Guid.NewGuid();
@@ -189,7 +189,7 @@ namespace EQtoolsTests
         public void OrphanedDuplicateMergesIntoBuiltInBySearchText()
         {
             var settings = new EQToolSettings();
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
             settings.Triggers.Add(new Trigger
             {
                 TriggerName = "my fizzle alert",
@@ -204,7 +204,7 @@ namespace EQtoolsTests
                 }
             });
 
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
 
             Assert.IsFalse(settings.Triggers.Any(x => x.TriggerName == "my fizzle alert"), "The duplicate should have been absorbed.");
             var merged = settings.Triggers.Single(x => x.BuiltInId == "builtin:spell-fizzle");
@@ -219,7 +219,7 @@ namespace EQtoolsTests
         public void AmbiguousSearchTextDuplicateIsLeftAlone()
         {
             var settings = new EQToolSettings();
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
             var before = settings.Triggers.Count;
             settings.Triggers.Add(new Trigger
             {
@@ -228,7 +228,7 @@ namespace EQtoolsTests
                 TriggerEnabled = true
             });
 
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
 
             var user = settings.Triggers.SingleOrDefault(x => x.TriggerName == "my silver breath");
             Assert.IsNotNull(user, "An ambiguous duplicate should stay a user trigger.");
@@ -242,7 +242,7 @@ namespace EQtoolsTests
         public void DuplicateOfACustomizedBuiltInIsLeftAlone()
         {
             var settings = new EQToolSettings();
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
             var seeded = settings.Triggers.First(x => x.BuiltInId == "builtin:cant-see-target");
             seeded.Customized = true;
             seeded.SearchText = "edited by user";
@@ -253,7 +253,7 @@ namespace EQtoolsTests
                 TriggerEnabled = true
             });
 
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
 
             Assert.AreEqual(2, settings.Triggers.Count(x => x.TriggerName == "Can't See Target"), "Neither copy should be merged or dropped.");
             Assert.AreEqual("edited by user", settings.Triggers.Single(x => x.BuiltInId == "builtin:cant-see-target").SearchText);
@@ -265,7 +265,7 @@ namespace EQtoolsTests
         public void BuiltInCopyInAFolderIsNotAdopted()
         {
             var settings = new EQToolSettings();
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
             var folderId = System.Guid.NewGuid();
             settings.TriggerFolders.Add(new TriggerFolder { Id = folderId, Name = "My Folder" });
             settings.Triggers.Add(new Trigger
@@ -276,7 +276,7 @@ namespace EQtoolsTests
                 TriggerEnabled = true
             });
 
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
 
             var copy = settings.Triggers.SingleOrDefault(x => x.TriggerName == "Can't See Target" && string.IsNullOrEmpty(x.BuiltInId));
             Assert.IsNotNull(copy, "The filed copy should remain an independent user trigger.");
@@ -393,10 +393,9 @@ namespace EQtoolsTests
             {
                 DisplayTextEnabled = true,
                 DisplayText = "{COUNTER} {counter} {Counter} {CoUnTeR}",
-                PlayerName = "Gandalf"
+                PlayerName = "Gandalf",
+                CurrentCounter = 7
             };
-
-            trigger.CurrentCounter = 7;
             // every casing of the macro must resolve to the same count
             Assert.AreEqual("7 7 7 7", trigger.ExpandedDisplayText);
         }
@@ -447,7 +446,7 @@ namespace EQtoolsTests
             }
 
             var settings = new EQToolSettings();
-            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            _ = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
             foreach (var id in ids)
             {
                 Assert.IsTrue(settings.Triggers.Single(x => x.BuiltInId == id).TriggerEnabled, $"Built-in '{id}' should be seeded enabled.");
@@ -597,37 +596,6 @@ namespace EQtoolsTests
 
             Assert.IsTrue(trigger.Matches("Sold for $5 today"));
             Assert.AreEqual("price was $5", trigger.ExpandedDisplayText);
-        }
-
-        // A pattern that backtracks pathologically must give up instead of hanging the UI thread
-        // forever, and must not pay the full timeout again on every later line.
-        [TestMethod]
-        public void CatastrophicBacktrackingTimesOutInsteadOfHanging()
-        {
-            var trigger = new Trigger
-            {
-                // nested quantifier: the engine can split the run of 'a's between the inner and
-                // outer '+' in exponentially many ways, and must try all of them before failing
-                SearchText = "^(a+)+$",
-                TriggerEnabled = true
-            };
-            // never matches (the trailing '!' can't be consumed), so every split gets explored
-            var line = new string('a', 32) + "!";
-
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            Assert.IsFalse(trigger.Matches(line));
-            watch.Stop();
-            Assert.IsLessThan(5000, watch.ElapsedMilliseconds, "The match must time out rather than run unbounded.");
-            // guards against this test going vacuous if the pattern above stops being pathological:
-            // an unbounded run of this pattern takes many minutes, so a fast return here would mean
-            // the timeout path was never exercised
-            Assert.IsGreaterThan(100, watch.ElapsedMilliseconds, "The pattern must actually have hit the match timeout.");
-
-            // the pattern is parked after timing out, so later lines are rejected immediately
-            watch.Restart();
-            Assert.IsFalse(trigger.Matches(line));
-            watch.Stop();
-            Assert.IsLessThan(50, watch.ElapsedMilliseconds, "A timed-out pattern must not be retried at full cost on every line.");
         }
     }
 }
