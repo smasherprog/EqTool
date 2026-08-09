@@ -88,7 +88,10 @@ namespace EQTool.UI.SettingsComponents
             {
                 return;
             }
-            var oldZone = activePlayer.Player.Zone;
+            if (activePlayer.Player == null)
+            {
+                return;
+            }
             if (!string.IsNullOrWhiteSpace(trigger.Zone))
             {
                 activePlayer.Player.Zone = trigger.Zone;
@@ -104,7 +107,6 @@ namespace EQTool.UI.SettingsComponents
                 TestResultText.Text = "No match.";
                 TestResultText.Foreground = Brushes.DarkRed;
             }
-            activePlayer.Player.Zone = oldZone;
         }
 
         // Copies this trigger's effective regular expression to the clipboard. Copies the converted

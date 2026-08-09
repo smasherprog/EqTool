@@ -31,6 +31,8 @@ namespace EQTool.Models
                     {
                         // regex needs to be recompiled if it contains the {c} macro, since that macro is replaced with the current PlayerName
                         _TriggerRegex = null;
+                        _compileFailed = false;
+                        _matchTimedOut = false;
                     }
                     CurrentCounter = 0;
                 }
@@ -134,6 +136,12 @@ namespace EQTool.Models
         // Computed once here (cold path) so the TriggerRegex hot path stays a cheap field check.
         private bool _hasContextToken;
 
+        // Whether the search pattern depends on the logged-in player's name. Callers use this to
+        // avoid evaluating a {c} pattern before the name is known, which would otherwise expand
+        // the macro to an empty string (see TriggerRegex).
+        [Newtonsoft.Json.JsonIgnore]
+        public bool UsesPlayerNameToken => _hasContextToken;
+
         public string SearchText
         {
             get => _SearchText;
@@ -143,6 +151,8 @@ namespace EQTool.Models
                 {
                     _SearchText = value;
                     _TriggerRegex = null;
+                    _compileFailed = false;
+                    _matchTimedOut = false;
                     _hasContextToken = !string.IsNullOrEmpty(value) && _SearchText.IndexOf("{c}", StringComparison.OrdinalIgnoreCase) >= 0;
                 }
             }
@@ -167,6 +177,16 @@ namespace EQTool.Models
         // the regular expression for this trigger
         private Regex _TriggerRegex;
 
+        // set when the pattern failed to compile, so the per-line hot path doesn't retry
+        // (and throw) on every line; cleared when SearchText or PlayerName changes
+        private bool _compileFailed;
+
+        // set when a match exceeded RegexTimeouts.Trigger. A pattern that backtracks that badly
+        // will do it again on the next line, and paying the full timeout per line would stall the
+        // UI thread just as surely as the original hang, so the pattern is parked for the session.
+        // Cleared when SearchText or PlayerName changes (i.e. when the user edits it).
+        private bool _matchTimedOut;
+
 
         [Newtonsoft.Json.JsonIgnore]
         public Regex TriggerRegex
@@ -174,28 +194,60 @@ namespace EQTool.Models
             get
             {
                 // delay regex creation until its asked for
-                if (_TriggerRegex == null && !string.IsNullOrWhiteSpace(_SearchText))
+                if (_TriggerRegex == null && !_compileFailed && !string.IsNullOrWhiteSpace(_SearchText))
                 {
-                    // escape the PlayerName so any regex metacharacters in it (e.g. '.', '(') are
-                    // treated literally and can't break (or throw on compiling) the trigger pattern
-                    var escapedPlayerName = Regex.Escape(PlayerName ?? string.Empty);
-                    var convertedSearchText = _SearchText.Replace("{c}", escapedPlayerName).Replace("{C}", escapedPlayerName);
-
-                    var match = placeholderRegex.Match(convertedSearchText);
-                    while (match.Success)
+                    try
                     {
-                        var group_name = match.Groups["xxx"].Value;
-                        convertedSearchText = placeholderRegex.Replace(convertedSearchText, $"(?<{group_name}>[\\w` ]+)", 1);
-                        match = match.NextMatch();
+                        var escapedPlayerName = Regex.Escape(PlayerName ?? string.Empty);
+                        var convertedSearchText = _SearchText.Replace("{c}", escapedPlayerName).Replace("{C}", escapedPlayerName);
+
+                        // Convert every simplified {name} placeholder into a real named group in a
+                        // single pass. Each placeholder is rewritten at its own position, so a token
+                        // that is left alone (see below) can't shift the ones after it.
+                        convertedSearchText = placeholderRegex.Replace(convertedSearchText, m =>
+                        {
+                            var group_name = m.Groups["xxx"].Value;
+
+                            // {2}, {10} etc. are regex quantifiers, not placeholders - "\d{3}" means
+                            // "three digits". A group name can't start with a digit either, so
+                            // rewriting these into "(?<3>...)" both silently changed what the pattern
+                            // matched and, for "{0}", threw ("capture number cannot be zero") and left
+                            // the trigger permanently dead. Leave the quantifier as the user wrote it.
+                            if (IsAllDigits(group_name))
+                            {
+                                return m.Value;
+                            }
+
+                            return $"(?<{group_name}>[\\w` ]+)";
+                        });
+
+                        // now that we've converted the simplified regex to the real regex pattern, create and return the Regex object
+                        _TriggerRegex = new Regex(convertedSearchText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
                     }
-
-                    // now that we've converted the simplified regex to the real regex pattern, create and return the Regex object
-                    _TriggerRegex = new Regex(convertedSearchText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
+                    catch
+                    {
+                        _compileFailed = true;
+                    }
                 }
 
                 return _TriggerRegex;
             }
+        }
+
+        private static bool IsAllDigits(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+            for (var i = 0; i < value.Length; i++)
+            {
+                if (!char.IsDigit(value[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         // The user can define search patterns using a simplified regular expression syntax
@@ -251,16 +303,29 @@ namespace EQTool.Models
 
             if (EffectiveUseRegex)
             {
+                if (_matchTimedOut)
+                {
+                    return false;
+                }
                 var regex = TriggerRegex;
                 if (regex == null)
                 {
                     return false;
                 }
-                var match = regex.Match(line);
-                if (match.Success)
+                try
                 {
-                    SaveNamedGroupValues(match);
-                    return true;
+                    var match = regex.Match(line);
+                    if (match.Success)
+                    {
+                        SaveNamedGroupValues(match);
+                        return true;
+                    }
+                }
+                catch (RegexMatchTimeoutException)
+                {
+                    // a pattern that backtracks past the budget (e.g. "^(\w+ )+$" against a long
+                    // non-matching line) would otherwise hang the UI thread outright
+                    _matchTimedOut = true;
                 }
                 return false;
             }
@@ -280,24 +345,23 @@ namespace EQTool.Models
                 rv = counterTokenRegex.Replace(rv, CurrentCounter.ToString());
             }
 
-            // walk the list of matches, replacing the user match with the real match
-            var match = placeholderRegex.Match(rv);
-            while (match.Success)
+            // Replace every placeholder with its captured value in a single pass. Each one is
+            // rewritten at its own position, which matters when a name isn't in the hash (the user
+            // made a typo, or the group didn't participate in this match): the old loop iterated
+            // matches of the original text but always replaced the *first* placeholder remaining in
+            // the rewritten text, so skipping one shifted every later value one placeholder left -
+            // "{typo} {damage}" produced "1000 {damage}".
+            // A MatchEvaluator also means the captured value is inserted literally, so a value
+            // containing '$' isn't read as a substitution pattern ($1, $&, ...).
+            rv = placeholderRegex.Replace(rv, m =>
             {
-                // Handle match here...
-                var group_name = match.Groups["xxx"].Value;
+                var group_name = m.Groups["xxx"].Value;
 
                 // this key should be present, but confirm in case user made a typo
-                if (valueHash.ContainsKey(group_name))
-                {
-                    // use regex to replace the placeholder named group with value from the hashtable
-                    // do them one group at a time
-                    var replace_text = $"{valueHash[group_name]}";
-                    rv = placeholderRegex.Replace(rv, replace_text, 1);
-                }
-
-                match = match.NextMatch();
-            }
+                return valueHash.ContainsKey(group_name)
+                    ? $"{valueHash[group_name]}"
+                    : m.Value;
+            });
             return rv;
         }
     }

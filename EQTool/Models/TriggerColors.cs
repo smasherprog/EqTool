@@ -33,19 +33,36 @@ namespace EQTool.Models
             "HotPink",
         };
 
+        // Resolved-brush cache so trigger fires don't allocate a BrushConverter and re-parse
+        // the color name every time. Entries are frozen so they are safe to share across
+        // threads; a null entry means the name failed to parse (so it isn't retried per fire).
+        private static readonly Dictionary<string, SolidColorBrush> brushCache = new Dictionary<string, SolidColorBrush>(System.StringComparer.OrdinalIgnoreCase);
+
         public static SolidColorBrush ToBrush(string name, SolidColorBrush fallback)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 return fallback;
             }
-            try
+            lock (brushCache)
             {
-                return (SolidColorBrush)new BrushConverter().ConvertFromString(name);
-            }
-            catch
-            {
-                return fallback;
+                if (!brushCache.TryGetValue(name, out var brush))
+                {
+                    try
+                    {
+                        brush = (SolidColorBrush)new BrushConverter().ConvertFromString(name);
+                        if (brush != null && brush.CanFreeze)
+                        {
+                            brush.Freeze();
+                        }
+                    }
+                    catch
+                    {
+                        brush = null;
+                    }
+                    brushCache[name] = brush;
+                }
+                return brush ?? fallback;
             }
         }
     }

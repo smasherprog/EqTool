@@ -17,10 +17,29 @@ namespace EQTool.Services.Handlers
 
         // Accept variants: with/without "the" and "spell"
         private readonly Regex _resistTargetRegex = new Regex(@"^Your target resisted(?: the)? (?<spell>.+?)(?: spell)?\.$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private readonly Regex _resistYouRegex = new Regex(@"^You resist(?: the)? (?<spell>.+?)(?: spell)?!?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private readonly Regex _winceRegex = new Regex(@"\bwinces\.$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private const int TrackWindowMillis = 500; // adjust to your latency
+        // LogParser raises LineEvent for every line, including lines a parser already handled, so a
+        // resist arrives here twice: once as ResistSpellEvent and once as LineEvent. Remember the
+        // line we already counted so the regex fallback below only fires when ResistParser didn't.
+        // Both events are raised on the UI thread (LogParser dispatches MainRun), so no lock needed.
+        private int _lastResistLineCounter = -1;
+
+        // Must exceed the log's 1-second timestamp resolution (LogFileDateTimeParse uses
+        // "ddd MMM dd HH:mm:ss yyyy"), otherwise two lines on adjacent seconds are 1000ms apart and
+        // a burst straddling a whole-second boundary can never merge into one session.
+        private const int TrackWindowMillis = 1500;
+
+        // A burst of anonymous winces needs at least this many hits before we alert. One " winces."
+        // on its own is far more likely to be someone else's nuke than a bard AE.
+        private const int MinimumAnonymousBurst = 2;
+
+        // Landing messages unique to one song each in the spell data, so a match identifies the
+        // song outright. Names are spelled to match EQSpells.BardSpellsThatNeedResists.
+        private const string StrandsOfMusicLanded = "is bound by silver strands of music";
+        private const string ChordsOfMusicLanded = "is bound in chords of music";
+        private const string SelosAssonantStrane = "Selo's Assonant Strane";
+        private const string SelosChordsOfCessation = "Selo's Chords of Cessation";
 
         public BardCountHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
@@ -36,45 +55,43 @@ namespace EQTool.Services.Handlers
             }
 
             // parse resist lines directly (covers cases where ResistParser didn't produce an event)
-            var m = _resistTargetRegex.Match(e.Line);
-            if (m.Success)
+            if (e.LineCounter != _lastResistLineCounter)
             {
-                var spellName = NormalizeSpellName(m.Groups["spell"].Value);
-                if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
+                var m = _resistTargetRegex.Match(e.Line);
+                if (m.Success)
                 {
-                    CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
-                    return;
+                    var spellName = NormalizeSpellName(m.Groups["spell"].Value);
+                    if (IsBardSongThatNeedsResists(spellName))
+                    {
+                        CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
+                        return;
+                    }
                 }
             }
 
-            m = _resistYouRegex.Match(e.Line);
-            if (m.Success)
+            // These two landing messages are each unique to a single song in the spell data, so we
+            // can name the session outright rather than guessing. Naming matters: an identified
+            // session reports unconditionally below, and it puts the song in the summary text.
+            if (e.Line.IndexOf(StrandsOfMusicLanded, StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                var spellName = NormalizeSpellName(m.Groups["spell"].Value);
-                if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
-                {
-                    CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
-                    return;
-                }
-            }
-
-            // "is bound by silver strands of music" is a per-target message for some bard spells.
-            // Treat this as a hit.
-            if (e.Line.IndexOf("is bound by silver strands of music", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                CreateOrAttachSession(e.TimeStamp, GetActiveSpellName(), hitOnly: true);
+                CreateOrAttachSession(e.TimeStamp, SelosAssonantStrane, hitOnly: true);
                 return;
             }
 
-            if (e.Line.IndexOf("is bound in chords of music", StringComparison.OrdinalIgnoreCase) >= 0)
+            if (e.Line.IndexOf(ChordsOfMusicLanded, StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                CreateOrAttachSession(e.TimeStamp, GetActiveSpellName(), hitOnly: true);
+                CreateOrAttachSession(e.TimeStamp, SelosChordsOfCessation, hitOnly: true);
                 return;
             }
 
             if (_winceRegex.IsMatch(e.Line))
             {
-                // wince counts as a hit occurrence
+                // Unlike the two messages above, " winces." is shared by Chords of Dissonance,
+                // Denon`s Disruptive Discord and a long tail of unrelated spells (Cannibalize, the
+                // mana drains, Denon`s Dissension...), and nothing tells us a bard is singing:
+                // YouBeginCastingParser only matches "You begin casting ", so UserCastingSpell is
+                // never set for a song. We therefore cannot identify the source here. Count it and
+                // let the burst threshold in FinalizeSession discard stray one-off winces.
                 CreateOrAttachSession(e.TimeStamp, GetActiveSpellName(), hitOnly: true);
             }
         }
@@ -86,11 +103,34 @@ namespace EQTool.Services.Handlers
                 return;
             }
 
+            // LineEvent for this same line follows immediately; mark it so we don't count it twice.
+            _lastResistLineCounter = e.LineCounter;
+
+            // "You resist the X spell!" means someone landed X on us. That is not our cast, so it
+            // does not belong in our hit/resist tally.
+            if (e.isYou)
+            {
+                return;
+            }
+
             var spellName = NormalizeSpellName(e.Spell.name);
-            if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
+            if (IsBardSongThatNeedsResists(spellName))
             {
                 CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
             }
+        }
+
+        private static bool IsBardSongThatNeedsResists(string normalizedName)
+        {
+            return !string.IsNullOrWhiteSpace(normalizedName)
+                && EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), normalizedName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static bool IsTrackedSpell(string normalizedName)
+        {
+            return !string.IsNullOrWhiteSpace(normalizedName)
+                && (EQSpells.SpellsThatNeedCounts.Any(a => string.Equals(NormalizeSpellName(a), normalizedName, StringComparison.OrdinalIgnoreCase))
+                    || IsBardSongThatNeedsResists(normalizedName));
         }
 
         // start or attach to an existing session
@@ -99,10 +139,7 @@ namespace EQTool.Services.Handlers
             var normalized = NormalizeSpellName(possibleSpell);
 
             // If we know the spell name and it's either in the configured list or forced, try to attach/create a named session
-            if (!string.IsNullOrWhiteSpace(normalized) &&
-                (forceCreate
-                 || EQSpells.SpellsThatNeedCounts.Any(a => string.Equals(NormalizeSpellName(a), normalized, StringComparison.OrdinalIgnoreCase))
-                 || EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), normalized, StringComparison.OrdinalIgnoreCase))))
+            if (!string.IsNullOrWhiteSpace(normalized) && (forceCreate || IsTrackedSpell(normalized)))
             {
                 Session s;
                 lock (_lock)
@@ -132,7 +169,7 @@ namespace EQTool.Services.Handlers
                         return;
                     }
 
-                    // no named session found � try to find a recent anonymous session (created by winces/chains)
+                    // no named session found - try to find a recent anonymous session (created by winces/chains)
                     var anon = _sessions.Where(a => string.IsNullOrWhiteSpace(a.SpellName)
                                                     && a.LastEventTime.HasValue
                                                     && Math.Abs((timestamp - a.LastEventTime.Value).TotalMilliseconds) <= TrackWindowMillis)
@@ -156,7 +193,7 @@ namespace EQTool.Services.Handlers
                         return;
                     }
 
-                    // no existing session at all � create a new named session (inside lock to avoid races)
+                    // no existing session at all - create a new named session (inside lock to avoid races)
                     s = CreateSession(normalized, timestamp);
                     if (hitOnly)
                     {
@@ -214,6 +251,11 @@ namespace EQTool.Services.Handlers
 
                     recent.LastEventTime = timestamp;
                 }
+
+                // This event could not be attributed to a song. The lookup above deliberately has no
+                // name filter, so an unrelated " winces." can land in a session we named from a
+                // landing message - remember that so we don't claim the whole burst was that song.
+                recent.HasUnattributedEvents = true;
             }
 
             ScheduleFinalize(recent);
@@ -228,10 +270,10 @@ namespace EQTool.Services.Handlers
             // Normalize various quote marks and whitespace
             var n = name.Trim();
             n = n.Replace('`', '\'')
-                 .Replace('�', '\'')
-                 .Replace('�', '\'')
-                 .Replace('�', '"')
-                 .Replace('�', '"');
+                 .Replace('\u2018', '\'')
+                 .Replace('\u2019', '\'')
+                 .Replace('\u201C', '"')
+                 .Replace('\u201D', '"');
             // collapse multiple spaces
             while (n.Contains("  "))
             {
@@ -306,6 +348,14 @@ namespace EQTool.Services.Handlers
                 return;
             }
 
+            // An anonymous session means every event in it was an unattributable " winces." line, so
+            // require an actual multi-target burst before alerting. Sessions we could identify - by
+            // a resist naming the song, or by one of the two unique landing messages - always report.
+            if (string.IsNullOrWhiteSpace(s.SpellName) && total < MinimumAnonymousBurst)
+            {
+                return;
+            }
+
             var parts = new List<string> { $"{total} Total" };
             if (s.Hits > 0)
             {
@@ -318,17 +368,18 @@ namespace EQTool.Services.Handlers
             }
 
             var text = string.Join(" | ", parts);
-
-            // Always emit chat/console summary so there's a persistent record
-            var ev = new CommsEvent
+            // Only name the burst when every event in it was attributable to that song; otherwise we
+            // would be asserting someone else's winces were ours.
+            if (!string.IsNullOrWhiteSpace(s.SpellName) && !s.HasUnattributedEvents)
             {
-                Sender = "System",
-                Content = text,
-                TheChannel = CommsEvent.Channel.SAY,
-                TimeStamp = DateTime.Now,
-                Line = text
-            };
-            logEvents.Handle(ev);
+                text = $"{s.SpellName}: {text}";
+            }
+
+            // Persistent record goes to the console window, which actually renders it. This used to
+            // raise a synthetic CommsEvent, but nothing displays CommsEvent - the only subscribers
+            // are other handlers - so the record was invisible, and raising it from this thread-pool
+            // thread pushed those handlers off the UI thread for no benefit.
+            debugOutput.WriteLine($"{(s.LastEventTime ?? s.StartTime):HH:mm:ss} {text}", OutputType.Spells);
 
             // Overlay: respect player setting BardCountTextAlert
             var doOverlay = activePlayer?.Player?.BardCountTextAlert ?? false;
@@ -368,6 +419,7 @@ namespace EQTool.Services.Handlers
             public DateTime? LastEventTime;
             public int Hits;
             public int Resists;
+            public bool HasUnattributedEvents;
             public CancellationTokenSource Cts;
         }
     }

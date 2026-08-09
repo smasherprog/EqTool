@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EQTool.Services
 {
@@ -89,10 +90,23 @@ namespace EQTool.Services
             }
 
             // is this phrase not in the history?
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var shouldSpeak = false;
             lock (audioAlertHistory)
             {
+                // entries older than the cooldown can never suppress anything again; prune
+                // them once the dictionary grows past what a busy 5-second window could hold
+                if (audioAlertHistory.Count > 100)
+                {
+                    var stale = audioAlertHistory
+                        .Where(kv => (now - kv.Value).TotalSeconds > audioAlertCooldownSeconds)
+                        .Select(kv => kv.Key).ToList();
+                    foreach (var key in stale)
+                    {
+                        _ = audioAlertHistory.Remove(key);
+                    }
+                }
+
                 if (interrupt)
                 {
                     // interrupting speech bypasses the repeat-suppression cooldown

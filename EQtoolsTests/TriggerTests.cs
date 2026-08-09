@@ -533,5 +533,101 @@ namespace EQtoolsTests
             Assert.IsFalse(trigger.Matches("axb(c) waves"));
 
         }
+
+        // "{3}" in a pattern is a regex quantifier, not a simplified {name} placeholder. Converting
+        // it into "(?<3>[\w` ]+)" silently changed what the pattern matched.
+        [TestMethod]
+        public void RegexQuantifiersAreNotTreatedAsPlaceholders()
+        {
+            var trigger = new Trigger
+            {
+                SearchText = @"^You have gained \d{3} experience",
+                TriggerEnabled = true
+            };
+
+            Assert.IsTrue(trigger.Matches("You have gained 120 experience"));
+            Assert.IsFalse(trigger.Matches("You have gained 12 experience"), "The {3} quantifier must still mean 'exactly three digits'.");
+            Assert.IsFalse(trigger.Matches("You have gained many experience"));
+        }
+
+        // "{0}" used to convert to "(?<0>...)", which throws ("capture number cannot be zero") and
+        // left the trigger permanently unable to compile - it silently never fired again.
+        [TestMethod]
+        public void ZeroQuantifierDoesNotKillTheTrigger()
+        {
+            var trigger = new Trigger
+            {
+                SearchText = @"^Nothing\d{0}here",
+                TriggerEnabled = true
+            };
+
+            Assert.IsNotNull(trigger.TriggerRegex, "The pattern must still compile.");
+            Assert.IsTrue(trigger.Matches("Nothinghere"));
+        }
+
+        // A placeholder with no captured value (a typo, or a group that didn't participate) must not
+        // shift the values that follow it. This used to produce "1000 {damage}".
+        [TestMethod]
+        public void UnknownPlaceholderDoesNotShiftLaterValues()
+        {
+            var trigger = new Trigger
+            {
+                SearchText = "^{attacker} hits you for {damage} points",
+                DisplayTextEnabled = true,
+                DisplayText = "{typo} took {damage} from {attacker}",
+                TriggerEnabled = true
+            };
+
+            Assert.IsTrue(trigger.Matches("a Balrog hits you for 1000 points"));
+            Assert.AreEqual("{typo} took 1000 from a Balrog", trigger.ExpandedDisplayText);
+        }
+
+        // Captured values are inserted literally: a '$' in a value must not be read as a
+        // substitution pattern ($1, $&, ...) by the placeholder replacement.
+        [TestMethod]
+        public void CapturedValueContainingDollarSignIsInsertedLiterally()
+        {
+            var trigger = new Trigger
+            {
+                SearchText = @"^Sold for (?<price>[$\w]+) today",
+                DisplayTextEnabled = true,
+                DisplayText = "price was {price}",
+                TriggerEnabled = true
+            };
+
+            Assert.IsTrue(trigger.Matches("Sold for $5 today"));
+            Assert.AreEqual("price was $5", trigger.ExpandedDisplayText);
+        }
+
+        // A pattern that backtracks pathologically must give up instead of hanging the UI thread
+        // forever, and must not pay the full timeout again on every later line.
+        [TestMethod]
+        public void CatastrophicBacktrackingTimesOutInsteadOfHanging()
+        {
+            var trigger = new Trigger
+            {
+                // nested quantifier: the engine can split the run of 'a's between the inner and
+                // outer '+' in exponentially many ways, and must try all of them before failing
+                SearchText = "^(a+)+$",
+                TriggerEnabled = true
+            };
+            // never matches (the trailing '!' can't be consumed), so every split gets explored
+            var line = new string('a', 32) + "!";
+
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            Assert.IsFalse(trigger.Matches(line));
+            watch.Stop();
+            Assert.IsLessThan(5000, watch.ElapsedMilliseconds, "The match must time out rather than run unbounded.");
+            // guards against this test going vacuous if the pattern above stops being pathological:
+            // an unbounded run of this pattern takes many minutes, so a fast return here would mean
+            // the timeout path was never exercised
+            Assert.IsGreaterThan(100, watch.ElapsedMilliseconds, "The pattern must actually have hit the match timeout.");
+
+            // the pattern is parked after timing out, so later lines are rejected immediately
+            watch.Restart();
+            Assert.IsFalse(trigger.Matches(line));
+            watch.Stop();
+            Assert.IsLessThan(50, watch.ElapsedMilliseconds, "A timed-out pattern must not be retried at full cost on every line.");
+        }
     }
 }
