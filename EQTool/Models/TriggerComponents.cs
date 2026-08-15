@@ -118,17 +118,6 @@ namespace EQTool.Models
         }
     }
 
-    // A single "end early" search pattern for a timer.
-    [Serializable]
-    public class EndEarlyEntry : TriggerNotifyBase
-    {
-        private string _SearchText = string.Empty;
-        public string SearchText { get => _SearchText; set => Set(ref _SearchText, value); }
-
-        private bool _UseRegex;
-        public bool UseRegex { get => _UseRegex; set => Set(ref _UseRegex, value); }
-    }
-
     // The Timer tab settings.
     [Serializable]
     public class TriggerTimer : TriggerNotifyBase
@@ -165,9 +154,6 @@ namespace EQTool.Models
         // Also mirror this timer's countdown as an animated progress bar in the overlay window.
         private bool _ShowInOverlay;
         public bool ShowInOverlay { get => _ShowInOverlay; set => Set(ref _ShowInOverlay, value); }
-
-        public System.Collections.ObjectModel.ObservableCollection<EndEarlyEntry> EndEarlyTexts { get; set; }
-            = new System.Collections.ObjectModel.ObservableCollection<EndEarlyEntry>();
 
         [Newtonsoft.Json.JsonIgnore]
         public TimeSpan Duration => new TimeSpan(0, Hours, Minutes, Seconds, Milliseconds);

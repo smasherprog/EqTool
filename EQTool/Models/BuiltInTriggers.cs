@@ -60,7 +60,6 @@ namespace EQTool.Models
         // create trigger exp grinding
         //  - triggers from "You gain experience" or "You gain party experience"
         //  - uses {counter} as part of output, to help user keep track of spawns
-        //  - allow user to send a tell to ".exp" to immediately clear all timers of this type
         public static Trigger CreateExpGained()
         {
             return new Trigger
@@ -75,8 +74,7 @@ namespace EQTool.Models
                 SearchText = @"^You gain (party )?experience",
                 UseRegex = true,
                 Category = CategoryName,
-                Comments = "Note: Sending a tell to \".exp\", i.e. \"/t .exp\" will immediately terminate all timers of this type!\n" +
-                            "BB fishers = 6:40 and 22:00, " +
+                Comments = "BB fishers = 6:40 and 22:00, " +
                             "Chardok = 18:00, " +
                             "COM = 22:00, " +
                             "Crystal Caverns = 14:45, " +
@@ -111,18 +109,10 @@ namespace EQTool.Models
                 Timer = new TriggerTimer
                 {
                     TimerType = TimerType.CountDown,
-                    TimerName = "-- Exp Timer [{counter}] (.exp)",
+                    TimerName = "-- Exp Timer [{counter}]",
                     Minutes = 6,
                     Seconds = 40,
                     RestartBehavior = TimerRestartBehavior.StartNewTimer,
-                    EndEarlyTexts = new System.Collections.ObjectModel.ObservableCollection<EndEarlyEntry>
-                    {
-                        new EndEarlyEntry
-                        {
-                            SearchText = @"^\.exp",
-                            UseRegex = true,
-                        },
-                    }
                 },
                 TimerEnding = new TriggerTimerEnding
                 {

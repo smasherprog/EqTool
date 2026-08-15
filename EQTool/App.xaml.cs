@@ -29,6 +29,17 @@ namespace EQTool
     {
         public static HttpClient httpclient = new HttpClient();
 
+        static App()
+        {
+            // Regex reads this key once, the first time the type is used, and caches it forever, so
+            // it has to be set before anything in the process builds a Regex - a static ctor on the
+            // startup class is the earliest hook we own. Without it every pattern runs unbounded and
+            // a user-authored trigger that backtracks catastrophically hangs the parsing thread for
+            // good. 25ms is the practical floor: the deadline is compared against Environment.TickCount,
+            // which only advances every ~15.6ms, so smaller values just abort early and erratically.
+            AppDomain.CurrentDomain.SetData("REGEX_DEFAULT_MATCH_TIMEOUT", TimeSpan.FromMilliseconds(25));
+        }
+
         private Autofac.IContainer container;
         private System.Windows.Forms.NotifyIcon SystemTrayIcon;
 

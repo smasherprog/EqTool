@@ -143,7 +143,6 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
@@ -237,19 +236,6 @@
                                   ItemsSource="{Binding RestartBehaviorOptions}"
                                   SelectedValuePath="Key" DisplayMemberPath="Value"
                                   SelectedValue="{Binding Timer.RestartBehavior, Mode=TwoWay}"/>
-
-                        <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,8,0,0">
-                            <TextBlock Text="End early text (for multiple possible values, add a row for each):" Margin="0,0,0,2"/>
-                            <DataGrid ItemsSource="{Binding Timer.EndEarlyTexts}" AutoGenerateColumns="False"
-                                      CanUserAddRows="True" CanUserDeleteRows="True" Height="140" HeadersVisibility="Column">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Search Text" Width="*"
-                                                        Binding="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <DataGridCheckBoxColumn Header="Use Regex"
-                                                            Binding="{Binding UseRegex, UpdateSourceTrigger=PropertyChanged}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </StackPanel>
                     </Grid>
                 </TabItem>
 

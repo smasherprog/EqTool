@@ -4,7 +4,6 @@ using EQTool.ViewModels.SpellWindow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Media;
 
 namespace EQTool.Services
@@ -12,7 +11,6 @@ namespace EQTool.Services
     // Drives the runtime behavior of trigger timers and counters:
     //  - creates named count-down timers in the Triggers window when a trigger matches
     //  - honors the restart behavior when a timer is triggered again
-    //  - cancels a timer early when an "end early" line is seen
     //  - fires the Timer Ending notification when the countdown crosses its threshold
     //  - fires the Timer Ended notification when the countdown reaches zero
     //  - resets a trigger's {COUNTER} tally after a period of no matches (no widget is shown)
@@ -153,63 +151,6 @@ namespace EQTool.Services
             });
         }
 
-        // Called for every log line so active timers can end early on a matching line.
-        public void OnLine(string line)
-        {
-            if (string.IsNullOrEmpty(line))
-            {
-                return;
-            }
-            List<ActiveTimer> toCancel = null;
-            lock (sync)
-            {
-                foreach (var t in activeTimers)
-                {
-                    var endEarly = t.Trigger?.Timer?.EndEarlyTexts;
-                    if (endEarly == null)
-                    {
-                        continue;
-                    }
-                    foreach (var entry in endEarly)
-                    {
-                        if (string.IsNullOrWhiteSpace(entry.SearchText))
-                        {
-                            continue;
-                        }
-                        var hit = entry.UseRegex
-                            ? SafeRegexMatch(entry.SearchText, line)
-                            : line.IndexOf(entry.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                        if (hit)
-                        {
-                            if (toCancel == null)
-                            {
-                                toCancel = new List<ActiveTimer>();
-                            }
-                            toCancel.Add(t);
-                            break;
-                        }
-                    }
-                }
-                if (toCancel != null)
-                {
-                    foreach (var t in toCancel)
-                    {
-                        _ = activeTimers.Remove(t);
-                    }
-                }
-            }
-            if (toCancel != null)
-            {
-                appDispatcher.DispatchUI(() =>
-                {
-                    foreach (var t in toCancel)
-                    {
-                        _ = spellWindowViewModel.SpellList.Remove(t.ViewModel);
-                    }
-                });
-            }
-        }
-
         // Called when a trigger with counter-reset enabled matches. This only arms the inactivity
         // reset for the trigger's {COUNTER} tally; it does not display anything in the spells window
         // (only a configured Timer shows there).
@@ -302,18 +243,6 @@ namespace EQTool.Services
             foreach (var t in endedToFire)
             {
                 executor.Execute(t.Trigger.TimerEnded.Output, t.Trigger.Expand);
-            }
-        }
-
-        private static bool SafeRegexMatch(string pattern, string input)
-        {
-            try
-            {
-                return Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase);
-            }
-            catch
-            {
-                return false;
             }
         }
     }

@@ -17,16 +17,6 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
         {
-            // give active timers a chance to end early on this line
-            try
-            {
-                timerManager.OnLine(e.Line);
-            }
-            catch (System.Exception ex)
-            {
-                App.LogUnhandledException(ex, "TriggerHandler timerManager.OnLine", activePlayer?.Player?.Server);
-            }
-
             var currentZone = activePlayer?.Player?.Zone;
             var currentServer = activePlayer?.Player?.Server;
             var currentPlayerName = activePlayer?.Player?.Name ?? string.Empty;

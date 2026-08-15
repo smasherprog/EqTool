@@ -27,7 +27,7 @@ namespace EQTool.Models
                 if (_PlayerName != value)
                 {
                     _PlayerName = value;
-                    if (_hasContextToken)
+                    if (UsesPlayerNameToken)
                     {
                         // regex needs to be recompiled if it contains the {c} macro, since that macro is replaced with the current PlayerName
                         _TriggerRegex = null;
@@ -131,16 +131,11 @@ namespace EQTool.Models
         //          ^(?<backstabber>[\w` ]+) backstabs (?<target>[\w` ]+) for (?<damage>[\w` ]+) points of damage\.
         private string _SearchText = string.Empty;
 
-        // Whether the pattern contains the {c} macro. Only {c} triggers depend on PlayerName, so
-        // only they need their compiled regex invalidated when the logged-in player changes.
-        // Computed once here (cold path) so the TriggerRegex hot path stays a cheap field check.
-        private bool _hasContextToken;
-
         // Whether the search pattern depends on the logged-in player's name. Callers use this to
         // avoid evaluating a {c} pattern before the name is known, which would otherwise expand
         // the macro to an empty string (see TriggerRegex).
         [Newtonsoft.Json.JsonIgnore]
-        public bool UsesPlayerNameToken => _hasContextToken;
+        public bool UsesPlayerNameToken = false;
 
         public string SearchText
         {
@@ -153,7 +148,7 @@ namespace EQTool.Models
                     _TriggerRegex = null;
                     _compileFailed = false;
                     _matchTimedOut = false;
-                    _hasContextToken = !string.IsNullOrEmpty(value) && _SearchText.IndexOf("{c}", StringComparison.OrdinalIgnoreCase) >= 0;
+                    UsesPlayerNameToken = !string.IsNullOrEmpty(value) && _SearchText.IndexOf("{c}", StringComparison.OrdinalIgnoreCase) >= 0;
                 }
             }
         }
@@ -221,7 +216,9 @@ namespace EQTool.Models
                             return $"(?<{group_name}>[\\w` ]+)";
                         });
 
-                        // now that we've converted the simplified regex to the real regex pattern, create and return the Regex object
+                        // now that we've converted the simplified regex to the real regex pattern, create and return the Regex object.
+                        // The match timeout is the process-wide default set in App's static ctor - user-authored
+                        // patterns are the ones most likely to backtrack catastrophically.
                         _TriggerRegex = new Regex(convertedSearchText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
                     }
                     catch
