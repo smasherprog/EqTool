@@ -43,11 +43,7 @@ namespace EQTool.Services.Handlers
             doAlert = activePlayer?.Player?.RootWarningOverlay ?? false;
             if (doAlert)
             {
-                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
-                _ = System.Threading.Tasks.Task.Delay(3000).ContinueWith(t =>
-                {
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
-                });
+                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Duration = TimeSpan.FromSeconds(3) });
             }
         }
     }

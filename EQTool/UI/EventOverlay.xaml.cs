@@ -24,6 +24,12 @@ namespace EQTool.UI
         public System.Windows.Threading.DispatcherTimer RemovalTimer { get; set; }
     }
 
+    public class OverlayMessageData
+    {
+        public TextBlock TextBlock { get; set; }
+        public System.Windows.Threading.DispatcherTimer RemovalTimer { get; set; }
+    }
+
     public class TimerBarData
     {
         public string Name { get; set; }
@@ -41,10 +47,13 @@ namespace EQTool.UI
         private readonly ActivePlayer activePlayer;
         private readonly List<ChainOverlayData> chainDatas = new List<ChainOverlayData>();
         private readonly List<TimerBarData> timerBarDatas = new List<TimerBarData>();
+        private readonly List<OverlayMessageData> messageDatas = new List<OverlayMessageData>();
         private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
-        private readonly System.Windows.Threading.DispatcherTimer chWarningClearTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
         private readonly System.Windows.Threading.DispatcherTimer resizeChromeTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+
+        // The size the single center message used to be drawn at, kept so stacked messages look the same.
+        private const double MessageFontSize = 44;
 
         public EventOverlay(LogEvents logEvents, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, ConsoleViewModel consoleViewModel)
             : base(settings.OverlayWindowState, toolSettingsLoad, settings, consoleViewModel)
@@ -57,12 +66,6 @@ namespace EQTool.UI
             base.Init();
             Topmost = true;
             SaveState();
-            chWarningClearTimer.Tick += (s, e) =>
-            {
-                chWarningClearTimer.Stop();
-                CenterText.Text = string.Empty;
-                CenterText.Foreground = Brushes.Red;
-            };
             resizeChromeTimer.Tick += (s, e) =>
             {
                 if (Math.Abs((DateTime.Now - LastWindowInteraction).TotalSeconds) >= 10)
@@ -79,22 +82,55 @@ namespace EQTool.UI
 
         private void LogEvents_OverlayEvent(object sender, OverlayEvent e)
         {
-            appDispatcher.DispatchUI(() =>
+            appDispatcher.DispatchUI(() => ShowMessage(e.Text, e.ForeGround, e.Duration));
+        }
+
+        private void ShowMessage(string text, Brush foreground, TimeSpan duration)
+        {
+            if (string.IsNullOrEmpty(text))
             {
-                if (e.Reset)
+                return;
+            }
+
+            // A non-positive interval makes a DispatcherTimer fire on every idle, so the row would
+            // flicker in and straight back out rather than being displayed.
+            if (duration <= TimeSpan.Zero)
+            {
+                duration = TimeSpan.FromSeconds(5);
+            }
+
+            var message = new OverlayMessageData
+            {
+                TextBlock = new TextBlock
                 {
-                    if (CenterText.Text == e.Text && CenterText.Foreground == e.ForeGround)
-                    {
-                        CenterText.Text = string.Empty;
-                        CenterText.Foreground = Brushes.Red;
-                    }
-                }
-                else
-                {
-                    CenterText.Text = e.Text;
-                    CenterText.Foreground = e.ForeGround;
-                }
-            });
+                    Text = text,
+                    Foreground = foreground ?? Brushes.Red,
+                    FontSize = MessageFontSize,
+                    FontWeight = FontWeights.Medium,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    IsHitTestVisible = false
+                },
+                RemovalTimer = new System.Windows.Threading.DispatcherTimer { Interval = duration }
+            };
+            message.RemovalTimer.Tick += (s, e) =>
+            {
+                message.RemovalTimer.Stop();
+                RemoveMessageRow(message);
+            };
+
+            _ = CenterTextPanel.Children.Add(message.TextBlock);
+            messageDatas.Add(message);
+            message.RemovalTimer.Start();
+        }
+
+        private void RemoveMessageRow(OverlayMessageData message)
+        {
+            if (!messageDatas.Remove(message))
+            {
+                return;
+            }
+            CenterTextPanel.Children.Remove(message.TextBlock);
         }
 
         private void LogParser_CHEvent(object sender, CompleteHealEvent e)
@@ -114,10 +150,7 @@ namespace EQTool.UI
                     var shouldwarn = CHService.ShouldWarnOfChain(chaindata, e);
                     if (shouldwarn)
                     {
-                        CenterText.Text = "CH Chain Warning";
-                        CenterText.Foreground = Brushes.Red;
-                        chWarningClearTimer.Stop();
-                        chWarningClearTimer.Start();
+                        ShowMessage("CH Chain Warning", Brushes.Red, TimeSpan.FromSeconds(2));
                     }
                 }
 
@@ -489,11 +522,14 @@ namespace EQTool.UI
                 logEvents.CompleteHealEvent -= LogParser_CHEvent;
                 logEvents.TimerBarEvent -= LogEvents_TimerBarEvent;
             }
-            chWarningClearTimer.Stop();
             resizeChromeTimer.Stop();
             foreach (var chaindata in chainDatas)
             {
                 chaindata.RemovalTimer?.Stop();
+            }
+            foreach (var message in messageDatas)
+            {
+                message.RemovalTimer?.Stop();
             }
 
             base.OnClosing(e);

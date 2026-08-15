@@ -228,7 +228,7 @@ namespace EQTool.Models
         public int MaxRoll { get; set; }
         public int Roll { get; set; }
     }
-    
+
     public class CompleteHealEvent : BaseLogParseEvent
     {
         public string Recipient { get; set; }
@@ -236,7 +236,7 @@ namespace EQTool.Models
         public string Position { get; set; }
         public string Caster { get; set; }
     }
-    
+
     public class YouHaveFinishedMemorizingEvent : BaseLogParseEvent
     {
         public string SpellName { get; set; }
@@ -250,7 +250,7 @@ namespace EQTool.Models
     public class YourSpellInterruptedEvent : BaseLogParseEvent
     {
     }
-    
+
     public class DragonRoarEvent : BaseLogParseEvent
     {
         public Spell Spell { get; set; }
@@ -304,7 +304,7 @@ namespace EQTool.Models
     {
         public string Text { get; set; }
         public System.Windows.Media.Brush ForeGround { get; set; }
-        public bool Reset { get; set; }
+        public TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(5);
     }
 
     public class TimerBarEvent

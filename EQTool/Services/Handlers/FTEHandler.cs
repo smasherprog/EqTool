@@ -36,11 +36,7 @@ namespace EQTool.Services.Handlers
                         text = $"{fteperson.Name} <{fteperson.GuildName}> FTE {e.NPCName}";
                     }
 
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = false });
-                    _ = System.Threading.Tasks.Task.Delay(3000).ContinueWith(t =>
-                    {
-                        logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = true });
-                    });
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Duration = System.TimeSpan.FromSeconds(3) });
                 });
             }
         }

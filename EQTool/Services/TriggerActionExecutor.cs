@@ -32,11 +32,7 @@ namespace EQTool.Services
             {
                 var text = expand(output.DisplayText);
                 var color = TriggerColors.ToBrush(output.DisplayTextColor, Brushes.Red);
-                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = color, Reset = false });
-                _ = System.Threading.Tasks.Task.Delay(5000).ContinueWith(t =>
-                {
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = color, Reset = true });
-                });
+                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = color, Duration = TimeSpan.FromSeconds(5) });
             }
 
             if (output.AudioType == TriggerAudioType.TextToSpeech && !string.IsNullOrWhiteSpace(output.TtsText))

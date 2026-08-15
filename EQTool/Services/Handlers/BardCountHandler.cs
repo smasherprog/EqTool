@@ -385,11 +385,7 @@ namespace EQTool.Services.Handlers
             var doOverlay = activePlayer?.Player?.BardCountTextAlert ?? false;
             if (doOverlay)
             {
-                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = false });
-                _ = Task.Delay(3000).ContinueWith(t =>
-                {
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Reset = true });
-                });
+                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Duration = TimeSpan.FromSeconds(3) });
             }
 
             // Audio: respect player setting BardCountAudio

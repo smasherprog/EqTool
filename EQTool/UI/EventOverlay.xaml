@@ -24,9 +24,7 @@
             <Grid Grid.Row="0" HorizontalAlignment="Left" MouseLeftButtonDown="DragWindow" Width="16" Height="16">
                 <StackPanel Background="Red" Margin="4, 4, 4, 4" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave"></StackPanel>
             </Grid>
-            <StackPanel Grid.Row="1" VerticalAlignment="Stretch" IsHitTestVisible="False">
-                <TextBlock x:Name="CenterText" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Medium" FontSize="44" Foreground="Red" IsHitTestVisible="False"></TextBlock>
-            </StackPanel> 
+            <StackPanel Grid.Row="1" x:Name="CenterTextPanel" VerticalAlignment="Stretch" IsHitTestVisible="False"></StackPanel>
             <Grid Grid.Row="2"  Name="ChainStackPanel" IsHitTestVisible="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
