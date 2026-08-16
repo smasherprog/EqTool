@@ -229,13 +229,15 @@
                             </TextBox>
                             <TextBlock Text="s" Margin="2,0,8,0" VerticalAlignment="Center"/>
                         </StackPanel>
-
-                        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,2"
-                                   Text="If timer is already running when triggered again:"/>
-                        <ComboBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" MinWidth="200" Margin="0,2,0,2"
-                                  ItemsSource="{Binding RestartBehaviorOptions}"
-                                  SelectedValuePath="Key" DisplayMemberPath="Value"
-                                  SelectedValue="{Binding Timer.RestartBehavior, Mode=TwoWay}"/>
+                        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,2,0,2">
+                            <TextBlock Margin="0,6,0,2"
+                              Text="If timer is already running when triggered again:"/>
+                            <ComboBox MinWidth="200" Margin="0,2,0,2"
+                             ItemsSource="{Binding RestartBehaviorOptions}"
+                             SelectedValuePath="Key" DisplayMemberPath="Value"
+                             SelectedValue="{Binding Timer.RestartBehavior, Mode=TwoWay}"/>
+                        </StackPanel>
+     
                     </Grid>
                 </TabItem>
 
