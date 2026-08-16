@@ -68,7 +68,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <RadioButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="No Sound" Margin="0,2,0,2"
@@ -81,18 +80,14 @@
                 <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,2,0,2"
                          IsEnabled="{Binding IsTextToSpeech}"
                          Text="{Binding TtsText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <CheckBox Grid.Row="3" Grid.Column="1" Content="Interrupt Speech" Margin="0,2,0,2"
-                          IsEnabled="{Binding IsTextToSpeech}"
-                          IsChecked="{Binding InterruptSpeech, Mode=TwoWay}"/>
-
-                <RadioButton Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Play Sound File" Margin="0,2,0,2"
+                <RadioButton Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Content="Play Sound File" Margin="0,2,0,2"
                              IsChecked="{Binding IsSoundFile, Mode=TwoWay}"/>
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="Sound File" Margin="20,2,8,2" VerticalAlignment="Center"
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Sound File" Margin="20,2,8,2" VerticalAlignment="Center"
                            IsEnabled="{Binding IsSoundFile}"/>
-                <TextBox Grid.Row="5" Grid.Column="1" Margin="0,2,4,2"
+                <TextBox Grid.Row="4" Grid.Column="1" Margin="0,2,4,2"
                          IsEnabled="{Binding IsSoundFile}"
                          Text="{Binding SoundFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Grid.Row="5" Grid.Column="2" Content="..." Width="30" Margin="0,2,0,2"
+                <Button Grid.Row="4" Grid.Column="2" Content="..." Width="30" Margin="0,2,0,2"
                         IsEnabled="{Binding IsSoundFile}" Click="BrowseSoundFile"/>
             </Grid>
         </GroupBox>

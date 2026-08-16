@@ -21,7 +21,6 @@ namespace EQTool.ViewModels.SettingsComponents
         public override TreeViewItemType Type => TreeViewItemType.Player;
 
         private UiSyncStatus _uiSyncStatus = UiSyncStatus.None;
-        // UI-file backup status for this character, shown as an icon next to the name.
         public UiSyncStatus UiSyncStatus
         {
             get => _uiSyncStatus;
@@ -29,7 +28,6 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         private string _uiSyncDate = string.Empty;
-        // Server backup date (empty unless Synced).
         public string UiSyncDate
         {
             get => _uiSyncDate;

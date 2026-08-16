@@ -4,13 +4,6 @@ using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
-    //
-    // AfkAttackedHandler
-    //
-    // Warns the player when something is attacking THEM while eqgame does not have
-    // focus (i.e. they have tabbed away and may be AFK). Fires a text-to-speech and/or
-    // overlay alert based on the per-character AfkAttacked toggles.
-    //
     public class AfkAttackedHandler : BaseHandler
     {
         // Throttle so a stream of incoming hits doesn't spam the overlay/voice.

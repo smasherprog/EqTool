@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
@@ -7,16 +7,13 @@ using System.Runtime.CompilerServices;
 
 namespace EQTool.ViewModels.MobInfoComponents
 {
-    // view model for Pet window.  readonly data that is displayed, cannot be edited by user
     public class PetViewModel : INotifyPropertyChanged
     {
-        // max number of pet ranks = 6 (5x normal ranks, 1x focused rank)
+        // 5 normal ranks plus 1 focused rank
         private const int RankRowsCount = 6;
 
-        // ctor
         public PetViewModel()
         {
-            // initialize the row colors
             for (var ndx = 0; ndx < RankRowsCount; ndx++)
             {
                 RowColor.Add(new System.Windows.Media.SolidColorBrush());
@@ -24,7 +21,6 @@ namespace EQTool.ViewModels.MobInfoComponents
             ResetRowBackgrounds();
         }
 
-        // name of the pet
         private string _PetName = "";
         public string PetName
         {
@@ -32,17 +28,14 @@ namespace EQTool.ViewModels.MobInfoComponents
             set { _PetName = value; OnPropertyChanged(); }
         }
 
-        // the PetSpell for this spell and for display
         private PetSpell _PetSpell = null;
         public PetSpell PetSpell
         {
             get => _PetSpell;
             set
             {
-                // set the petspell
                 _PetSpell = value;
 
-                // set the derived fields
                 if (_PetSpell != null)
                 {
                     SpellName = PetSpell.SpellName;
@@ -56,7 +49,6 @@ namespace EQTool.ViewModels.MobInfoComponents
         }
 
 
-        // clear all fields
         public void Reset()
         {
             PetName = "";
@@ -71,7 +63,6 @@ namespace EQTool.ViewModels.MobInfoComponents
             ResetRowBackgrounds();
         }
 
-        // spell name
         private string _SpellName = "";
         public string SpellName
         {
@@ -79,20 +70,16 @@ namespace EQTool.ViewModels.MobInfoComponents
             set { _SpellName = value; OnPropertyChanged(); }
         }
 
-        // dictionary of (classes, required levels) for this spell
-        // key = PlayerClasses enu, value = level require
         private Dictionary<PlayerClasses, int> _Classes = new Dictionary<PlayerClasses, int>();
         public Dictionary<PlayerClasses, int> Classes
         {
             get => _Classes;
             set
             {
-                // set the field value
                 _Classes = value;
                 ClassNames = "";
                 ClassLevels = "";
 
-                // set the dervied ClassNames string property
                 if (_Classes != null)
                 {
                     var classNames = "";
@@ -107,7 +94,6 @@ namespace EQTool.ViewModels.MobInfoComponents
                     }
                     ClassNames = classNames;
 
-                    // set the derived ClassLevels string property
                     var classLevels = "";
                     ndx = 0;
                     foreach (var level in _Classes.Values)
@@ -123,7 +109,6 @@ namespace EQTool.ViewModels.MobInfoComponents
                 OnPropertyChanged();
             }
         }
-        // is pet name known?
         public bool IsPetNameKnown => _PetName != "";
         public int RankIndex { get; private set; } = -1;
         private int maxObservedMelee = 0;
@@ -131,12 +116,10 @@ namespace EQTool.ViewModels.MobInfoComponents
         {
             if (PetSpell != null && IsPetNameKnown)
             {
-                // new high?
                 if (damage > maxObservedMelee || RankIndex == -1)
                 {
                     maxObservedMelee = damage;
-                    // walk the list of ranks and see if this matches a rank
-                    //traverse biggest to smallest so match faster
+                    // biggest to smallest so the common high ranks match first
                     for (var ndx = _PetSpell.PetRankList.Count - 1; ndx >= 0; ndx--)
                     {
                         var petRank = _PetSpell.PetRankList[ndx];
@@ -166,20 +149,17 @@ namespace EQTool.ViewModels.MobInfoComponents
         }
 
 
-        // reagents, kept in a list of pairs of (PetReagent enum, number of that reagent required)
         private List<Tuple<PetReagent, int>> _PetReagents = new List<Tuple<PetReagent, int>>();
         public List<Tuple<PetReagent, int>> PetReagents
         {
             get => _PetReagents;
             set
             {
-                // set the field value
                 _PetReagents = value;
                 PetReagentsText = "";
 
                 if (_PetReagents != null)
                 {
-                    // set the dervied string property
                     var reagentText = "";
                     var ndx = 0;
                     foreach (var pair in _PetReagents)
@@ -203,7 +183,6 @@ namespace EQTool.ViewModels.MobInfoComponents
             set { _PetReagentsText = value; OnPropertyChanged(); }
         }
 
-        // list of PetRank objects
         private List<PetRank> _PetRankList = new List<PetRank>();
         public List<PetRank> PetRankList
         {
@@ -212,8 +191,7 @@ namespace EQTool.ViewModels.MobInfoComponents
         }
 
 
-        // data to support dynamic highlighting of any given row
-        // pick a highlight color that is reasonably visible for both black and white font
+        // must stay visible behind both black and white font
         private readonly System.Windows.Media.Brush _HighLightColor = System.Windows.Media.Brushes.LightSlateGray;
         private readonly System.Windows.Media.Brush _NormalColor = System.Windows.Media.Brushes.Transparent;
         //private readonly System.Windows.Media.Brush _HighLightColor = System.Windows.Media.Brushes.DarkGreen;
@@ -221,7 +199,6 @@ namespace EQTool.ViewModels.MobInfoComponents
 
         public List<System.Windows.Media.Brush> RowColor { get; } = new List<System.Windows.Media.Brush>();
 
-        // un-highlight all row colors
         private void ResetRowBackgrounds()
         {
             for (var ndx = 0; ndx < RankRowsCount; ndx++)
@@ -229,12 +206,10 @@ namespace EQTool.ViewModels.MobInfoComponents
                 RowColor[ndx] = _NormalColor;
                 //RowColor[ndx] = _HighLightColor;
 
-                // force the changed property to match what the XAML field is binding to
                 OnPropertyChanged(nameof(RowColor));
             }
         }
 
-        // highlight a row to indicate which rank this particular pet is
         public void HighLightRow(int ndx)
         {
             if ((ndx >= 0) && (ndx < RankRowsCount))
@@ -242,7 +217,6 @@ namespace EQTool.ViewModels.MobInfoComponents
                 ResetRowBackgrounds();
                 RowColor[ndx] = _HighLightColor;
 
-                // force the changed property to match what the XAML field is binding to
                 OnPropertyChanged(nameof(RowColor));
             }
         }

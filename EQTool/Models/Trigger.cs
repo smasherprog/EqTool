@@ -8,7 +8,10 @@ namespace EQTool.Models
     [Serializable]
     public class Trigger
     {
-        // regex to support conversion of simplified regex to full "real" regex
+        // Users may write patterns with simplified {name} placeholders instead of full regex -
+        // "^{backstabber} backstabs {target} for {damage} points" is converted to
+        // "^(?<backstabber>[\w` ]+) backstabs (?<target>[\w` ]+) for (?<damage>[\w` ]+) points".
+        // Captured values land in valueHash and are substituted back into the output fields.
         private const string placeholderRegexPattern = @"\{(?<xxx>\w+)\}";
         private static readonly Regex placeholderRegex = new Regex(placeholderRegexPattern, RegexOptions.Compiled);
 
@@ -39,7 +42,6 @@ namespace EQTool.Models
             }
         }
 
-        // Trigger properties
         public Guid TriggerId { get; set; } = Guid.NewGuid();
         public bool TriggerEnabled { get; set; }
         public string TriggerName { get; set; }
@@ -69,9 +71,7 @@ namespace EQTool.Models
         [Newtonsoft.Json.JsonIgnore]
         public string BuiltInFolder { get; set; }
 
-        // Organizational/category label.
         public string Category { get; set; } = "Default";
-        // Free-form user notes.
         public string Comments { get; set; } = string.Empty;
 
         public string Zone { get; set; }
@@ -121,14 +121,6 @@ namespace EQTool.Models
             };
         }
 
-        // the search field
-        // may contain all regular expressions, and may also include simplified placeholder-style regular expressions
-        //      Simple text
-        //          Your spell fizzles!
-        //      Simplified Placeholder-style Regular Expression:
-        //          ^{backstabber} backstabs {target} for {damage} points of damage\.
-        //      Normal Regular Expression:
-        //          ^(?<backstabber>[\w` ]+) backstabs (?<target>[\w` ]+) for (?<damage>[\w` ]+) points of damage\.
         private string _SearchText = string.Empty;
 
         // Whether the search pattern depends on the logged-in player's name. Callers use this to
@@ -153,23 +145,16 @@ namespace EQTool.Models
             }
         }
 
-        // properties to support text to be displayed
-        // may contain simplified placeholder-style regex
-        //      Example:     Direction: {direction}
         public bool DisplayTextEnabled { get; set; }
         public string DisplayText { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         public string ExpandedDisplayText => ExpandOutputText(DisplayText);
 
-        // properties to support text to be spoken via TTS
-        // may contain simplified placeholder-style regex
-        //      Example:     Direction: {direction}
         public bool AudioTextEnabled { get; set; }
         public string AudioText { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         public string ExpandedAudioText => ExpandOutputText(AudioText);
 
-        // the regular expression for this trigger
         private Regex _TriggerRegex;
 
         // set when the pattern failed to compile, so the per-line hot path doesn't retry
@@ -188,7 +173,6 @@ namespace EQTool.Models
         {
             get
             {
-                // delay regex creation until its asked for
                 if (_TriggerRegex == null && !_compileFailed && !string.IsNullOrWhiteSpace(_SearchText))
                 {
                     try
@@ -216,9 +200,8 @@ namespace EQTool.Models
                             return $"(?<{group_name}>[\\w` ]+)";
                         });
 
-                        // now that we've converted the simplified regex to the real regex pattern, create and return the Regex object.
-                        // The match timeout is the process-wide default set in App's static ctor - user-authored
-                        // patterns are the ones most likely to backtrack catastrophically.
+                        // The match timeout is the process-wide default set in App's static ctor -
+                        // user-authored patterns are the ones most likely to backtrack catastrophically.
                         _TriggerRegex = new Regex(convertedSearchText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
                     }
                     catch
@@ -247,31 +230,16 @@ namespace EQTool.Models
             return true;
         }
 
-        // The user can define search patterns using a simplified regular expression syntax
-        //       Example:    ^{backstabber} backstabs {target} for {damage} points of damage\.
-        // The simplified form gets converted into the real regex expression for use in creating the TriggerRegex
-        //       Example:    ^(?<backstabber>[\w` ]+) backstabs (?<target>[\w` ]+) for (?<damage>[\w` ]+) points of damage\.
-        // Regular expression "named groups" from the user input are stored in a HashTable, with keys = the group names, and values = the parsed values
-        //       Example:    Roger the Rogue backstabs a poor rabbit for 1000 points of damage
-        // Resulting hashTable of (key, value) pairs:
-        //          (backstabber, Roger the Rogue)
-        //          (target, a poor rabbit)
-        //          (damage, 1000)
-        private readonly Hashtable valueHash = new Hashtable();     // list of named groups and their parsed values that we find in the search text
+        private readonly Hashtable valueHash = new Hashtable();
 
-        // use this function to save the results after a regular expression search has been performed
-        // if successful, then save the results into the trigger, for use later
         public void SaveNamedGroupValues(Match match)
         {
-            // walk the Groups list in the regex Match, and save the values we care about
             foreach (Group g in match.Groups)
             {
-                // is this named group key already in the hash?  then just reset the value
                 if (valueHash.ContainsKey(g.Name))
                 {
                     valueHash[g.Name] = g.Value;
                 }
-                // else add both the named group key and the associated value
                 else
                 {
                     valueHash.Add(g.Name, g.Value);
@@ -282,15 +250,11 @@ namespace EQTool.Models
         [Newtonsoft.Json.JsonIgnore]
         public long CurrentCounter { get; set; } = 0;
 
-        // Public expansion of simplified {name} placeholders using the values captured
-        // from the last successful regex match. Used by all trigger outputs.
         public string Expand(string text)
         {
             return string.IsNullOrEmpty(text) ? string.Empty : ExpandOutputText(text);
         }
 
-        // Tests a log line against this trigger, honoring the regex/plain-text setting.
-        // On a regex match, captured named-group values are saved for output expansion.
         public bool Matches(string line)
         {
             if (string.IsNullOrEmpty(line) || string.IsNullOrWhiteSpace(SearchText))

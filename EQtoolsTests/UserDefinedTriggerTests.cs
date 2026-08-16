@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using EQTool.Models;
 using EQTool.Services;
 using EQtoolsTests.Fakes;
@@ -22,7 +22,6 @@ namespace EQtoolsTests
         [TestMethod]
         public void ZeroNamedGroups()
         {
-            // add in a testing trigger to the list of user defined triggers
             var settings = this.container.Resolve<EQToolSettings>();
             settings.Triggers.Add(new Trigger { TriggerEnabled = true, TriggerName = "Test Trigger1", SearchText = "^Can you hear me now?", DisplayTextEnabled = true, DisplayText = "I can hear you", AudioTextEnabled = true, AudioText = "I can hear you" });
 
@@ -40,7 +39,6 @@ namespace EQtoolsTests
         [TestMethod]
         public void ThreeNamedGroups()
         {
-            // add in a testing trigger to the list of user defined triggers
             var settings = this.container.Resolve<EQToolSettings>();
             settings.Triggers.Add(new Trigger { TriggerEnabled = true, TriggerName = "Test Trigger2", SearchText = "^{count} {containers} of {beverage} on the wall", DisplayTextEnabled = true, DisplayText = "{count} {containers} of {beverage}", AudioTextEnabled = true, AudioText = "{count} {containers} of {beverage}" });
 

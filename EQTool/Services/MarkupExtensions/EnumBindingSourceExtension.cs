@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows.Markup;
 
 namespace EQTool.Services.MarkupExtensions
 {
-    // This extension will allow you to take an enum Type and then create a bindable list of enum values for a control.
     public class EnumBindingSourceExtension : MarkupExtension
     {
         public EnumBindingSourceExtension() { }
@@ -52,7 +51,6 @@ namespace EQTool.Services.MarkupExtensions
             var actualEnumType = Nullable.GetUnderlyingType(_EnumType) ?? _EnumType;
             var enumValues = Enum.GetValues(actualEnumType).Cast<object>();
 
-            // Handle exclusions
             if (!string.IsNullOrWhiteSpace(Exclude))
             {
                 var excludedNames = Exclude
@@ -67,7 +65,6 @@ namespace EQTool.Services.MarkupExtensions
 
             var final = enumValues.ToArray();
 
-            // Nullable enum support
             if (actualEnumType == _EnumType)
                 return final;
 

@@ -1,4 +1,4 @@
-﻿using EQToolShared;
+using EQToolShared;
 using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
@@ -7,11 +7,6 @@ using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
 {
-    //
-    // base class
-    // all Events know at least about the timestamp and the line from the logfile
-    // child Event class can add any specific fields needed to carry additional info
-    //
     public class BaseLogParseEvent
     {
         public DateTime TimeStamp { get; set; }
@@ -21,7 +16,6 @@ namespace EQTool.Models
 
     public class ExpGainedEvent : BaseLogParseEvent
     {
-        // ctor
         public ExpGainedEvent() { }
         public ExpGainedEvent(DateTime timestamp, string line, int lineCounter)
         {
@@ -66,9 +60,6 @@ namespace EQTool.Models
         public string NPCName { get; set; }
         public string FTEPerson { get; set; }
     }
-    //
-    // Event class to carry all info from DamageParser to interested listeners
-    //
     public class DamageEvent : BaseLogParseEvent
     {
         public string TargetName { get; set; }
@@ -103,9 +94,6 @@ namespace EQTool.Models
         public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
     }
 
-    //
-    // event class to carry all relevant communications events to interested listeners
-    //
     public class CommsEvent : BaseLogParseEvent
     {
         public enum Channel
@@ -127,18 +115,12 @@ namespace EQTool.Models
         public string Sender { get; set; }
     }
 
-    //
-    // event class for discipline cooldown event
-    //
     public class DisciplineCooldownEvent : BaseLogParseEvent
     {
         public int TotalTimerSeconds { get; set; }
         public string DisciplineName { get; set; }
     }
 
-    //
-    // event class for pet-related occurrences
-    //
     public class PetEvent : BaseLogParseEvent
     {
         public enum PetIncident

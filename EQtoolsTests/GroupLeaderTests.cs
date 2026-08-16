@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using EQTool.Services;
 using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,7 +13,6 @@ namespace EQtoolsTests
         private readonly LogParser logParser;
         private readonly SettingsWindowViewModel viewModel;
 
-        // ctor
         public GroupLeaderTests()
         {
             logParser = container.Resolve<LogParser>();

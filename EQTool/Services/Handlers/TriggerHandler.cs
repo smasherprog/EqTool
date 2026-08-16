@@ -53,7 +53,6 @@ namespace EQTool.Services.Handlers
                     // bump the {COUNTER} tally before expanding any output so it reflects this match
                     trigger.CurrentCounter++;
 
-                    // Basic tab output (display text / audio)
                     executor.Execute(trigger.GetEffectiveBasic(), trigger.Expand);
 
                     // Timer and Counter tabs; the manager owns the enabled/configured checks

@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using EQTool.Models;
 using EQTool.ViewModels.MobInfoComponents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,7 +10,6 @@ namespace EQtoolsTests
     {
         private readonly PetViewModel playerPet;
         private readonly Pets pets;
-        // ctor
         public PetTests()
         {
             playerPet = container.Resolve<PetViewModel>();
@@ -47,7 +46,6 @@ namespace EQtoolsTests
             playerPet.PetSpell = petSpell;
             playerPet.PetName = "Bakalakadaka";
 
-            // confirm we can find the right rank
             // for Emissary, max damage of the 4th rank (index 3) = 59
             playerPet.CheckMaxMelee(59);
             Assert.AreEqual(3, playerPet.RankIndex);

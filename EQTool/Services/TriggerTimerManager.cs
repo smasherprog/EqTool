@@ -8,12 +8,6 @@ using System.Windows.Media;
 
 namespace EQTool.Services
 {
-    // Drives the runtime behavior of trigger timers and counters:
-    //  - creates named count-down timers in the Triggers window when a trigger matches
-    //  - honors the restart behavior when a timer is triggered again
-    //  - fires the Timer Ending notification when the countdown crosses its threshold
-    //  - fires the Timer Ended notification when the countdown reaches zero
-    //  - resets a trigger's {COUNTER} tally after a period of no matches (no widget is shown)
     public class TriggerTimerManager
     {
         private class ActiveTimer
@@ -60,7 +54,6 @@ namespace EQTool.Services
 
         }
 
-        // Called when a trigger that has a timer configured matches a log line.
         public void HandleTimerMatch(Trigger trigger)
         {
             if (trigger?.Timer == null || !trigger.Timer.IsEnabled)

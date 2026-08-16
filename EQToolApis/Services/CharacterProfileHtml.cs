@@ -190,7 +190,6 @@ function ppShowTab(name) {
             var sb = new StringBuilder();
             _ = sb.Append("<div class=\"pp-profile\">");
 
-            // Left: stats panel
             _ = sb.Append("<div class=\"pp-panel pp-stats\">");
             _ = sb.Append($"<div class=\"pp-charname\">{Enc(p.CharacterName)}</div>");
             _ = sb.Append($"<div class=\"pp-updated\">{Enc(p.Server.ToString())} &middot; Updated {p.UpdatedAt:yyyy-MM-dd}</div>");
@@ -220,7 +219,6 @@ function ppShowTab(name) {
             _ = sb.Append("<div class=\"pp-note\">Totals from equipped item stats</div>");
             _ = sb.Append("</div>");
 
-            // Right: equipped grid + inventory/bank tabs
             _ = sb.Append("<div class=\"pp-main\">");
             _ = sb.Append("<div class=\"pp-panel\"><div class=\"pp-h\">Equipped Items</div><div class=\"pp-equip-rows\">");
             foreach (var row in EquipRows)
@@ -269,7 +267,6 @@ function ppShowTab(name) {
             return sb.ToString();
         }
 
-        // Full standalone page for the desktop app's embedded WebBrowser panel.
         public static string RenderDocument(CharacterProfile? profile, string message, string assetBase)
         {
             var body = profile != null

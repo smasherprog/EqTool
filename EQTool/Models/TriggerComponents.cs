@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 
 namespace EQTool.Models
 {
-    // How a trigger output produces audio.
     public enum TriggerAudioType
     {
         None,
@@ -13,7 +12,6 @@ namespace EQTool.Models
         SoundFile
     }
 
-    // The kind of timer a trigger creates when it matches.
     public enum TimerType
     {
         NoTimer,
@@ -33,7 +31,6 @@ namespace EQTool.Models
         DoNothing = 3
     }
 
-    // Common base for the small editable models so two-way binding updates the UI.
     [Serializable]
     public abstract class TriggerNotifyBase : INotifyPropertyChanged
     {
@@ -54,9 +51,7 @@ namespace EQTool.Models
         }
     }
 
-    // The set of actions performed when something fires: optionally show overlay text,
-    // copy text to the clipboard, and play audio (TTS or a sound file).
-    // Reused by the Basic tab, Timer Ending tab, and Timer Ended tab.
+    // Shared by the Basic, Timer Ending and Timer Ended tabs.
     [Serializable]
     public class TriggerOutput : TriggerNotifyBase
     {
@@ -89,13 +84,9 @@ namespace EQTool.Models
         private string _TtsText = string.Empty;
         public string TtsText { get => _TtsText; set => Set(ref _TtsText, value); }
 
-        private bool _InterruptSpeech;
-        public bool InterruptSpeech { get => _InterruptSpeech; set => Set(ref _InterruptSpeech, value); }
-
         private string _SoundFile = string.Empty;
         public string SoundFile { get => _SoundFile; set => Set(ref _SoundFile, value); }
 
-        // Helpers for binding the three mutually-exclusive audio radio buttons.
         [Newtonsoft.Json.JsonIgnore]
         public bool IsNoSound
         {
@@ -118,7 +109,6 @@ namespace EQTool.Models
         }
     }
 
-    // The Timer tab settings.
     [Serializable]
     public class TriggerTimer : TriggerNotifyBase
     {
@@ -143,15 +133,13 @@ namespace EQTool.Models
         private TimerRestartBehavior _RestartBehavior = TimerRestartBehavior.StartNewTimer;
         public TimerRestartBehavior RestartBehavior { get => _RestartBehavior; set => Set(ref _RestartBehavior, value); }
 
-        // Color of the timer's progress bar in the Triggers (spell) window.
         private string _BarColor = "MediumPurple";
         public string BarColor { get => _BarColor; set => Set(ref _BarColor, value); }
 
-        // Name of the spell whose icon is shown next to this timer. Defaults to Feign Death.
+        // a timer has no icon of its own, so it borrows a spell's artwork by name
         private string _IconName = "Feign Death";
         public string IconName { get => _IconName; set => Set(ref _IconName, value); }
 
-        // Also mirror this timer's countdown as an animated progress bar in the overlay window.
         private bool _ShowInOverlay;
         public bool ShowInOverlay { get => _ShowInOverlay; set => Set(ref _ShowInOverlay, value); }
 
@@ -162,7 +150,6 @@ namespace EQTool.Models
         public bool IsEnabled => TimerType != TimerType.NoTimer;
     }
 
-    // The Timer Ending tab: notify when the timer counts down to a threshold.
     [Serializable]
     public class TriggerTimerEnding : TriggerNotifyBase
     {
@@ -184,7 +171,6 @@ namespace EQTool.Models
         public TimeSpan Threshold => new TimeSpan(0, Hours, Minutes, Seconds);
     }
 
-    // The Timer Ended tab: notify when the timer reaches zero.
     [Serializable]
     public class TriggerTimerEnded : TriggerNotifyBase
     {
@@ -194,8 +180,7 @@ namespace EQTool.Models
         public TriggerOutput Output { get; set; } = new TriggerOutput();
     }
 
-    // The Counter tab: optionally reset the match counter after a period of inactivity.
-    // Enabling reset also enables counting/display for this trigger.
+    // Enabling reset also enables counting and display for this trigger.
     [Serializable]
     public class TriggerCounter : TriggerNotifyBase
     {

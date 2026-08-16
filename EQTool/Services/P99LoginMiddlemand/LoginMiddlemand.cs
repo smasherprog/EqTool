@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -95,16 +95,12 @@ namespace EQTool.Services.P99LoginMiddlemand
 
         public void Open(int port)
         {
-            // Set up socket
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-            // Set up local endpoint
             LocalAddr = new IPEndPoint(IPAddress.Any, port);
 
-            // Bind the socket
             Socket.Bind(LocalAddr);
 
-            // Resolve the remote server's address
             var remoteHostEntry = Dns.GetHostEntry("login.eqemulator.net");
             var remoteIPAddress = remoteHostEntry.AddressList[0];
             RemoteAddr = new IPEndPoint(remoteIPAddress, 5998);

@@ -5,18 +5,13 @@ using System.Linq;
 
 namespace EQTool.Services
 {
-    // Flags EverQuest / Pigparse install locations that are known to break log and UI
-    // file access:
-    //   - Program Files: Windows redirects writes to the per-user VirtualStore.
-    //   - Desktop / OneDrive: permission redirection and cloud sync can lock, move, or
-    //     offload files out from under the tool.
-    //   - Pigparse installed inside the EverQuest folder: EQ patches/updates can clobber it.
-    // Each location causes a different failure, so the warnings are reported separately.
+    // Each flagged location breaks file access differently: Program Files redirects writes to
+    // the per-user VirtualStore, Desktop/OneDrive can lock or offload files out from under the
+    // tool, and Pigparse inside the EverQuest folder gets clobbered by EQ patches.
     public static class InstallPathChecker
     {
         private const StringComparison OIC = StringComparison.OrdinalIgnoreCase;
 
-        // Warning text for the EverQuest install location, or empty if it looks fine.
         public static string GetEqPathWarning(string eqDirectory)
         {
             if (string.IsNullOrWhiteSpace(eqDirectory))
@@ -29,8 +24,6 @@ namespace EQTool.Services
                 : "EverQuest install location warning:\n" + string.Join("\n", problems);
         }
 
-        // Warning text for the Pigparse install location, or empty if it looks fine. Also
-        // flags Pigparse living inside the EverQuest folder.
         public static string GetEqToolPathWarning(string eqDirectory)
         {
             string toolDir;

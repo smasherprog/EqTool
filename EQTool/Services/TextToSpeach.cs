@@ -1,34 +1,32 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EQTool.Services
 {
     public interface ITextToSpeach
     {
         void Say(string text);
-        // When interrupt is true, any in-progress speech is cancelled and the
-        // repeat-suppression cooldown is bypassed so the new phrase speaks immediately.
-        void Say(string text, bool interrupt);
     }
     public class TextToSpeach : ITextToSpeach
     {
-        // keep a dictionary of recent audio alert phrases, key = phrase to be spoken, value = DateTime of last occurence.
-        // If the same phrase comes again inside audioAlertCooldown seconds, stay silent 
-        private const int audioAlertCooldownSeconds = 5;
-        private readonly Dictionary<string, DateTime> audioAlertHistory = new Dictionary<string, DateTime>();
-
 #if !LINUX
-        // All synthesizer access runs on this serial task chain, in Say() call order.
-        // The synthesizer is not thread-safe, and unsynchronized access let phrases speak
-        // at the warm-up volume or let racing interrupts cancel each other. The chain only
-        // serializes the short configure-and-submit sections; the audio itself renders on
-        // the synthesizer's own internal queue, so nothing here waits for speech to finish.
-        private readonly object chainLock = new object();
-        private System.Threading.Tasks.Task synthWorkChain = System.Threading.Tasks.Task.CompletedTask;
-        private readonly System.Speech.Synthesis.SpeechSynthesizer synth;
-        private string LastSelectedVoice = string.Empty;
+        // One synthesizer queues phrases instead of overlapping them, so each phrase goes to
+        // an idle one and a busy pool grows a new one. The cap stops a burst of triggers from
+        // spawning an unbounded number; past it phrases queue as they would on a single one.
+        private const int maxSynths = 8;
+
+        private readonly List<Synth> synths = new List<Synth>();
+
+        private class Synth
+        {
+            public System.Speech.Synthesis.SpeechSynthesizer Synthesizer;
+            // The selected voice is per synthesizer, so each tracks what it was last set to.
+            public string LastSelectedVoice = string.Empty;
+            // SpeakAsync returns before the synthesizer leaves the Ready state, so its own state
+            // cannot say whether it has already been handed a phrase.
+            public bool InUse;
+        }
 #endif
         private readonly EQToolSettings eQToolSettings;
 
@@ -36,52 +34,102 @@ namespace EQTool.Services
         {
             this.eQToolSettings = eQToolSettings;
 #if !LINUX
-
-            synth = new System.Speech.Synthesis.SpeechSynthesizer();
-            if (string.IsNullOrWhiteSpace(eQToolSettings.SelectedVoice))
+            // build the first one up front so the first alert is not delayed by it
+            RunInBackground(() =>
             {
-                synth.SetOutputToDefaultAudioDevice();
-            }
-            else
-            {
-                synth.SelectVoice(eQToolSettings.SelectedVoice);
-                LastSelectedVoice = eQToolSettings.SelectedVoice;
-            }
-            EnqueueSynthWork(() =>
-            {
-                synth.Volume = 0;
-                synth.Speak("test");
+                lock (synths)
+                {
+                    _ = CreateSynth();
+                }
             });
 #endif
         }
 
 #if !LINUX
-        // Appends work to the serial chain. Failures are swallowed per item so one bad
-        // phrase (e.g. a voice that failed to load) cannot kill speech for all later alerts.
-        private void EnqueueSynthWork(Action work)
+        // Creating a synthesizer blocks while the voice engine loads and callers are on the UI
+        // thread, so none of this runs inline. Failures are swallowed so one bad phrase (e.g. a
+        // voice that failed to load) cannot kill speech for later alerts.
+        private static void RunInBackground(Action work)
         {
-            lock (chainLock)
+            _ = System.Threading.Tasks.Task.Run(() =>
             {
-                synthWorkChain = synthWorkChain.ContinueWith(_ =>
+                try
                 {
-                    try
-                    {
-                        work();
-                    }
-                    catch
-                    {
-                    }
-                }, System.Threading.Tasks.TaskScheduler.Default);
+                    work();
+                }
+                catch
+                {
+                }
+            });
+        }
+
+        private Synth GetIdleSynth()
+        {
+            foreach (var s in synths)
+            {
+                if (!s.InUse)
+                {
+                    return s;
+                }
+            }
+            // at the cap the oldest is reused, which queues the phrase behind whatever it is saying
+            return synths.Count < maxSynths ? CreateSynth() : synths[0];
+        }
+
+        private Synth CreateSynth()
+        {
+            var s = new Synth { Synthesizer = new System.Speech.Synthesis.SpeechSynthesizer() };
+            if (string.IsNullOrWhiteSpace(eQToolSettings.SelectedVoice))
+            {
+                s.Synthesizer.SetOutputToDefaultAudioDevice();
+            }
+            else
+            {
+                s.Synthesizer.SelectVoice(eQToolSettings.SelectedVoice);
+                s.LastSelectedVoice = eQToolSettings.SelectedVoice;
+            }
+            // speaking once at zero volume loads the voice engine, so the first audible phrase
+            // is not delayed while it warms up
+            s.Synthesizer.Volume = 0;
+            s.Synthesizer.Speak("test");
+            s.Synthesizer.SpeakCompleted += (o, e) => s.InUse = false;
+            synths.Add(s);
+            return s;
+        }
+
+        // A synthesizer is not thread-safe, and unsynchronized access let phrases speak at another
+        // phrase's volume, so picking one and setting it up is a single critical section. Nothing
+        // in here waits for speech: the audio renders on the synthesizer's own queue.
+        private void Speak(string text, string voice, int volume)
+        {
+            lock (synths)
+            {
+                var s = GetIdleSynth();
+                if (string.IsNullOrWhiteSpace(voice) && s.LastSelectedVoice != string.Empty)
+                {
+                    s.Synthesizer.SetOutputToDefaultAudioDevice();
+                    s.LastSelectedVoice = string.Empty;
+                }
+                else if (!string.IsNullOrWhiteSpace(voice) && s.LastSelectedVoice != voice)
+                {
+                    s.Synthesizer.SelectVoice(voice);
+                    s.LastSelectedVoice = voice;
+                }
+
+                s.Synthesizer.Volume = volume;
+                // A power-saving audio device takes a moment to wake and drops the first
+                // samples it is handed, clipping the start of the phrase.
+                var prompt = new System.Speech.Synthesis.PromptBuilder();
+                prompt.AppendBreak(TimeSpan.FromMilliseconds(250));
+                prompt.AppendText(text);
+                s.Synthesizer.SpeakAsync(prompt);
+                // set last, so a synthesizer that failed to take the phrase is not lost from the pool
+                s.InUse = true;
             }
         }
 #endif
 
         public void Say(string text)
-        {
-            Say(text, false);
-        }
-
-        public void Say(string text, bool interrupt)
         {
 #if !LINUX
             if (string.IsNullOrWhiteSpace(text))
@@ -89,77 +137,10 @@ namespace EQTool.Services
                 return;
             }
 
-            // is this phrase not in the history?
-            var now = DateTime.UtcNow;
-            var shouldSpeak = false;
-            lock (audioAlertHistory)
-            {
-                // entries older than the cooldown can never suppress anything again; prune
-                // them once the dictionary grows past what a busy 5-second window could hold
-                if (audioAlertHistory.Count > 100)
-                {
-                    var stale = audioAlertHistory
-                        .Where(kv => (now - kv.Value).TotalSeconds > audioAlertCooldownSeconds)
-                        .Select(kv => kv.Key).ToList();
-                    foreach (var key in stale)
-                    {
-                        _ = audioAlertHistory.Remove(key);
-                    }
-                }
-
-                if (interrupt)
-                {
-                    // interrupting speech bypasses the repeat-suppression cooldown
-                    shouldSpeak = true;
-                    audioAlertHistory[text] = now;
-                }
-                else if (audioAlertHistory.ContainsKey(text) == false)
-                {
-                    shouldSpeak = true;
-                    audioAlertHistory.Add(text, now);
-                }
-                else
-                {
-                    // the history has an entry for this phrase.  Let's see how old it is
-                    var prior = audioAlertHistory[text];
-                    var elapsed = now - prior;
-                    if (elapsed.TotalSeconds > audioAlertCooldownSeconds)
-                    {
-                        // update the time stamp for this phrase
-                        shouldSpeak = true;
-                        audioAlertHistory[text] = now;
-                    }
-                }
-            }
-
-            if (shouldSpeak)
-            {
-                EnqueueSynthWork(() =>
-                {
-                    if (string.IsNullOrWhiteSpace(eQToolSettings.SelectedVoice) && LastSelectedVoice != string.Empty)
-                    {
-                        synth.SetOutputToDefaultAudioDevice();
-                    }
-                    else if (!string.IsNullOrWhiteSpace(eQToolSettings.SelectedVoice) && LastSelectedVoice != eQToolSettings.SelectedVoice)
-                    {
-                        synth.SelectVoice(eQToolSettings.SelectedVoice);
-                        LastSelectedVoice = eQToolSettings.SelectedVoice;
-                    }
-
-                    synth.Volume = eQToolSettings.GlobalAudioVolume ?? 100;
-                    if (interrupt)
-                    {
-                        synth.SpeakAsyncCancelAll();
-                    }
-                    // A power-saving audio device takes a moment to wake and drops the
-                    // first samples it is handed, clipping the start of the phrase.
-                    // Leading silence gives it time to wake before the words begin.
-                    var prompt = new System.Speech.Synthesis.PromptBuilder();
-                    prompt.AppendBreak(TimeSpan.FromMilliseconds(250));
-                    prompt.AppendText(text);
-                    synth.SpeakAsync(prompt);
-                });
-            }
+            // read once here so a settings change partway through cannot split a phrase's voice and volume
+            var voice = eQToolSettings.SelectedVoice;
+            var volume = eQToolSettings.GlobalAudioVolume ?? 100;
+            RunInBackground(() => Speak(text, voice, volume));
 #endif
         }
     }

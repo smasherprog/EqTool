@@ -4,10 +4,6 @@ using System.Windows.Media;
 
 namespace EQTool.Services
 {
-    // Executes a TriggerOutput: overlay display text and audio (text-to-speech or
-    // sound file). Shared by the Basic, Timer Ending and Timer Ended outputs.
-    // Simplified {name} placeholders are expanded via the provided expand function
-    // (the matching trigger).
     public class TriggerActionExecutor
     {
         private readonly LogEvents logEvents;
@@ -37,7 +33,7 @@ namespace EQTool.Services
 
             if (output.AudioType == TriggerAudioType.TextToSpeech && !string.IsNullOrWhiteSpace(output.TtsText))
             {
-                textToSpeach.Say(expand(output.TtsText), output.InterruptSpeech);
+                textToSpeach.Say(expand(output.TtsText));
             }
             else if (output.AudioType == TriggerAudioType.SoundFile && !string.IsNullOrWhiteSpace(output.SoundFile))
             {

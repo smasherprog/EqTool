@@ -10,10 +10,5 @@ namespace EQtoolsTests.Fakes
         {
             this.TextToSpeachCallback?.Invoke(text);
         }
-
-        public void Say(string text, bool interrupt)
-        {
-            this.TextToSpeachCallback?.Invoke(text);
-        }
     }
 }

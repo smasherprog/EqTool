@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using EQTool.Services.Handlers;
 using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,7 +27,6 @@ namespace EQtoolsTests
         [TestMethod]
         public void NoMatch()
         {
-            // no match
             var now = DateTime.Now;
             var message = "some bogus line";
             var match = slainParser.Match(message, now, 0);
@@ -154,7 +153,6 @@ namespace EQtoolsTests
 
         [TestMethod]
         // player has died multiple times, but then shows sign of life, so the death tracking list is purged
-        // melee
         public void PlayerActive_Melee()
         {
             var now = DateTime.Now;
@@ -163,7 +161,6 @@ namespace EQtoolsTests
             _ = slainParser.Handle(message, now, 0);
             _ = slainParser.Handle(message, now, 0);
 
-            // melee
             _ = damageParser.Handle("You slice a moose for 100 points of damage", now, 0);
 
             var count = deathLoopHandler.DeathCount();
@@ -172,7 +169,6 @@ namespace EQtoolsTests
 
         [TestMethod]
         // player has died multiple times, but then shows sign of life, so the death tracking list is purged
-        // comms
         public void PlayerActive_Comms()
         {
             var now = DateTime.Now;
@@ -181,7 +177,6 @@ namespace EQtoolsTests
             _ = slainParser.Handle(message, now, 0);
             _ = slainParser.Handle(message, now, 0);
 
-            // comms
             _ = playerCommsParser.Handle("You told Mom, 'Look no hands!'", now, 0);
 
             var count = deathLoopHandler.DeathCount();

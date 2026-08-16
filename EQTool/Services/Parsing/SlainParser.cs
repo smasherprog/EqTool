@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using System;
 using System.Text.RegularExpressions;
 
@@ -35,7 +35,6 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        // function to check for a death event
         public SlainEvent Match(string line, DateTime timestamp, int lineCounter)
         {
             //[Mon Sep 16 14:32:02 2024] a Tesch Mas Gnoll has been slain by Genartik!

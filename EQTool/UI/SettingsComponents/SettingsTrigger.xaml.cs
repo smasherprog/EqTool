@@ -48,7 +48,6 @@ namespace EQTool.UI.SettingsComponents
             UpdateSaveEnabled();
         }
 
-        // Fired when a bound field's ValidationRule adds or removes an error.
         private void OnValidationError(object sender, ValidationErrorEventArgs e)
         {
             if (e.Action == ValidationErrorEventAction.Added)

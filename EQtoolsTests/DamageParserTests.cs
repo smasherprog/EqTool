@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using EQTool.Models;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
@@ -136,7 +136,6 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_YouMiss()
         {
-            // you miss
             //You try to pierce a lava basilisk, but miss!
             //You try to crush spectral keeper, but spectral keeper's magical skin absorbs the blow!
             //You try to crush a froglok fisherman, but a froglok fisherman dodges!
@@ -161,7 +160,6 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_OthersHit()
         {
-            // others hit
             //Giber slashes rogue clockwork for 13 points of damage.
             var now = DateTime.Now;
             var message = "Giber slashes rogue clockwork for 13 points of damage.";

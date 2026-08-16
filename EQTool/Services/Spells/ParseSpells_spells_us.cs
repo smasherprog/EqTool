@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using System;
@@ -479,7 +479,6 @@ namespace EQTool.Services
                 var ResistCheck = int.Parse(splits[147 - offset]);
                 var recasttime = int.Parse(splits[15]);
 
-                // extract the reagent info
                 var petReagents = new List<Tuple<PetReagent, int>>();
                 for (var ndx = 58; ndx <= 61; ndx++)
                 {
@@ -489,7 +488,6 @@ namespace EQTool.Services
                         var quantity = int.Parse(splits[ndx + 4]);
                         if (petReagent != PetReagent.NotUsed)
                         {
-                            // add the tuple to the list
                             petReagents.Add(new Tuple<PetReagent, int>(petReagent, quantity));
                         }
                     }

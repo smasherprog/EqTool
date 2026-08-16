@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -43,7 +43,6 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         private bool isMultiSelected;
-        // True when the item is part of a Ctrl+click multi-selection.
         public bool IsMultiSelected
         {
             get => isMultiSelected;
@@ -58,7 +57,6 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         private bool isEditing;
-        // True while the item's name is being edited inline in the tree.
         public bool IsEditing
         {
             get => isEditing;

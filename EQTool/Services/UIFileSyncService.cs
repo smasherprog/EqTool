@@ -16,22 +16,6 @@ using System.Threading.Tasks;
 
 namespace EQTool.Services
 {
-    // Two-way sync + backup for the EverQuest per-character UI config file pair
-    // ("UI_<name>_<server>.ini" and "<name>_<server>.ini"). Modeled on
-    // InventoryWatcherService. Background sync is gated on the opt-in SyncUIFiles
-    // setting AND a Discord login; manual actions need only the login (the server
-    // enforces it as well).
-    //
-    // - A FileSystemWatcher uploads a file when it changes on disk.
-    // - SyncNow() (startup + the "Sync Now" button) reconciles every file both
-    //   ways: newer wins, and anything missing locally is restored (the backup
-    //   use-case).
-    // - Every upload and download records a hash of the contents it synced, and
-    //   content already matching that hash is skipped. That single guard covers
-    //   the burst of watcher events Windows raises for one save, re-saves that
-    //   changed nothing, and the echo of our own downloaded writes.
-    // - Successful uploads and downloads raise a tray balloon: filenames when
-    //   1-2 files, otherwise UI vs character file counts.
     public class UIFileSyncService : IDisposable
     {
         private const string BaseUrl = "https://pigparse.azurewebsites.net";
@@ -57,14 +41,12 @@ namespace EQTool.Services
             _settings = settings;
         }
 
-        // Logged in with Discord - required for any server call (upload/list/download/delete).
         private bool IsLoggedIn =>
             !string.IsNullOrEmpty(_settings.DiscordId) &&
             !string.IsNullOrEmpty(_settings.DiscordApiToken);
 
-        // The opt-in toggle gates only the background behavior (watcher uploads +
-        // startup pull). Manual actions (Sync Now / Refresh / per-character
-        // right-click) work whenever logged in, regardless of the toggle.
+        // The opt-in toggle gates only background behavior. Manual actions (Sync Now, Refresh,
+        // per-character right-click) work whenever logged in, regardless of the toggle.
         private bool IsEnabled => _settings.SyncUIFiles && IsLoggedIn;
 
         public void Start()
@@ -82,8 +64,7 @@ namespace EQTool.Services
                 _watcher.Changed += OnFileChanged;
             }
 
-            // Automatic startup pull only when the opt-in toggle is on (and logged
-            // in). Runs off-thread so InitStuff is not blocked.
+            // off-thread so InitStuff is not blocked
             if (IsEnabled)
             {
                 RunInBackground(SyncNow);
@@ -127,11 +108,8 @@ namespace EQTool.Services
             });
         }
 
-        // ------- reconcile / backup -------
-
-        // Reconciles every file in both directions. Calls that arrive while one is
-        // already running (startup pull vs. the "Sync Now" button) return instead
-        // of doing the whole thing twice.
+        // A call arriving while one is already running (startup pull vs. the "Sync Now"
+        // button) returns instead of doing the whole reconcile twice.
         public void SyncNow()
         {
             if (!IsLoggedIn || Interlocked.CompareExchange(ref _syncing, 1, 0) != 0)
@@ -155,8 +133,7 @@ namespace EQTool.Services
             }
         }
 
-        // Brings down anything newer on the server, plus anything missing locally
-        // (the restore-to-a-fresh-machine case). Returns the files written.
+        // also pulls anything missing locally, which is the restore-to-a-fresh-machine case
         private List<string> Pull(string dir, List<UIFileMetadata> serverFiles)
         {
             var downloaded = new List<string>();
@@ -184,8 +161,6 @@ namespace EQTool.Services
             return downloaded;
         }
 
-        // Uploads local files newer than (or absent from) the server. Returns the
-        // files uploaded.
         private List<string> Push(string dir, List<UIFileMetadata> serverFiles)
         {
             var uploaded = new List<string>();
@@ -231,11 +206,7 @@ namespace EQTool.Services
             }
         }
 
-        // ------- upload / download -------
-
-        // Returns true when the file was actually uploaded. Only a login is
-        // required: the watcher checks the SyncUIFiles toggle before calling, and
-        // manual actions work whenever logged in.
+        // only a login is checked here: the watcher tests the SyncUIFiles toggle before calling
         private bool UploadFile(string path, string fileName, UIFileNameInfo info)
         {
             if (!IsLoggedIn || !File.Exists(path))
@@ -334,8 +305,6 @@ namespace EQTool.Services
             return null;
         }
 
-        // Tray balloon summarizing synced files ("Uploaded"/"Downloaded"): filenames
-        // when 1-2 files, otherwise UI vs character file counts.
         private static void ShowSyncNotification(string verb, List<string> files)
         {
             if (files.Count == 0)
@@ -375,8 +344,6 @@ namespace EQTool.Services
             });
         }
 
-        // ------- management API surface (used by the UI Sync settings tab) -------
-
         public List<UIFileMetadata> GetServerFiles()
         {
             if (!IsLoggedIn)
@@ -386,8 +353,7 @@ namespace EQTool.Services
             return SendJson<List<UIFileMetadata>>(BaseUrl + "/api/uifile/list") ?? new List<UIFileMetadata>();
         }
 
-        // Local UI pair files present on disk (parsed to player/server). Does not
-        // require a Discord login - it just reads the EQ folder.
+        // no login needed - this only reads the EQ folder
         public List<UIFileNameInfo> GetLocalUiFiles()
         {
             var result = new List<UIFileNameInfo>();
@@ -415,8 +381,6 @@ namespace EQTool.Services
         {
             return SendJson<UIFileDownloadResponse>(BaseUrl + "/api/uifile/download?fileName=" + Uri.EscapeDataString(fileName));
         }
-
-        // ------- http -------
 
         // Returns null when the call failed; every caller treats that as failure,
         // so nothing above this line needs its own try/catch around HTTP.

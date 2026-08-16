@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -101,7 +101,6 @@ public static class WindowExtensions
         var rcWork = monInfo.rcWork;
         var rcMonitor = monInfo.rcMonitor;
 
-        // Calculate work area relative to monitor
         minMax.ptMaxPosition.x = Math.Abs(rcWork.Left - rcMonitor.Left);
         minMax.ptMaxPosition.y = Math.Abs(rcWork.Top - rcMonitor.Top);
         minMax.ptMaxSize.x = Math.Abs(rcWork.Right - rcWork.Left);

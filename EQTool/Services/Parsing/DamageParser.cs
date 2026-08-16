@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQTool.ViewModels;
 using EQToolShared;
 using EQToolShared.Enums;
@@ -7,23 +7,12 @@ using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
-    //
-    // DamageParser
-    //
-    // Parse line for
-    //      melee attacks from this player that land
-    //      melee attacks from this player that miss
-    //      melee attacks from other entities that land
-    //      non-melee damage events
-    //
     public class DamageParser : IEqLogParser
     {
         private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
 
         //https://regex101.com/r/JPpEcr/1
-        // these references to the regex101.com website are very helpful, as that hash at the end of the URL reconstructs the entire test, with regex and test lines.  Somehow.  Magic...
-        // So it's worth retaining to be able to go back and test later.
         private const string youHitPattern = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
 
         //https://regex101.com/r/nvSnKN/1        
@@ -43,16 +32,12 @@ namespace EQTool.Services.Parsing
         private readonly Regex othersMissRegex = new Regex(othersMissPattern, RegexOptions.Compiled);
         private readonly Regex nonMeleeRegex = new Regex(nonMeleePattern, RegexOptions.Compiled);
 
-        //
-        // ctor
-        //
         public DamageParser(ActivePlayer activePlayer, LogEvents logEvents)
         {
             this.activePlayer = activePlayer;
             this.logEvents = logEvents;
         }
 
-        // handle a line from the log file
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var de = Match(line, timestamp, lineCounter);

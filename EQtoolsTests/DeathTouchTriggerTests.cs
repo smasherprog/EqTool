@@ -26,7 +26,6 @@ namespace EQtoolsTests
             player.Player.Zone = "fearplane";
 
             // Built-in triggers are a read-only library that is disabled by default.
-            // Enable the Death Touch trigger so the trigger pipeline evaluates it.
             var settings = container.Resolve<EQToolSettings>();
             var trigger = BuiltInTriggers.CreateDeathTouch();
             trigger.TriggerEnabled = true;

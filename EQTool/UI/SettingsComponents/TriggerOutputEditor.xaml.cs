@@ -4,9 +4,6 @@ using System.Windows.Controls;
 
 namespace EQTool.UI.SettingsComponents
 {
-    // Reusable editor for a TriggerOutput (text settings + audio settings).
-    // Bound via its DataContext, so the same control serves the Basic, Timer Ending
-    // and Timer Ended outputs.
     public partial class TriggerOutputEditor : UserControl
     {
         // Set by the host when an enabled Display Text field is empty, so the text box can show a
@@ -58,7 +55,7 @@ namespace EQTool.UI.SettingsComponents
             }
             else if (output.AudioType == TriggerAudioType.TextToSpeech && !string.IsNullOrWhiteSpace(output.TtsText))
             {
-                app.ResolveService<ITextToSpeach>().Say(output.TtsText, true);
+                app.ResolveService<ITextToSpeach>().Say(output.TtsText);
             }
         }
     }

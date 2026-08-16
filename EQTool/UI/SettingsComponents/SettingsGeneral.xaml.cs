@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Map;
 using EQTool.Services.P99LoginMiddlemand;
@@ -83,8 +83,6 @@ namespace EQTool.UI.SettingsComponents
             DataContext = SettingsWindowData = settingsWindowData;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             InitializeComponent();
-            // The Triggers and Characters tabs host the tree/editor master-detail and are
-            // driven by the settings management view model rather than the window view model.
             TriggersTabRoot.DataContext = settingsManagementViewModel;
             CharactersTabRoot.DataContext = settingsManagementViewModel;
             TryCheckLoggingEnabled();
@@ -818,12 +816,12 @@ namespace EQTool.UI.SettingsComponents
                 return;
             }
             // The shared service picks up the selected voice and master volume from settings.
-            textToSpeach.Say("You resist the Dragon Roar spell!", true);
+            textToSpeach.Say("You resist the Dragon Roar spell!");
         }
 
         private void testVolume(object sender, RoutedEventArgs e)
         {
-            textToSpeach.Say("This is a volume test", true);
+            textToSpeach.Say("This is a volume test");
         }
 
         private void testChChain(object sender, RoutedEventArgs e)
@@ -1131,7 +1129,6 @@ namespace EQTool.UI.SettingsComponents
             return true;
         }
 
-        // Two-way sync now, then refresh the per-character status on the Characters tab.
         private void SyncUIFilesNow(object sender, RoutedEventArgs e)
         {
             if (!RequireDiscordLogin())
@@ -1149,7 +1146,6 @@ namespace EQTool.UI.SettingsComponents
             });
         }
 
-        // Re-pull the per-character UI sync status from the server (no upload/download).
         private void RefreshUISyncStatus(object sender, RoutedEventArgs e)
         {
             settingsManagementViewModel.RefreshAllCharacterSyncStatus();
@@ -1253,7 +1249,6 @@ namespace EQTool.UI.SettingsComponents
 
         public static void CopyDirectory(string sourceDir, string destDir)
         {
-            // Copy all files
             foreach (var file in Directory.GetFiles(sourceDir))
             {
                 var fileName = Path.GetFileName(file);
@@ -1261,7 +1256,6 @@ namespace EQTool.UI.SettingsComponents
                 File.Copy(file, destFile, true);
             }
 
-            // Recursively copy subdirectories
             foreach (var subDir in Directory.GetDirectories(sourceDir))
             {
                 var dirName = Path.GetFileName(subDir);
@@ -1305,7 +1299,6 @@ namespace EQTool.UI.SettingsComponents
         {
             try
             {
-                // This uses the system default browser
                 var psi = new ProcessStartInfo
                 {
                     FileName = url,
@@ -1522,11 +1515,9 @@ namespace EQTool.UI.SettingsComponents
                 return;
             }
 
-            // ensure overlay/audio are enabled for the test
             SettingsWindowData.ActivePlayer.Player.BardCountTextAlert = true;
             SettingsWindowData.ActivePlayer.Player.BardCountAudio = true;
 
-            // open overlay to show the visual test (matches other tests' behavior)
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
 
             button.IsEnabled = false;
@@ -1534,7 +1525,6 @@ namespace EQTool.UI.SettingsComponents
             {
                 try
                 {
-                    // simulate the sequence from your example
                     // small sleeps to keep events inside the bard tracking window
                     PushLog("Your Location is 206.11, -13.83, 3.44");
 
@@ -1543,10 +1533,8 @@ namespace EQTool.UI.SettingsComponents
                         PushLog("A death beetle winces.");
                     }
 
-                    // one resist
                     PushLog("Your target resisted the Chords of Dissonance spell.");
 
-                    // optional skill gain message to match example
                     PushLog("You have become better at Stringed Instruments! (58)");
                 }
                 finally
@@ -1556,7 +1544,6 @@ namespace EQTool.UI.SettingsComponents
             });
         }
 
-        // ---- Triggers / Characters tree handlers (master-detail) ----
 
         private void TriggerTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -1638,7 +1625,6 @@ namespace EQTool.UI.SettingsComponents
                 // primary selection (so the editor panel stays put)
                 if (data.IsMultiSelected)
                 {
-                    // removing from the selection is always allowed
                     data.IsMultiSelected = false;
                 }
                 else

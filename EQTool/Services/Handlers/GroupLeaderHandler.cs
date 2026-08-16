@@ -1,14 +1,12 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
 {
     public class GroupLeaderHandler : BaseHandler
     {
-        // reference to DI global
         private readonly SettingsWindowViewModel settingsWindowViewModel;
 
-        // ctor
         public GroupLeaderHandler(BaseHandlerData baseHandlerData, SettingsWindowViewModel settingsWindowViewModel) : base(baseHandlerData)
         {
             this.settingsWindowViewModel = settingsWindowViewModel;

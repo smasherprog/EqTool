@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
@@ -277,7 +277,6 @@ namespace EQTool.Services.Handlers
                 }
                 if (spellduration.TotalSeconds > 0)
                 {
-                    // figure out whether or not to overwrite/reset this timer
                     // the only time we don't want to overWrite is 
                     //  - target is NPC, and
                     //  - detrimental spell, and
@@ -297,7 +296,6 @@ namespace EQTool.Services.Handlers
                         }
                     }
 
-                    // create new SpellViewModel
                     var vm = new SpellViewModel
                     {
                         IsTargetPlayer = !isnpc,
@@ -315,7 +313,6 @@ namespace EQTool.Services.Handlers
                         TotalRemainingDuration = spellduration
                     };
 
-                    // add the timer
                     spellWindowViewModel.TryAdd(vm, overWrite);
                 }
             }

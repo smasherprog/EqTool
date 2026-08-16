@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
@@ -17,7 +17,6 @@ namespace EQTool.Services.Handlers
             this.spellWindowViewModel = spellWindowViewModel;
             this.spells = spells;
 
-            // catch FinishedMemorizing events
             logEvents.YouHaveFinishedMemorizingEvent += LogEvents_YouHaveFinishedMemorizingEvent;
         }
 

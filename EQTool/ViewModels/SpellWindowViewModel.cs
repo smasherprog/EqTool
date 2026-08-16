@@ -260,14 +260,12 @@ namespace EQTool.ViewModels
                     }
                 }
 
-                //update rolls
                 var randomRollsVisible = settings.ShowRandomRolls == false ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 foreach (var item in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Roll).Cast<TimerViewModel>().ToList())
                 {
                     item.ColumnVisibility = randomRollsVisible;
                 }
 
-                //update spells
                 foreach (var s in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>())
                 {
                     var isNPCTarget = !s.IsTargetPlayer;
@@ -489,7 +487,6 @@ namespace EQTool.ViewModels
                 var rollsingroup = SpellList.Where(a => string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase) && a.SpellViewModelType == SpellViewModelType.Roll).Cast<RollViewModel>().ToList();
                 foreach (var item in rollsingroup)
                 {
-                    //reset the timer on all of the rolls
                     item.TotalRemainingDuration = TimeSpan.FromTicks(match.TotalDuration.Ticks);
                 }
                 SpellList.Add(match);

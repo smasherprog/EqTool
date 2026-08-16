@@ -9,7 +9,6 @@ using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
-    // Aggregate multi-target short bursts (winces / "chains of music" / resists) into a single summary message.
     public class BardCountHandler : BaseHandler
     {
         private readonly object _lock = new object();
@@ -133,7 +132,6 @@ namespace EQTool.Services.Handlers
                     || IsBardSongThatNeedsResists(normalizedName));
         }
 
-        // start or attach to an existing session
         private void CreateOrAttachSession(DateTime timestamp, string possibleSpell, bool hitOnly = false, bool isResist = false, bool forceCreate = false)
         {
             var normalized = NormalizeSpellName(possibleSpell);
@@ -144,7 +142,6 @@ namespace EQTool.Services.Handlers
                 Session s;
                 lock (_lock)
                 {
-                    // try to find an existing named session for this spell within the window of last activity
                     s = _sessions.Where(a => !string.IsNullOrWhiteSpace(a.SpellName)
                                               && string.Equals(NormalizeSpellName(a.SpellName), normalized, StringComparison.OrdinalIgnoreCase)
                                               && a.LastEventTime.HasValue
@@ -164,7 +161,6 @@ namespace EQTool.Services.Handlers
                         }
 
                         s.LastEventTime = timestamp;
-                        // reschedule finalize after last activity
                         ScheduleFinalize(s);
                         return;
                     }
@@ -267,14 +263,12 @@ namespace EQTool.Services.Handlers
             {
                 return name;
             }
-            // Normalize various quote marks and whitespace
             var n = name.Trim();
             n = n.Replace('`', '\'')
                  .Replace('\u2018', '\'')
                  .Replace('\u2019', '\'')
                  .Replace('\u201C', '"')
                  .Replace('\u201D', '"');
-            // collapse multiple spaces
             while (n.Contains("  "))
             {
                 n = n.Replace("  ", " ");
@@ -381,14 +375,12 @@ namespace EQTool.Services.Handlers
             // thread pushed those handlers off the UI thread for no benefit.
             debugOutput.WriteLine($"{(s.LastEventTime ?? s.StartTime):HH:mm:ss} {text}", OutputType.Spells);
 
-            // Overlay: respect player setting BardCountTextAlert
             var doOverlay = activePlayer?.Player?.BardCountTextAlert ?? false;
             if (doOverlay)
             {
                 logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Yellow, Duration = TimeSpan.FromSeconds(3) });
             }
 
-            // Audio: respect player setting BardCountAudio
             var doAudio = activePlayer?.Player?.BardCountAudio ?? false;
             if (doAudio)
             {

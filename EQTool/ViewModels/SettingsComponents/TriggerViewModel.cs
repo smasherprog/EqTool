@@ -10,8 +10,6 @@ using System.Windows.Media;
 
 namespace EQTool.Models
 {
-    // View model backing the trigger editor. Binds directly to a live
-    // Trigger instance (and its sub-objects) and persists on Save.
     public class TriggerViewModel : INotifyPropertyChanged
     {
         private readonly EQToolSettings toolSettings;
@@ -166,7 +164,6 @@ namespace EQTool.Models
             settingsLoad.Save(toolSettings);
         }
 
-        // Structural property set by the Triggers tree (folder placement).
         public Guid? FolderId
         {
             get => Model.FolderId;
@@ -175,10 +172,8 @@ namespace EQTool.Models
 
         public Guid TriggerId => Model.TriggerId;
 
-        // The underlying trigger model (used by the editor's Test feature).
         public Trigger Model { get; }
 
-        // Built-in (library) triggers are read-only until copied out.
         public bool IsBuiltIn => Model.IsBuiltIn;
         public bool IsEditable => !Model.IsBuiltIn;
 
@@ -249,7 +244,6 @@ namespace EQTool.Models
             }
         }
 
-        // "All Zones" followed by every known zone short name, alphabetized.
         public List<string> ZoneOptions
         {
             get
@@ -281,7 +275,6 @@ namespace EQTool.Models
             }
         }
 
-        // Component objects bound directly by the editor tabs.
         public TriggerOutput Basic => Model.Basic;
         public TriggerTimer Timer => Model.Timer;
         public TriggerTimerEnding TimerEnding => Model.TimerEnding;
@@ -301,8 +294,6 @@ namespace EQTool.Models
             new KeyValuePair<TimerRestartBehavior, string>(TimerRestartBehavior.RestartTimer, "Restart current timer"),
             new KeyValuePair<TimerRestartBehavior, string>(TimerRestartBehavior.DoNothing, "Do nothing"),
         };
-
-        // ---- Validation ----
 
         private void RefreshValidation()
         {
@@ -385,7 +376,6 @@ namespace EQTool.Models
         public Brush SearchTextBorderBrush =>
             string.IsNullOrWhiteSpace(SearchTextErrorMessge) ? Brushes.Gray : Brushes.Red;
 
-        // Basic tab: a display must have text when its checkbox is enabled.
         public string DisplayTextErrorMessge
         {
             get
@@ -400,7 +390,6 @@ namespace EQTool.Models
         public Visibility DisplayTextErrorMessgeVisible =>
             string.IsNullOrWhiteSpace(DisplayTextErrorMessge) ? Visibility.Collapsed : Visibility.Visible;
 
-        // Timer tab: when a timer is selected it needs a name and a non-zero duration.
         public string TimerErrorMessge
         {
             get
@@ -425,8 +414,6 @@ namespace EQTool.Models
         public Visibility TimerErrorMessgeVisible =>
             string.IsNullOrWhiteSpace(TimerErrorMessge) ? Visibility.Collapsed : Visibility.Visible;
 
-        // Timer Ending tab: when enabled the "notify when down to" time cannot be all zeros, and it
-        // must actually do something (display text or audio).
         public string TimerEndingErrorMessge
         {
             get
@@ -451,7 +438,6 @@ namespace EQTool.Models
         public Visibility TimerEndingErrorMessgeVisible =>
             string.IsNullOrWhiteSpace(TimerEndingErrorMessge) ? Visibility.Collapsed : Visibility.Visible;
 
-        // Timer Ended tab: when enabled it must actually do something (display text or audio).
         public string TimerEndedErrorMessge
         {
             get
@@ -466,7 +452,6 @@ namespace EQTool.Models
         public Visibility TimerEndedErrorMessgeVisible =>
             string.IsNullOrWhiteSpace(TimerEndedErrorMessge) ? Visibility.Collapsed : Visibility.Visible;
 
-        // Counter tab: the reset time cannot be all zeros when the reset checkbox is selected.
         public string CounterErrorMessge
         {
             get
@@ -503,7 +488,6 @@ namespace EQTool.Models
             return false;
         }
 
-        // Red borders for the specific invalid controls (mirrors Trigger Name / Search Text).
         private bool TimerSelected => Model.Timer != null && Model.Timer.TimerType != TimerType.NoTimer;
 
         public Brush TimerNameBorderBrush =>
@@ -520,7 +504,6 @@ namespace EQTool.Models
             Model.Counter != null && Model.Counter.ResetEnabled && Model.Counter.ResetAfter.TotalMilliseconds <= 0
                 ? Brushes.Red : Brushes.Gray;
 
-        // Per-tab error flags so each tab header can highlight when that tab needs attention.
         public bool BasicTabHasError => !string.IsNullOrWhiteSpace(DisplayTextErrorMessge);
         public bool TimerTabHasError => !string.IsNullOrWhiteSpace(TimerErrorMessge);
         public bool TimerEndingTabHasError => !string.IsNullOrWhiteSpace(TimerEndingErrorMessge);

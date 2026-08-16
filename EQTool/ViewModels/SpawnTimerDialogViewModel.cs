@@ -11,41 +11,24 @@ namespace EQTool.ViewModels
 
     public class SpawnTimerDialogViewModel : INotifyPropertyChanged
     {
+        // Matches hh:mm:ss, mm:ss, or ss - the leading hh and mm groups are optional as a pair,
+        // so a lone number parses as seconds. https://regex101.com/r/oBV1NI/1
         private const string hmsPattern =
             @"^(((?<hh>[0-9]+):)?((?<mm>[0-9]+):))?(?<ss>[0-9]+)$";
-        //    ^ ((?<hh>[0-9]+):)?                                        Group "hh"      0 or more (sets of numbers, followed by a colon)
-        //                       ((?<mm>[0-9]+):)                        Group "mm"      1 set of numbers followed by a colon
-        //     (                                 )?                                      0 or more hh and mm groups
-        //                                         (?<ss>[0-9]+)         Group "ss"      1 set of numbers
-        //
-        // https://regex101.com/r/oBV1NI/1
-        //
         private readonly Regex regex = new Regex(hmsPattern, RegexOptions.Compiled);
 
 
-        // -----------------------------------------------------------------------
-        //
-        // the overall enable/disable Spawn Timers checkbox
-        //
         private bool _SpawnTimerEnabled = false;
         public bool SpawnTimerEnabled
         {
             get { return _SpawnTimerEnabled; }
-            set 
-            { 
+            set
+            {
                 _SpawnTimerEnabled = value;
                 OnPropertyChanged();
             }
         }
 
-        // -----------------------------------------------------------------------
-        //
-        // timer start fields
-        //
-
-        //
-        // enum for starttypes
-        //
         public enum StartTypes
         {
             PIG_PARSE_AI,
@@ -58,11 +41,8 @@ namespace EQTool.ViewModels
         private string _SlainText       = "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)";
         private string _FactionText     = "(Coldain|Rygorr)";
 
-        //
-        // timer start getters and setters
-        //
-        public StartTypes StartType 
-        { 
+        public StartTypes StartType
+        {
             get { return _StartType; }
             set
             {
@@ -91,13 +71,9 @@ namespace EQTool.ViewModels
             }
         }
 
-        // -----------------------------------------------------------------------
-        //
-        // timer end fields
-        //
         private string _WarningTime         = "30";
         private int _WarningSeconds         = 30;
-        
+
         private bool _ProvideWarningText    = true;
         private bool _ProvideWarningTTS     = true;
         private string _WarningText         = "30 second warning";
@@ -108,9 +84,6 @@ namespace EQTool.ViewModels
         private string _EndText             = "Pop";
         private string _EndTTS              = "Pop";
 
-        //
-        // timer end getters and setters
-        // note we will also use the setter to set the related seconds field, to keep them synced
         public string WarningTime
         {
             get { return _WarningTime; }
@@ -118,16 +91,13 @@ namespace EQTool.ViewModels
             {
                 _WarningTime = value;
 
-                // calculate the number of seconds in the warning time field
                 var match_warning = regex.Match(_WarningTime);
                 if (match_warning.Success)
                 {
-                    // get results from the rexex scan
                     var hh = match_warning.Groups["hh"].Value;
                     var mm = match_warning.Groups["mm"].Value;
                     var ss = match_warning.Groups["ss"].Value;
 
-                    // count up the seconds
                     _WarningSeconds = 0;
                     if (ss != "")
                     {
@@ -150,7 +120,6 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        // getter for the internally calculated field
         public int WarningSeconds { get { return _WarningSeconds; } }
 
 
@@ -234,16 +203,11 @@ namespace EQTool.ViewModels
             }
         }
 
-        // -----------------------------------------------------------------------
-        //
-        // counter reset field
-        //
         private string      _CounterResetTime = "1:00:00";
         private int         _CounterResetSeconds = 3600;
         public int          TimerCounter { get; set; } = 0;
         public DateTime     LastUsedTime { get; set; } = DateTime.Now;
 
-        // note we will also use the setter to set the related seconds field, to keep them synced
         public string CounterResetTime
         {
             get { return _CounterResetTime; }
@@ -251,16 +215,13 @@ namespace EQTool.ViewModels
             {
                 _CounterResetTime = value;
 
-                // convert the hh:mm:ss field to integer seconds
                 var match_counter = regex.Match(_CounterResetTime);
                 if (match_counter.Success)
                 {
-                    // get results from the rexex scan
                     var hh = match_counter.Groups["hh"].Value;
                     var mm = match_counter.Groups["mm"].Value;
                     var ss = match_counter.Groups["ss"].Value;
 
-                    // count up the seconds
                     _CounterResetSeconds = 0;
                     if (ss != "")
                     {
@@ -284,33 +245,21 @@ namespace EQTool.ViewModels
             }
         }
 
-        // getter for the internally calculated field
         public int CounterResetSeconds { get { return _CounterResetSeconds; } }
 
 
-        // getter for next timer counter.
         public int GetNextTimerCounter()
         {
-            // is it time to reset the counter?
             DateTime now = DateTime.Now;
             TimeSpan timeSpan = now - LastUsedTime;
             if (timeSpan.TotalSeconds > CounterResetSeconds)
                 TimerCounter = 0;
 
-            // reset the last used time, and return next value
             LastUsedTime = now;
             return ++TimerCounter;
         }
 
 
-        // -----------------------------------------------------------------------
-        //
-        // timer duration fields
-        //
-
-        //
-        // enum for durations
-        //
         public enum Durations
         {
             PRESET_0600,
@@ -325,11 +274,6 @@ namespace EQTool.ViewModels
         private string _CustomDuration  = "30:00";
         private int _DurationSeconds    = 1800;
 
-        //
-        // timer duration getters and setters
-        //
-
-        // note we will also use the setter to set the related seconds field, to keep them synced
         public Durations Duration
         {
             get { return _Duration; }
@@ -337,7 +281,6 @@ namespace EQTool.ViewModels
             {
                 _Duration = value;
 
-                // calculate the number of seconds for the Duration field
                 switch (_Duration)
                 {
                     case Durations.PRESET_0600:
@@ -361,16 +304,13 @@ namespace EQTool.ViewModels
                         break;
 
                     case Durations.CUSTOM:
-                        // convert the hh:mm:ss field to integer seconds
                         var match_duration = regex.Match(CustomDuration);
                         if (match_duration.Success)
                         {
-                            // get results from the rexex scan
                             var hh = match_duration.Groups["hh"].Value;
                             var mm = match_duration.Groups["mm"].Value;
                             var ss = match_duration.Groups["ss"].Value;
 
-                            // count up the seconds
                             _DurationSeconds = 0;
                             if (ss != "")
                             {
@@ -397,7 +337,6 @@ namespace EQTool.ViewModels
             }
         }
 
-        // note we will also use the setter to set the related seconds field, to keep them synced
         public string CustomDuration
         {
             get { return _CustomDuration; }
@@ -405,19 +344,15 @@ namespace EQTool.ViewModels
             {
                 _CustomDuration = value;
 
-                // only do this if the user also has the Custom radio button selected
                 if (Duration == Durations.CUSTOM)
                 {
-                    // convert the hh:mm:ss field to integer seconds
                     var match_duration = regex.Match(_CustomDuration);
                     if (match_duration.Success)
                     {
-                        // get results from the rexex scan
                         var hh = match_duration.Groups["hh"].Value;
                         var mm = match_duration.Groups["mm"].Value;
                         var ss = match_duration.Groups["ss"].Value;
 
-                        // count up the seconds
                         _DurationSeconds = 0;
                         if (ss != "")
                         {
@@ -441,14 +376,9 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        // getter for the internally calculated field
         public int DurationSeconds { get { return _DurationSeconds; } }
 
 
-        // -----------------------------------------------------------------------
-        //
-        // notes and comments
-        //
         private string _NotesText =
             "AC in OOT: 6 min\r\n" +
             "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)\r\n" +
@@ -482,28 +412,14 @@ namespace EQTool.ViewModels
 
 
 
-        //
-        // utility function to set all fields to the same value as the passed object fields
-        //
         public void SetFrom(SpawnTimerDialogViewModel m)
         {
-            // sweep thru all the fields
-
-            //
-            // overall enable/disable
-            //
             SpawnTimerEnabled = m.SpawnTimerEnabled;
 
-            //
-            // timer start
-            //
             StartType = m.StartType;
             SlainText = m.SlainText;
             FactionText = m.FactionText;
 
-            //
-            // timer end
-            //
             WarningTime = m.WarningTime;
 
             ProvideWarningText = m.ProvideWarningText;
@@ -516,22 +432,13 @@ namespace EQTool.ViewModels
             EndText = m.EndText;
             EndTTS = m.EndTTS;
 
-            //
-            // counter reset field
-            //
             CounterResetTime = m.CounterResetTime;
             TimerCounter = m.TimerCounter;
             LastUsedTime = m.LastUsedTime;
 
-            //
-            // timer duration fields
-            //
             Duration = m.Duration;
             CustomDuration = m.CustomDuration;
 
-            //
-            // notes and comments field
-            //
             NotesText = m.NotesText;
 
         }
@@ -544,9 +451,6 @@ namespace EQTool.ViewModels
 
     }
 
-    //
-    // data validation class for hh:mm:ss fields
-    //
     public class HourMinutesSecondsValidationRule : ValidationRule
     {
         private const string hmsPattern = @"^(((?<hh>[0-9]+):)?((?<mm>[0-9]+):))?(?<ss>[0-9]+)$";
@@ -562,9 +466,7 @@ namespace EQTool.ViewModels
         }
     }
 
-    //
-    // converter class to allow radiobuttons to bind to enum
-    //
+    // Lets radiobuttons bind to an enum: the button's parameter is compared to the bound value.
     public class RadioButtonEnumConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

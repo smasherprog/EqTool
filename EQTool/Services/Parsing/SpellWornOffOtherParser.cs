@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using System;
 using System.Text.RegularExpressions;
 
@@ -7,8 +7,6 @@ namespace EQTool.Services.Parsing
     public class SpellWornOffOtherParser : IEqLogParser
     {
         //https://regex101.com/r/5u7bs7/1
-        // these references to the regex101.com website are very helpful, as that hash at the end of the URL reconstructs the entire test, with regex and test lines.  Somehow.  Magic...
-        // So it's worth retaining to be able to go back and test later.
         private const string wornOffPattern = @"^Your (?<spell_name>[\w ]+) spell has worn off\.";
         private readonly Regex wornOffRegex = new Regex(wornOffPattern, RegexOptions.Compiled);
 
@@ -33,13 +31,11 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        // check this line for a match of the desired search pattern
         public SpellWornOffOtherEvent MatchWornOffOther(string line, DateTime timestamp, int lineCounter)
         {
             // return value
             SpellWornOffOtherEvent rv = null;
 
-            // check line for a match
             var match = wornOffRegex.Match(line);
             if (match.Success)
             {

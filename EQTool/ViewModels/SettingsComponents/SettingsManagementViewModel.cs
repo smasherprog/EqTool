@@ -23,12 +23,9 @@ namespace EQTool.ViewModels.SettingsComponents
         private readonly EQSpells eqSpells;
         private readonly UIFileSyncService uiFileSyncService;
         private readonly TreeGlobal triggersRoot;
-        // One-shot guard: character UI-sync status is pulled from the server only once per
-        // settings-window session (first Characters-tab open), not on every tab switch.
+        // Sync status is pulled once per settings-window session, not on every tab switch.
         private bool characterSyncStatusChecked;
-        // The node(s) that were Cut/Copied and are waiting to be Pasted (folders/triggers).
         private readonly System.Collections.Generic.List<TreeViewItemBase> clipboardNodes = new System.Collections.Generic.List<TreeViewItemBase>();
-        // True when the clipboard nodes should be duplicated on paste (Copy), false to move (Cut).
         private bool clipboardIsCopy;
         public SettingsManagementViewModel(UserComponentSettingsManagementFactory userComponentFactory, EQToolSettings settings, EQToolSettingsLoad eQToolSettingsLoad, EQSpells eqSpells, UIFileSyncService uiFileSyncService)
         {
@@ -58,21 +55,15 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Rebuilds the Triggers branch as a single merged tree from settings.Triggers. Built-in
-        // triggers (IsBuiltIn, kept in the list by EQToolSettingsLoad.SyncBuiltInTriggers) are
-        // read-only and placed into their declared "/"-separated folders; user triggers go into the
-        // user's own folders (by FolderId). Both kinds carry their own TriggerEnabled.
+        // Built-in triggers are read-only and placed into their declared "/"-separated folders;
+        // user triggers go into the user's own folders by FolderId. Both carry TriggerEnabled.
         private void BuildTriggerTree()
         {
             triggersRoot.Children.Clear();
 
-            // Read-only built-in folders are created on demand from "/"-separated paths (a
-            // built-in trigger's declared folder, or the built-in path a user folder/trigger
-            // is anchored to).
+            // built-in folders have no stable ids, so they are created on demand keyed by path
             var builtInFolderCache = new System.Collections.Generic.Dictionary<string, TreeTriggerFolder>(StringComparer.OrdinalIgnoreCase);
 
-            // User folders (persisted), linked by ParentId (user parent) or BuiltInParentPath
-            // (placed inside a built-in library folder).
             var folderNodes = new System.Collections.Generic.Dictionary<Guid, TreeTriggerFolder>();
             foreach (var f in settings.TriggerFolders)
             {
@@ -116,7 +107,6 @@ namespace EQTool.ViewModels.SettingsComponents
                 }
                 else if (!string.IsNullOrWhiteSpace(trigger.BuiltInFolderPath))
                 {
-                    // User trigger anchored inside a built-in library folder.
                     parent = GetOrCreateBuiltInFolder(triggersRoot, trigger.BuiltInFolderPath, builtInFolderCache);
                 }
                 parent.Children.Add(NewTriggerNode(new TriggerViewModel(trigger, settings, eQToolSettingsLoad, eqSpells), parent));
@@ -125,11 +115,9 @@ namespace EQTool.ViewModels.SettingsComponents
             SortRecursive(triggersRoot);
         }
 
-        // Clears every trigger and user folder, then re-seeds the built-in library from code exactly
-        // as a brand-new user would get it (all built-ins present; only those in the top-level
-        // Encounters folder are enabled). This discards all
-        // user-created triggers/folders and any customizations to built-ins, then persists and
-        // rebuilds the tree. Used by the Debug tab's "Reset Triggers" button.
+        // Re-seeds the built-in library exactly as a brand-new user would get it: all built-ins
+        // present, but only those in the top-level Encounters folder enabled. Discards every
+        // user-created trigger/folder and all customizations to built-ins.
         public void ResetTriggersToDefault()
         {
             settings.Triggers = new System.Collections.Generic.List<Models.Trigger>();
@@ -139,8 +127,6 @@ namespace EQTool.ViewModels.SettingsComponents
             BuildTriggerTree();
         }
 
-        // Walks/creates the nested read-only built-in folder chain for a "/"-separated path, rooted
-        // at the given node, reusing previously created folders for shared path segments.
         private TreeTriggerFolder GetOrCreateBuiltInFolder(TreeViewItemBase root, string path, System.Collections.Generic.Dictionary<string, TreeTriggerFolder> cache)
         {
             TreeViewItemBase current = root;
@@ -169,14 +155,12 @@ namespace EQTool.ViewModels.SettingsComponents
             return leaf;
         }
 
-        // Adds a node and re-sorts the parent so children stay alphabetical.
         private void InsertChild(TreeViewItemBase parent, TreeViewItemBase node)
         {
             parent.Children.Add(node);
             SortChildren(parent);
         }
 
-        // Sorts a parent's children: folders first, then triggers, each alphabetical by Name.
         private void SortChildren(TreeViewItemBase parent)
         {
             var ordered = parent.Children
@@ -200,7 +184,7 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Creates a trigger node and keeps the tree sorted when its name changes.
+        // re-sorts on rename so the tree does not go out of order while the user types
         private TreeTrigger NewTriggerNode(TriggerViewModel vm, TreeViewItemBase parent)
         {
             var node = new TreeTrigger(vm, parent);
@@ -221,8 +205,7 @@ namespace EQTool.ViewModels.SettingsComponents
             return menuItem;
         }
 
-        // Context menu for the (hidden) Triggers root, used when right-clicking empty space
-        // in the Triggers tree so top-level folders/triggers can still be added or pasted.
+        // the root node is hidden, so this backs right-clicking empty space in the tree
         public ContextMenu GetTriggerRootContextMenu()
         {
             return GetContextMenu(triggersRoot);
@@ -238,7 +221,6 @@ namespace EQTool.ViewModels.SettingsComponents
             }
             else if (item is TreeGlobal)
             {
-                // The root of the Triggers branch.
                 var menu = new ContextMenu();
                 _ = menu.Items.Add(BuildMenuItem("Add Trigger", AddTrigger, item));
                 _ = menu.Items.Add(BuildMenuItem("Add Folder", AddFolder, item));
@@ -253,8 +235,6 @@ namespace EQTool.ViewModels.SettingsComponents
             }
             else if (item is TreeTriggerFolder folder)
             {
-                // Built-in folders themselves are read-only (no rename/cut/delete), but users can
-                // add their own triggers and folders inside them, and paste into them.
                 if (folder.IsBuiltIn)
                 {
                     var builtinMenu = new ContextMenu();
@@ -290,7 +270,6 @@ namespace EQTool.ViewModels.SettingsComponents
                 var menu = new ContextMenu();
                 if (trig.IsBuiltIn)
                 {
-                    // Built-in triggers can only be enabled/disabled or copied (into an editable copy).
                     _ = menu.Items.Add(BuildMenuItem(trig.Trigger.TriggerEnabled ? "Disable" : "Enable", ToggleTriggerEnabled, item));
                     _ = menu.Items.Add(BuildMenuItem("Copy", CopyItem, item));
                     return menu;
@@ -314,7 +293,6 @@ namespace EQTool.ViewModels.SettingsComponents
             return null;
         }
 
-        // Expands the clicked folder (or the whole tree from the root) and every folder beneath it.
         private void ExpandAll(object sender, RoutedEventArgs e)
         {
             if ((sender as MenuItem)?.Tag is TreeViewItemBase node)
@@ -323,7 +301,6 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Collapses the clicked folder (or the whole tree from the root) and every folder beneath it.
         private void CollapseAll(object sender, RoutedEventArgs e)
         {
             if ((sender as MenuItem)?.Tag is TreeViewItemBase node)
@@ -332,8 +309,7 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Sets IsExpanded on a node and its entire subtree. The hidden triggersRoot is never a
-        // visible TreeViewItem, so only its children are touched when starting from the root.
+        // triggersRoot is never a visible TreeViewItem, so it is skipped rather than expanded
         private void SetExpandedRecursive(TreeViewItemBase node, bool expanded)
         {
             if (!(node is TreeGlobal))
@@ -346,9 +322,8 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // The "/"-separated library path of a built-in folder node (e.g. "Encounters/Kael"),
-        // built by walking up its (always built-in) ancestors. Used to anchor user triggers and
-        // folders created inside the Built In library, since built-in folders have no stable ids.
+        // Built-in folders have no stable ids, so items created inside the library anchor to
+        // this "/"-separated path (e.g. "Encounters/Kael") instead.
         private static string GetBuiltInFolderPath(TreeTriggerFolder folder)
         {
             var parts = new System.Collections.Generic.List<string>();
@@ -368,7 +343,7 @@ namespace EQTool.ViewModels.SettingsComponents
                 var parentFolder = parent as TreeTriggerFolder;
                 var vm = new TriggerViewModel(settings, eQToolSettingsLoad, eqSpells)
                 {
-                    // A built-in parent has no usable id; the trigger anchors to it by path below.
+                    // a built-in parent has no id, so it anchors by path instead
                     FolderId = parentFolder?.IsBuiltIn == true ? null : parentFolder?.Backing.Id
                 };
                 if (parentFolder?.IsBuiltIn == true)
@@ -390,7 +365,7 @@ namespace EQTool.ViewModels.SettingsComponents
                 var backing = new TriggerFolder
                 {
                     Name = "New Folder",
-                    // A built-in parent has no usable id; the folder anchors to it by path instead.
+                    // a built-in parent has no id, so it anchors by path instead
                     ParentId = parentFolder?.IsBuiltIn == true ? null : parentFolder?.Backing.Id,
                     BuiltInParentPath = parentFolder?.IsBuiltIn == true ? GetBuiltInFolderPath(parentFolder) : null
                 };
@@ -434,7 +409,6 @@ namespace EQTool.ViewModels.SettingsComponents
             clipboardIsCopy = true;
         }
 
-        // Collects all trigger nodes within a subtree (the node itself if it is a trigger).
         private void CollectTriggerNodes(TreeViewItemBase node, System.Collections.Generic.List<TreeTrigger> acc)
         {
             if (node is TreeTrigger t)
@@ -448,9 +422,8 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Determines which nodes an operation should act on: the full multi-selection
-        // when the clicked item is part of it, otherwise just the clicked item. Nested
-        // selections are reduced to their top-most nodes to avoid duplicate work.
+        // Acts on the whole multi-selection when the clicked item is part of it, else just the
+        // clicked item. Nested selections collapse to their top-most nodes to avoid double work.
         private System.Collections.Generic.List<TreeViewItemBase> ResolveSelection(TreeViewItemBase clicked)
         {
             var selected = new System.Collections.Generic.List<TreeViewItemBase>();
@@ -503,13 +476,11 @@ namespace EQTool.ViewModels.SettingsComponents
             {
                 return;
             }
-            // Pasting INTO built-in folders is allowed (the pasted user items anchor there by
-            // path when persisted); built-in items themselves still can't be cut or deleted.
+            // no built-in guard here on purpose: pasting INTO a built-in folder is allowed, since
+            // the pasted user items anchor there by path when persisted
 
             if (clipboardIsCopy)
             {
-                // Duplicate each node (and its subtree) with fresh ids; clones are
-                // always editable even when copied out of the Built In library.
                 foreach (var node in clipboardNodes)
                 {
                     var clone = CloneNode(node, target);
@@ -526,7 +497,7 @@ namespace EQTool.ViewModels.SettingsComponents
                 return;
             }
 
-            // Move (Cut): skip nodes that would be pasted into themselves/their subtree.
+            // skip nodes that would be pasted into themselves or their own subtree
             foreach (var node in clipboardNodes.ToList())
             {
                 if (IsSelfOrDescendant(target, node))
@@ -543,8 +514,6 @@ namespace EQTool.ViewModels.SettingsComponents
             PersistTriggerTree();
         }
 
-        // Deep-clones a tree node (trigger or folder + subtree) with new ids. The clone
-        // is always a normal, editable node (built-in status is dropped).
         private TreeViewItemBase CloneNode(TreeViewItemBase node, TreeViewItemBase parent)
         {
             if (node is TreeTrigger tt)
@@ -569,10 +538,9 @@ namespace EQTool.ViewModels.SettingsComponents
             return null;
         }
 
-        // JSON round-trip deep copy of a trigger with a fresh id. IsBuiltIn is JsonIgnore, so the
-        // clone is never marked built-in. BuiltInId is cleared so a copy of a built-in becomes a
-        // fully independent, editable user trigger (and is shown in the tree, not treated as the
-        // built-in's enabled marker).
+        // IsBuiltIn is JsonIgnore, so the round-trip alone drops built-in status; clearing
+        // BuiltInId makes a copy of a built-in a fully independent user trigger rather than
+        // the built-in's enabled marker.
         private Models.Trigger CloneTrigger(Models.Trigger source)
         {
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(source);
@@ -584,7 +552,6 @@ namespace EQTool.ViewModels.SettingsComponents
             return clone;
         }
 
-        // Registers the cloned trigger model(s) in settings so they persist.
         private void AddTriggerModels(TreeViewItemBase node)
         {
             if (node is TreeTrigger tt)
@@ -600,7 +567,6 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Returns true if 'candidate' is 'node' itself or anywhere in 'node's subtree.
         private bool IsSelfOrDescendant(TreeViewItemBase candidate, TreeViewItemBase node)
         {
             var current = candidate;
@@ -620,8 +586,6 @@ namespace EQTool.ViewModels.SettingsComponents
             DeleteSelection((sender as MenuItem)?.Tag as TreeViewItemBase);
         }
 
-        // Deletes the resolved selection (all multi-selected items when the clicked item
-        // is part of it, otherwise just the clicked item). Built-in items are never deleted.
         private void DeleteSelection(TreeViewItemBase clicked)
         {
             if (clicked == null)
@@ -659,7 +623,6 @@ namespace EQTool.ViewModels.SettingsComponents
             PersistTriggerTree();
         }
 
-        // Removes the underlying Trigger of every TreeTrigger in this subtree from settings.Triggers.
         private void RemoveTriggersUnder(TreeViewItemBase node)
         {
             foreach (var child in node.Children)
@@ -680,11 +643,8 @@ namespace EQTool.ViewModels.SettingsComponents
             DeleteSelection((sender as MenuItem)?.Tag as TreeViewItemBase);
         }
 
-        // Enables or disables the clicked trigger (and the rest of the multi-selection, including
-        // triggers inside any selected folders). The clicked trigger's current state decides the
-        // direction, so a mixed selection becomes uniformly enabled/disabled. Built-in and user
-        // triggers are handled the same way - both carry their own TriggerEnabled - and the change
-        // is persisted.
+        // The clicked trigger's state decides the direction for the whole selection, so a mixed
+        // selection ends up uniformly enabled or disabled rather than each item flipping.
         private void ToggleTriggerEnabled(object sender, RoutedEventArgs e)
         {
             if (!((sender as MenuItem)?.Tag is TreeTrigger clicked))
@@ -715,7 +675,6 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Called when inline editing of a node's name finishes (Enter / focus lost).
         public void CommitEdit(TreeViewItemBase node)
         {
             if (node == null || !node.IsEditing)
@@ -733,9 +692,7 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Walks the current tree and writes the folder hierarchy and each trigger's
-        // FolderId back into settings, then saves. This keeps the persisted flat
-        // lists in sync with the tree after any structural change.
+        // settings stores flat lists, so the whole tree is re-flattened after any structural change
         private void PersistTriggerTree()
         {
             var folders = new System.Collections.Generic.List<TriggerFolder>();
@@ -750,9 +707,8 @@ namespace EQTool.ViewModels.SettingsComponents
             {
                 if (child is TreeTriggerFolder f)
                 {
-                    // Built-in library folders are created in code and never persisted themselves,
-                    // but they may contain user folders/triggers - descend with the accumulated
-                    // "/"-separated path so those children anchor back to this spot on reload.
+                    // Built-in folders are never persisted themselves, but may contain user items -
+                    // descend with the accumulated path so those children anchor back here on reload.
                     if (f.IsBuiltIn)
                     {
                         var path = string.IsNullOrEmpty(builtInPath) ? f.Name : builtInPath + "/" + f.Name;
@@ -760,7 +716,6 @@ namespace EQTool.ViewModels.SettingsComponents
                         continue;
                     }
                     f.Backing.ParentId = parentId;
-                    // Anchored to a built-in folder only when it has no user parent.
                     f.Backing.BuiltInParentPath = parentId == null ? builtInPath : null;
                     folders.Add(f.Backing);
                     WalkAndCollect(f, f.Backing.Id, folders);
@@ -811,8 +766,6 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Determines which characters an operation should act on: the full multi-selection
-        // when the clicked character is part of it, otherwise just the clicked character.
         private System.Collections.Generic.List<TreePlayer> ResolveCharacterSelection(TreePlayer clicked)
         {
             var selected = new System.Collections.Generic.List<TreeViewItemBase>();
@@ -828,9 +781,6 @@ namespace EQTool.ViewModels.SettingsComponents
             return new System.Collections.Generic.List<TreePlayer> { clicked };
         }
 
-        // ---- UI file sync status (Characters tab) ----
-
-        // Pulls the server list once per settings-window session (first Characters-tab open).
         public void RefreshAllCharacterSyncStatusOnce()
         {
             if (characterSyncStatusChecked)
@@ -840,8 +790,6 @@ namespace EQTool.ViewModels.SettingsComponents
             RefreshAllCharacterSyncStatus();
         }
 
-        // Re-pulls the full server list and refreshes every character's icon/date. Used by
-        // the General "Refresh" button and the server node's right-click "Refresh".
         public void RefreshAllCharacterSyncStatus()
         {
             var players = new List<TreePlayer>();
@@ -853,7 +801,6 @@ namespace EQTool.ViewModels.SettingsComponents
             RefreshStatuses(players);
         }
 
-        // Refreshes a single character's icon/date (per-character right-click "Refresh").
         public void RefreshCharacterSyncStatus(TreePlayer player)
         {
             if (player != null)
@@ -946,8 +893,6 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Deletes this character's UI backup (both files of the pair) from the server. Local
-        // files are left untouched.
         private void DeleteCharacterUi(object sender, RoutedEventArgs e)
         {
             if (!((sender as MenuItem)?.Tag is TreePlayer clicked))
@@ -983,7 +928,6 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         private ObservableCollection<TreeViewItemBase> _triggerTreeItems = new ObservableCollection<TreeViewItemBase>();
-        // Root(s) of the Triggers tab tree (the Triggers branch).
         public ObservableCollection<TreeViewItemBase> TriggerTreeItems
         {
             get => _triggerTreeItems;
@@ -998,7 +942,6 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         private ObservableCollection<TreeViewItemBase> _characterTreeItems = new ObservableCollection<TreeViewItemBase>();
-        // Root(s) of the Characters tab tree (one node per server).
         public ObservableCollection<TreeViewItemBase> CharacterTreeItems
         {
             get => _characterTreeItems;
@@ -1013,7 +956,6 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         private UserControl _triggerUserControl;
-        // Detail editor shown on the right of the Triggers tab for the selected trigger.
         public UserControl TriggerUserControl
         {
             get => _triggerUserControl;
@@ -1025,7 +967,6 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         private UserControl _characterUserControl;
-        // Detail editor shown on the right of the Characters tab for the selected server/character.
         public UserControl CharacterUserControl
         {
             get => _characterUserControl;
@@ -1036,8 +977,6 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Triggers tab selection: only an actual trigger has an editor; folders and the
-        // root clear the detail pane.
         public void TriggerTreeSelected(TreeViewItemBase p)
         {
             if (p is TreeTrigger)
@@ -1050,8 +989,6 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        // Characters tab selection: servers and players show their detail editor; the
-        // Zone(s) placeholder clears the detail pane.
         public void CharacterTreeSelected(TreeViewItemBase p)
         {
             if (p is TreePlayer || p is TreeServer)

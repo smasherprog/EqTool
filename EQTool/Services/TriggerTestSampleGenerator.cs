@@ -4,14 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace EQTool.Services
 {
-    // Produces a sample log line that will cause a trigger to match, so the trigger editor's
-    // "Test" box can be pre-filled with something that actually fires the trigger.
-    //
-    // For plain-text triggers the search text is returned verbatim (matching is a case-insensitive
-    // substring check, so the text always matches itself). For regex triggers a matching example is
-    // synthesized by walking the pattern: alternations pick their first branch, groups/quantifiers
-    // are expanded minimally, character classes yield one representative character, and anchors /
-    // look-arounds contribute nothing. The result is verified with Trigger.Matches before use.
+    // A matching example is synthesized by walking the pattern: alternations pick their first
+    // branch, quantifiers expand minimally, character classes yield one representative character,
+    // and anchors/look-arounds contribute nothing. Verified with Trigger.Matches before use.
     public static class TriggerTestSampleGenerator
     {
         // Same simplified-placeholder pattern Trigger uses to turn "{name}" into a named group.
@@ -55,7 +50,6 @@ namespace EQTool.Services
             }
         }
 
-        // Parses one alternation branch (a sequence of terms) until it hits '|', ')', or the end.
         private static string ParseSequence(string s, ref int pos)
         {
             var sb = new StringBuilder();
@@ -66,7 +60,6 @@ namespace EQTool.Services
             return sb.ToString();
         }
 
-        // Parses a single atom plus an optional quantifier.
         private static string ParseTerm(string s, ref int pos)
         {
             var atom = ParseAtom(s, ref pos);
@@ -95,7 +88,6 @@ namespace EQTool.Services
             return atom;
         }
 
-        // Skips a trailing lazy ('?') or possessive ('+') modifier after a quantifier.
         private static void ConsumeLazyOrPossessive(string s, ref int pos)
         {
             if (pos < s.Length && (s[pos] == '?' || s[pos] == '+'))
@@ -134,7 +126,6 @@ namespace EQTool.Services
             return "{";
         }
 
-        // Parses one atom: anchor, group, character class, escape, dot, or literal.
         private static string ParseAtom(string s, ref int pos)
         {
             var c = s[pos];

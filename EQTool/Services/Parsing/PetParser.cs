@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
-    // parser for things specific to _Pets
     public class PetParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
@@ -26,7 +25,6 @@ namespace EQTool.Services.Parsing
         private readonly Regex[] regexPatches = new Regex[(int)PetEvent.PetIncident.ANY];
         private readonly List<PetEvent.PetIncident> PetEventTypes = Enum.GetValues(typeof(PetEvent.PetIncident)).Cast<PetEvent.PetIncident>().Where(a => a != PetEvent.PetIncident.NONE && a != PetEvent.PetIncident.ANY).ToList();
 
-        // ctor
         public PetParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
@@ -43,8 +41,6 @@ namespace EQTool.Services.Parsing
         }
 
 
-        // handle a line from the log file.
-        // If we find what we are seeking, fire off our event
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var rv = false;
@@ -76,11 +72,8 @@ namespace EQTool.Services.Parsing
             return null;
         }
 
-        // parse this line to see if it contains pet-specific items
-        // returns a PetEvent object or null
         public PetEvent Match(string line, DateTime timestamp, int lineCounter)
         {
-            // no pet
             if (patternPetNotThere == line)
             {
                 return new PetEvent

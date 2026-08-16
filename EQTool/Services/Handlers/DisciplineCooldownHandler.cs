@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
@@ -13,11 +13,9 @@ namespace EQTool.Services.Handlers
 {
     public class DisciplineCooldownHandler : BaseHandler
     {
-        // internal data
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
 
-        // ctor
         public DisciplineCooldownHandler(EQSpells spells, SpellWindowViewModel spellWindowViewModel, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spellWindowViewModel = spellWindowViewModel;
@@ -25,9 +23,6 @@ namespace EQTool.Services.Handlers
             this.spells = spells;
         }
 
-        //
-        // function that gets called whenever a DisciplineCooldownEvent is received
-        //
         private void LogEvents_DisciplineCooldownEvent(object sender, DisciplineCooldownEvent discCooldownEvent)
         {
             var spellname = "Feign Death";

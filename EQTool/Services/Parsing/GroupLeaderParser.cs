@@ -1,13 +1,11 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using System;
 using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
-    // parse for the log lines indicating who the group leader is
     public class GroupLeaderParser : IEqLogParser
     {
-        // set up the regular expressions
         private const string patternYouJoin = @"^You notify (?<group_leader>[\w` ]+) that you agree to join the group.";
         private const string patternYouInvite = @"^You invite [\w` ]+ to join your group.";
         private const string patternLeaderChanged = @"(?<group_leader>[\w` ]+) (is|are) now the leader of your group.";
@@ -19,15 +17,12 @@ namespace EQTool.Services.Parsing
 
         private readonly LogEvents logEvents;
 
-        // ctor
         public GroupLeaderParser(LogEvents logEvents)
         {
             this.logEvents = logEvents; 
         }
 
 
-        // handle a line from the log file.
-        // If we find what we are seeking, fire off our event
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             bool rv = false;
@@ -42,7 +37,6 @@ namespace EQTool.Services.Parsing
             return rv;
         }
 
-        // parse this line to see if it containns the search phrase
         public GroupLeaderEvent Match(string line, DateTime timestamp, int lineCounter)
         {
             GroupLeaderEvent rv = null;

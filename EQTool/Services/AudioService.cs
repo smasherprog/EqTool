@@ -8,7 +8,6 @@ namespace EQTool.Services
         void Play(string soundFilePath);
     }
 
-    // Plays a user-selected sound file (wav/mp3/etc.) using a WPF MediaPlayer.
     // MediaPlayer must be created and driven on the UI (dispatcher) thread.
     public class AudioService : IAudioService
     {

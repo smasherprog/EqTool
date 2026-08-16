@@ -1,4 +1,4 @@
-﻿using EQToolShared.Enums;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +7,9 @@ using System.Linq;
 
 namespace EQTool.Models
 {
-    // ===============================================================================================================
 
-    //
-    // class to represent a single pet rank, ndx.e. the stats for the max pet, or min pet, and all inbetween
-    //
     public class PetRank
     {
-        // ctor
         public PetRank(string rank,
                         int petLevel,
                         int maxMelee,
@@ -44,29 +39,21 @@ namespace EQTool.Models
         public string Description { get; }
 
     }
-    // ===============================================================================================================
 
-    //
-    // class to represent a Pet Spell, such as "Leering Corpse", "Emissary of Thule", etc
-    // note that this class has a list of all the possible PetRanks for this spell
-    //
     public class PetSpell
     {
-        // ctor
         public PetSpell(string spellName, EQSpells spells)
         {
             SpellName = spellName;
 
-            // extract these data from the already-parsed spells file
             spells.AllSpells.TryGetValue(spellName, out var spell);
             Classes = spell.Classes;
             PetReagents = spell.PetReagents;
 
-            // create an empty list, ready to be populated
             PetRankList = new List<PetRank>();
         }
 
-        // a kind-of copy ctor - for use with the Mage pet near-clones situation
+        // Mage Air/Earth/Fire/Water pets share one stat table, so the clones reuse the source's ranks
         public PetSpell(string spellName, PetSpell source)
         {
             SpellName = spellName;
@@ -84,17 +71,11 @@ namespace EQTool.Models
 
 
 
-    // ===============================================================================================================
 
-    //
-    // class to serve as a container for all PetSpell objects
-    //
     public class Pets
     {
-        // reference to DI globals
         private readonly EQSpells eqSpells;
 
-        // ctor
         public Pets(EQSpells eqSpells)
         {
             this.eqSpells = eqSpells;
@@ -104,15 +85,11 @@ namespace EQTool.Models
             }
         }
 
-        // returns dictionary of PetSpell objects, key = spell name, value = corresponding PetSpell object
         public readonly Dictionary<string, PetSpell> PetSpellDictionary = new Dictionary<string, PetSpell>();
 
-        // load all the PetSpell data
         private void LoadPetSpells()
         {
-            //
             // necro Pets
-            //
             var petSpell = new PetSpell(spellName: "Cavorting Bones", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/2", petLevel: 1, maxMelee: 8, maxBashKick: 0));
             petSpell.PetRankList.Add(new PetRank(rank: "2/2", petLevel: 2, maxMelee: 10, maxBashKick: 0));
@@ -230,9 +207,7 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 48, maxMelee: 62, maxBashKick: 26, lifetapOrProc: "49", description: "Max+Focus"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // 
             // Shaman Pets
-            //
             petSpell = new PetSpell(spellName: "Companion Spirit", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 22, maxMelee: 22, maxBashKick: 16));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 23, maxMelee: 23, maxBashKick: 17));
@@ -273,9 +248,7 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 39, maxMelee: 52, maxBashKick: 24, description: "Max"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // 
             // Enchanter Pets
-            //
             petSpell = new PetSpell(spellName: "Pendril's Animation", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/2", petLevel: 1, maxMelee: 7, maxBashKick: 0));
             petSpell.PetRankList.Add(new PetRank(rank: "2/2", petLevel: 2, maxMelee: 9, maxBashKick: 0, description: "Max"));
@@ -373,14 +346,10 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 48, maxMelee: 56, maxBashKick: 25, description: "Max"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // 
             // Mage Pets
-            //
-            // note we are taking advantage of the fact that the Air/Earth/Fire/Water pet spells all have same stats for their ranks,
-            // so we add the PetRank objects to the first one, then use the special copy ctor to clone the others
-            //
+            // the four elemental variants share one stat table, so ranks are added to the first
+            // and the rest are cloned from it
 
-            // level 4
             var baseSpellName = "Elementalkin";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/3", petLevel: 4, maxMelee: 8, maxBashKick: 0, lifetapOrProc: "5", damageShield: 6));
@@ -395,7 +364,6 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 8
             baseSpellName = "Elementaling";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/4", petLevel: 6, maxMelee: 10, maxBashKick: 9, lifetapOrProc: "7", damageShield: 8));
@@ -411,7 +379,6 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 12
             baseSpellName = "Elemental";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/4", petLevel: 10, maxMelee: 12, maxBashKick: 12, lifetapOrProc: "11", damageShield: 12));
@@ -427,7 +394,6 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 16
             baseSpellName = "Minor Summoning";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 10, maxMelee: 12, maxBashKick: 12, lifetapOrProc: "14", damageShield: 15));
@@ -444,7 +410,6 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 20
             baseSpellName = "Lesser Summoning";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 15, maxMelee: 14, maxBashKick: 14, lifetapOrProc: "17", damageShield: 18));
@@ -461,7 +426,6 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 24
             baseSpellName = "Summoning";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 19, maxMelee: 16, maxBashKick: 15, lifetapOrProc: "20", damageShield: 21));
@@ -478,7 +442,6 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 29
             baseSpellName = "Greater Summoning";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 22, maxMelee: 20, maxBashKick: 16, lifetapOrProc: "23", damageShield: 24));
@@ -495,7 +458,6 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 34
             baseSpellName = "Minor Conjuration";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 25, maxMelee: 26, maxBashKick: 17, lifetapOrProc: "26", damageShield: 27));
@@ -512,7 +474,6 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 39
             baseSpellName = "Lesser Conjuration";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 29, maxMelee: 32, maxBashKick: 19, lifetapOrProc: "30", damageShield: 31));
@@ -529,7 +490,7 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 44 - todo guessed at bash/kick stats
+            // todo - guessed at bash/kick stats
             baseSpellName = "Conjuration";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 33, maxMelee: 40, maxBashKick: 21, lifetapOrProc: "34", damageShield: 35));
@@ -546,7 +507,6 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 49
             baseSpellName = "Greater Conjuration";
             petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 37, maxMelee: 48, maxBashKick: 23, lifetapOrProc: "38", damageShield: 39));
@@ -564,7 +524,7 @@ namespace EQTool.Models
             petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 51 - todo guessed at all stats for the 6/5 rank
+            // todo - guessed at all stats for the 6/5 rank
             petSpell = new PetSpell(spellName: "Vocarate: Earth", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 41, maxMelee: 50, maxBashKick: 23, lifetapOrProc: "51"));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 42, maxMelee: 52, maxBashKick: 24, lifetapOrProc: "52"));
@@ -574,7 +534,7 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 46, maxMelee: 60, maxBashKick: 26, lifetapOrProc: "56", description: "Max+Focus"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 52 - todo guessed at max melee for the 6/5 rank
+            // todo - guessed at max melee for the 6/5 rank
             petSpell = new PetSpell(spellName: "Vocarate: Fire", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 41, maxMelee: 21, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 42, maxMelee: 22, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2));
@@ -584,7 +544,7 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 46, maxMelee: 30, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2, description: "Max+Focus"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 53 - todo guessed at all stats for the 6/5 rank
+            // todo - guessed at all stats for the 6/5 rank
             petSpell = new PetSpell(spellName: "Vocarate: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 41, maxMelee: 48, maxBashKick: 63, lifetapOrProc: "51"));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 42, maxMelee: 50, maxBashKick: 65, lifetapOrProc: "52"));
@@ -594,7 +554,6 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 46, maxMelee: 58, maxBashKick: 72, lifetapOrProc: "56", description: "Max+Focus"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 54 
             petSpell = new PetSpell(spellName: "Vocarate: Water", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 41, maxMelee: 48, maxBashKick: 0, lifetapOrProc: "102", maxBackstab: 144));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 42, maxMelee: 50, maxBashKick: 0, lifetapOrProc: "104", maxBackstab: 150));
@@ -604,7 +563,6 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 46, maxMelee: 58, maxBashKick: 0, lifetapOrProc: "112", maxBackstab: 174, description: "Max+Focus"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 56
             petSpell = new PetSpell(spellName: "Dyzil's Deafening Decoy", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 41, maxMelee: 38, maxBashKick: 20, lifetapOrProc: "42", damageShield: 43));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 42, maxMelee: 40, maxBashKick: 21, lifetapOrProc: "43", damageShield: 44));
@@ -613,7 +571,7 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 45, maxMelee: 45, maxBashKick: 22, lifetapOrProc: "46", damageShield: 47, description: "Max"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 57 - todo guessed at all data
+            // todo - guessed at all data
             petSpell = new PetSpell(spellName: "Greater Vocaration: Earth", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 44, maxMelee: 52, maxBashKick: 26, lifetapOrProc: "54"));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 45, maxMelee: 54, maxBashKick: 26, lifetapOrProc: "55"));
@@ -623,7 +581,7 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 49, maxMelee: 62, maxBashKick: 28, lifetapOrProc: "59", description: "Max+Focus"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 58 - todo guessed at all data
+            // todo - guessed at all data
             petSpell = new PetSpell(spellName: "Greater Vocaration: Fire", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 44, maxMelee: 33, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 45, maxMelee: 34, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2));
@@ -633,7 +591,7 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 49, maxMelee: 42, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2, description: "Max+Focus"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 59 - todo guessed at all data
+            // todo - guessed at all data
             petSpell = new PetSpell(spellName: "Greater Vocaration: Air", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 44, maxMelee: 50, maxBashKick: 67, lifetapOrProc: "54"));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 45, maxMelee: 52, maxBashKick: 68, lifetapOrProc: "55"));
@@ -643,7 +601,7 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 49, maxMelee: 60, maxBashKick: 75, lifetapOrProc: "59", description: "Max+Focus"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 60 - todo guessed at all data
+            // todo - guessed at all data
             petSpell = new PetSpell(spellName: "Greater Vocaration: Water", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 44, maxMelee: 50, maxBashKick: 0, lifetapOrProc: "108", maxBackstab: 180));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 45, maxMelee: 52, maxBashKick: 0, lifetapOrProc: "110", maxBackstab: 186));
@@ -671,7 +629,8 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 41, maxMelee: 56, maxBashKick: 25));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // Monster Summoning 3 - todo guessed at all data
+            // Monster Summoning 3
+            // todo - guessed at all data
             petSpell = new PetSpell("Monster Summoning III", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 44, maxMelee: 52, maxBashKick: 24));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 45, maxMelee: 54, maxBashKick: 24));

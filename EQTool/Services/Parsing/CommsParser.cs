@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQTool.ViewModels;
 using System;
 using System.Text.RegularExpressions;
@@ -6,12 +6,8 @@ using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
-    //
-    // this parser will watch for Player comms
-    //
     public class CommsParser : IEqLogParser
     {
-        // class data
         private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
 
@@ -36,17 +32,12 @@ namespace EQTool.Services.Parsing
         private readonly Regex regexOutOfCharacter = new Regex(patternOutOfCharacter, RegexOptions.Compiled);
         private readonly Regex regexShouts = new Regex(patternShouts, RegexOptions.Compiled);
 
-        //
-        // ctor
-        //
         public CommsParser(ActivePlayer activePlayer, LogEvents logEvents)
         {
             this.activePlayer = activePlayer;
             this.logEvents = logEvents;
         }
 
-        // handle a line from the log file.
-        // If we find what we are seeking, fire off our event
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var commsEvent = Match(line, timestamp, lineCounter);
@@ -61,17 +52,9 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        // parse this line to see if it contains what we are looking for
-        // returns a CommsEvent object if a comms event is detecte, else
-        // returns null
         public CommsEvent Match(string line, DateTime timestamp, int lineCounter)
         {
-            //
-            // begin checking for the various channels
-            //
 
-            // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // group
 
             //You tell your party, 'oh interesting'
             //Jaloy tells the group, 'wiki says he can be in 1 of 2 locations'
@@ -92,8 +75,6 @@ namespace EQTool.Services.Parsing
             }
 
             //
-            // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // guild
 
             //You say to your guild, 'nice'
             //[Wed Oct 16 17:17:25 2024] Okeanos tells the guild, 'it literally says speedway but the  products inside the store are 7/11 branded '
@@ -161,8 +142,6 @@ namespace EQTool.Services.Parsing
             }
 
 
-            // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // say
 
             //You say, 'Hail, Wenglawks Kkeak'
             //[Wed Nov 20 20:29:06 2019] Jaloy says, 'i am a new warrior'
@@ -183,8 +162,6 @@ namespace EQTool.Services.Parsing
                 };
             }
 
-            // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // tells
 
             //You told Qdyil, 'not even sure'
             //[Sat Mar 21 17:45:14 2020] Thalistair tells you, 'omw'
@@ -206,8 +183,6 @@ namespace EQTool.Services.Parsing
                 };
             }
 
-            // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // auction
 
             //You auction, 'wtb diamond'
             //[Mon Feb 22 14:40:47 2021] Mezzter auctions, 'WTS bone chips 7p per stack pst'
@@ -227,8 +202,6 @@ namespace EQTool.Services.Parsing
                 };
             }
 
-            // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // ooc
 
             //You say out of character, 'train to west'
             //[Wed Nov 20 20:18:47 2019] Enudara says out of character, 'grats'
@@ -248,8 +221,6 @@ namespace EQTool.Services.Parsing
                 };
             }
 
-            // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // shout
 
             //You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'
             //[Sat Aug 22 18:54:17 2020] Fizzix shouts, 'ASSIST Fizzix on --- [ an essence tamer ]'

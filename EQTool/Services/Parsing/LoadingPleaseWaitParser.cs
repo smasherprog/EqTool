@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using System;
 
 namespace EQTool.Services.Parsing
@@ -7,14 +7,11 @@ namespace EQTool.Services.Parsing
     {
         private readonly LogEvents logEvents;
 
-        // ctor
         public LoadingPleaseWaitParser(LogEvents logEvents)
         {
             this.logEvents = logEvents; 
         }
 
-        // handle a line from the log file.
-        // If we find what we are seeking, fire off our event
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             bool rv = false;
@@ -29,7 +26,6 @@ namespace EQTool.Services.Parsing
             return rv;
         }
 
-        // parse this line to see if it containns the search phrase
         public LoadingPleaseWaitEvent Match(string line, DateTime timestamp, int lineCounter)
         {
             LoadingPleaseWaitEvent rv = null;

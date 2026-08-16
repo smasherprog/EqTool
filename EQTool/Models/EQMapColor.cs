@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace EQTool.Models
 {
@@ -87,15 +87,12 @@ namespace EQTool.Models
             return value < min ? min : value > max ? max : value;
         }
 
-        // Convert an RGB value into an HLS value.
         private static void RgbToHls(int r, int g, int b, out double h, out double l, out double s)
         {
-            // Convert RGB to a 0.0 to 1.0 range.
             var double_r = r / 255.0;
             var double_g = g / 255.0;
             var double_b = b / 255.0;
 
-            // Get the maximum and minimum RGB components.
             var max = double_r;
             if (max < double_g)
             {
@@ -143,7 +140,6 @@ namespace EQTool.Models
             }
         }
 
-        // Convert an HLS value into an RGB value.
         private static void HlsToRgb(double h, double l, double s,
             out int r, out int g, out int b)
         {
@@ -163,7 +159,6 @@ namespace EQTool.Models
                 double_b = QqhToRgb(p1, p2, h - 120);
             }
 
-            // Convert RGB to the 0 to 255 range.
             r = (int)(double_r * 255.0);
             g = (int)(double_g * 255.0);
             b = (int)(double_b * 255.0);
