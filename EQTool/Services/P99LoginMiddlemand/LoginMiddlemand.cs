@@ -619,13 +619,22 @@ namespace EQTool.Services.P99LoginMiddlemand
             StopListening();
         }
 
+        // The listener spends its life blocked in connection_read() and only re-checks Running
+        // once that returns, so it cannot be relied on to notice a stop promptly: on error it
+        // also swaps in a fresh Connection, which may not be the one disposed here. An unbounded
+        // Join therefore risks never returning - and this runs on the UI thread, from the tray
+        // menu's Exit handler, so that leaves the whole menu dead and the app killable only from
+        // outside. Wait briefly for a clean exit and move on; the thread is a background thread,
+        // so one still stuck in a socket read cannot keep the process alive.
+        private const int ListenerStopTimeoutMilliseconds = 2000;
+
         public void StopListening()
         {
             try
             {
                 Running = false;
                 connection?.Dispose();
-                thread?.Join();
+                _ = (thread?.Join(ListenerStopTimeoutMilliseconds));
                 thread = null;
                 connection = null;
             }
@@ -650,9 +659,14 @@ namespace EQTool.Services.P99LoginMiddlemand
                     Running = true;
                 }
                 connection?.Dispose();
-                thread?.Join();
+                _ = (thread?.Join(ListenerStopTimeoutMilliseconds));
                 connection = new Connection();
-                thread = new Thread(ListenForConnections);
+                thread = new Thread(ListenForConnections)
+                {
+                    // Background, so a listener still parked in a blocking read cannot hold the
+                    // process open after Shutdown.
+                    IsBackground = true
+                };
                 thread.Start();
             }
             catch (Exception ex)
