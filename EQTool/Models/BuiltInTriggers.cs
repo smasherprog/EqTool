@@ -441,7 +441,7 @@ namespace EQTool.Models
         }
         public static Trigger CreateEnraged()
         {
-            var trigger = Build("builtin:enraged", "Enraged", "{npc} has become ENRAGED.", true, "{npc} ENRAGED", "{npc} is enraged");
+            var trigger = Build("builtin:enraged", "Enraged", "^{npc} has become ENRAGED.", true, "{npc} ENRAGED", "{npc} is enraged");
             trigger.BuiltInFolder = "Encounters";
             return trigger;
         }
@@ -473,13 +473,13 @@ namespace EQTool.Models
         // "<name> invites you to join a group." -> group invite alert.
         public static Trigger CreateGroupInvite()
         {
-            return Build("builtin:group-invite", "Group Invite", "{name} invites you to join a group.", true, "{name} Invites you to a group", "{name} Invites you to a group", "Utility");
+            return Build("builtin:group-invite", "Group Invite", "^{name} invites you to join a group.", true, "{name} Invites you to a group", "{name} Invites you to a group", "Utility");
         }
 
         // "<npc> begins to cast the gate spell." -> npc gating alert.
         public static Trigger CreateNpcGating()
         {
-            return Build("builtin:npc-gating", "NPC Gating", "{npc} begins to cast the gate spell.", true, "{npc} begins to Gate", "{npc} begins to Gate", "Combat");
+            return Build("builtin:npc-gating", "NPC Gating", "^{npc} begins to cast the gate spell.", true, "{npc} begins to Gate", "{npc} begins to Gate", "Combat");
         }
 
         // A display-only built-in: shows overlay text and never speaks. The audio text is still

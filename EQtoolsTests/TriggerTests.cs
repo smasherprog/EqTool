@@ -301,6 +301,39 @@ namespace EQtoolsTests
             Assert.IsFalse(trigger.Matches("a spectre tells you, 'Attacking a spectre Master.'"), "A pet attack message should not fire.");
         }
 
+        // These patterns start with the name, so they are anchored: the name group still captures
+        // multi-word names, and chat that quotes the phrase mid-line no longer fires.
+        [TestMethod]
+        public void NameFirstAlertsMatchOnlyAtTheStartOfTheLine()
+        {
+            var enraged = BuiltInTriggers.CreateEnraged();
+            Assert.IsTrue(enraged.Matches("a Kromrif warrior has become ENRAGED."));
+            Assert.AreEqual("a Kromrif warrior ENRAGED", enraged.Expand(enraged.GetEffectiveBasic().DisplayText));
+            Assert.IsFalse(enraged.Matches("Soandso tells the guild, 'a Kromrif warrior has become ENRAGED.'"));
+
+            var gating = BuiltInTriggers.CreateNpcGating();
+            Assert.IsTrue(gating.Matches("a goblin shaman begins to cast the gate spell."));
+            Assert.AreEqual("a goblin shaman begins to Gate", gating.Expand(gating.GetEffectiveBasic().DisplayText));
+            Assert.IsFalse(gating.Matches("Soandso shouts, 'a goblin shaman begins to cast the gate spell.'"));
+
+            var invite = BuiltInTriggers.CreateGroupInvite();
+            Assert.IsTrue(invite.Matches("Thalistair invites you to join a group."));
+            Assert.AreEqual("Thalistair Invites you to a group", invite.Expand(invite.GetEffectiveBasic().DisplayText));
+        }
+
+        // A pattern that starts with a {placeholder} and no "^" is retried at every position in the
+        // line, so its cost grows with the square of the line length. Three such built-ins were most
+        // of the log parsing time, worst on long space-padded lines like CH calls.
+        [TestMethod]
+        public void BuiltInPatternsThatStartWithAPlaceholderAreAnchored()
+        {
+            var unanchored = BuiltInTriggers.All()
+                .Where(x => x.EffectiveUseRegex && x.SearchText.StartsWith("{") && !x.SearchText.StartsWith("{c}", System.StringComparison.OrdinalIgnoreCase))
+                .Select(x => x.TriggerName)
+                .ToList();
+            Assert.AreEqual(0, unanchored.Count, "Add ^ to: " + string.Join(", ", unanchored));
+        }
+
         // "You are drowning" alerts with both display text and TTS audio.
         [TestMethod]
         public void DrowningAlertsWithTextAndAudio()
