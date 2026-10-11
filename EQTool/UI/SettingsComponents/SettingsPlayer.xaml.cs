@@ -111,6 +111,7 @@ namespace EQTool.UI.SettingsComponents
 
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad settingsLoad;
+        private readonly UIFileSyncService uiFileSyncService;
         private readonly string characterName;
         private readonly EQToolShared.Enums.Servers server;
         private TextBlock invTab;
@@ -118,10 +119,11 @@ namespace EQTool.UI.SettingsComponents
         private UIElement invPane;
         private UIElement bankPane;
 
-        public SettingsPlayer(TreePlayer treePlayer, EQToolSettings settings, EQToolSettingsLoad settingsLoad)
+        public SettingsPlayer(TreePlayer treePlayer, EQToolSettings settings, EQToolSettingsLoad settingsLoad, UIFileSyncService uiFileSyncService)
         {
             this.settings = settings;
             this.settingsLoad = settingsLoad;
+            this.uiFileSyncService = uiFileSyncService;
             characterName = treePlayer?.Player?.Name;
             server = treePlayer?.Player?.Server ?? EQToolShared.Enums.Servers.Green;
             DataContext = new SettingsPlayerViewModel(treePlayer);
@@ -237,6 +239,7 @@ namespace EQTool.UI.SettingsComponents
                         settings.DiscordId = result.DiscordId;
                         settings.DiscordApiToken = result.ApiToken;
                         settingsLoad?.Save(settings);
+                        uiFileSyncService.Start();
                         Refresh();
                     }
                 }));

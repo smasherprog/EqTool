@@ -507,6 +507,7 @@ namespace EQTool
                         EQToolSettings.DiscordId = result.DiscordId;
                         EQToolSettings.DiscordApiToken = result.ApiToken;
                         container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
+                        container.Resolve<UIFileSyncService>().Start();
                         DiscordLoginMenuItem.Text = $"Discord: {result.Username} (click to logout)";
                     }
                     else

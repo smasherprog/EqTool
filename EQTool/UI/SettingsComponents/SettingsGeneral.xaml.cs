@@ -270,6 +270,12 @@ namespace EQTool.UI.SettingsComponents
             SaveConfig();
         }
 
+        private void SyncUIFilesCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
+            uiFileSyncService.Start();
+        }
+
         private void LogArchiveCheckBox_Click(object sender, RoutedEventArgs e)
         {
             SaveConfig();

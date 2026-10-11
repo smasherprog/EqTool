@@ -129,7 +129,7 @@ namespace EQTool.ViewModels.SettingsComponents
 
         private TreeTriggerFolder GetOrCreateBuiltInFolder(TreeViewItemBase root, string path, System.Collections.Generic.Dictionary<string, TreeTriggerFolder> cache)
         {
-            TreeViewItemBase current = root;
+            var current = root;
             TreeTriggerFolder leaf = null;
             var accumulated = string.Empty;
             foreach (var segment in path.Split('/'))
@@ -818,15 +818,18 @@ namespace EQTool.ViewModels.SettingsComponents
             _ = Task.Factory.StartNew(() =>
             {
                 var serverFiles = uiFileSyncService.GetServerFiles();
-                var localKeys = new HashSet<string>(
-                    uiFileSyncService.GetLocalUiFiles().Select(i => CharacterKey(i.PlayerName, i.Server)));
-                _ = Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+                if (serverFiles != null)
                 {
-                    foreach (var tp in players)
+                    var localKeys = new HashSet<string>(
+                        uiFileSyncService.GetLocalUiFiles().Select(i => CharacterKey(i.PlayerName, i.Server)));
+                    _ = Application.Current.Dispatcher.BeginInvoke((Action)(() =>
                     {
-                        ApplyStatus(tp, serverFiles, localKeys);
-                    }
-                }));
+                        foreach (var tp in players)
+                        {
+                            ApplyStatus(tp, serverFiles, localKeys);
+                        }
+                    }));
+                }
             });
         }
 
@@ -849,7 +852,7 @@ namespace EQTool.ViewModels.SettingsComponents
             if (matches.Count > 0)
             {
                 tp.UiSyncStatus = UiSyncStatus.Synced;
-                tp.UiSyncDate = matches.Max(f => f.LastModifiedUtc).ToString("yyyy-MM-dd hh:mm tt");
+                tp.UiSyncDate = matches.Max(f => f.LastModifiedUtc).ToLocalTime().ToString("yyyy-MM-dd hh:mm tt");
             }
             else if (localKeys.Contains(CharacterKey(name, server.Value)))
             {
@@ -916,12 +919,16 @@ namespace EQTool.ViewModels.SettingsComponents
             }
             _ = Task.Factory.StartNew(() =>
             {
-                var files = uiFileSyncService.GetServerFiles()
-                    .Where(f => f.Server == server.Value && string.Equals(f.PlayerName, name, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-                foreach (var f in files)
+                var fs = uiFileSyncService.GetServerFiles();
+                if (fs != null)
                 {
-                    _ = uiFileSyncService.DeleteServerFile(f.FileName);
+                    var files = fs
+                        .Where(f => f.Server == server.Value && string.Equals(f.PlayerName, name, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                    foreach (var f in files)
+                    {
+                        _ = uiFileSyncService.DeleteServerFile(f.FileName);
+                    }
                 }
                 RefreshCharacterSyncStatus(clicked);
             });

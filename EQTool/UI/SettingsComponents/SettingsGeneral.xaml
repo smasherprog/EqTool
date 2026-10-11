@@ -129,7 +129,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Sync UI files" FontWeight="Bold" VerticalAlignment="Center" MinWidth="80" Margin="0,0,8,0"
                                            ToolTip="Automatically back up and sync your character UI files to the server (requires Discord login). Per-character status shows on the Characters tab."/>
-                                <CheckBox IsChecked="{Binding SyncUIFiles}" IsEnabled="{Binding IsDiscordLoggedIn}" Click="Savesettings" VerticalAlignment="Center"/>
+                                <CheckBox IsChecked="{Binding SyncUIFiles}" IsEnabled="{Binding IsDiscordLoggedIn}" Click="SyncUIFilesCheckBox_Click" VerticalAlignment="Center"/>
                                 <TextBlock Text="(requires Discord login)" Foreground="Gray" VerticalAlignment="Center" Margin="8,0,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
@@ -573,7 +573,7 @@
                                     </TextBlock.Style>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Text="{Binding LastPlayed}" Margin="8,0,0,0" />
-                                <TextBlock Grid.Column="3" Text="{Binding UiSyncDate}" Margin="8,0,0,0" Foreground="Gray" ToolTip="Last UI sync (UTC)" />
+                                <TextBlock Grid.Column="3" Text="{Binding UiSyncDate}" Margin="8,0,0,0" Foreground="Gray" ToolTip="Last UI sync" />
                             </Grid>
                         </HierarchicalDataTemplate>
                     </TreeView.Resources>

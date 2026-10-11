@@ -19,25 +19,21 @@ namespace EQTool.Services
     public class UIFileSyncService : IDisposable
     {
         private const string BaseUrl = "https://pigparse.azurewebsites.net";
-        // mtime comparisons tolerate small clock differences between machines.
-        private static readonly TimeSpan Epsilon = TimeSpan.FromSeconds(2);
-        // How long to let a save settle before reading it: EQ rewrites an ini in
-        // several flushes and the first watcher event arrives mid-write.
+        private static readonly TimeSpan Epsilon = TimeSpan.FromSeconds(10);
         private const int SettleMilliseconds = 1500;
 
         private readonly EQToolSettings _settings;
         private readonly HttpClient _httpClient = new HttpClient();
-        // file name (lower-cased) -> hash of the contents we last synced.
         private readonly ConcurrentDictionary<string, string> _syncedHash = new ConcurrentDictionary<string, string>();
-        // Uploads run one at a time so the hash guard is read and recorded without
-        // another event for the same file slipping in between.
         private readonly object _uploadLock = new object();
-        // 0/1: one reconcile at a time.
         private int _syncing;
         private FileSystemWatcher _watcher;
+        private string CurrentDirPath = string.Empty;
+        private readonly IAppDispatcher appDispatcher;
 
-        public UIFileSyncService(EQToolSettings settings)
+        public UIFileSyncService(EQToolSettings settings, IAppDispatcher appDispatcher)
         {
+            this.appDispatcher = appDispatcher;
             _settings = settings;
         }
 
@@ -52,28 +48,7 @@ namespace EQTool.Services
         public void Start()
         {
             Dispose();
-            var dir = GetEffectiveDirectory();
-            if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
-            {
-                _watcher = new FileSystemWatcher(dir, "*.ini")
-                {
-                    NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName,
-                    EnableRaisingEvents = true
-                };
-                _watcher.Created += OnFileChanged;
-                _watcher.Changed += OnFileChanged;
-            }
-
-            // off-thread so InitStuff is not blocked
-            if (IsEnabled)
-            {
-                RunInBackground(SyncNow);
-            }
-        }
-
-        public void UpdateDirectory()
-        {
-            Start(); // Start() tears down the previous watcher first
+            RunInBackground(SyncNow);
         }
 
         public void Dispose()
@@ -97,9 +72,6 @@ namespace EQTool.Services
             var fileName = Path.GetFileName(e.FullPath);
             RunInBackground(() =>
             {
-                // One save arrives as several events. They all wait out the settle
-                // period, the first one through uploads, and the rest match the
-                // recorded hash and do nothing - so one save, one balloon.
                 Thread.Sleep(SettleMilliseconds);
                 if (UploadFile(e.FullPath, fileName, info))
                 {
@@ -108,24 +80,56 @@ namespace EQTool.Services
             });
         }
 
-        // A call arriving while one is already running (startup pull vs. the "Sync Now"
-        // button) returns instead of doing the whole reconcile twice.
+        private bool EnsureWatcherCreated()
+        {
+            var dir = GetEffectiveDirectory();
+            if (_watcher == null || dir != CurrentDirPath)
+            {
+                if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
+                {
+                    Dispose();
+                    _watcher = new FileSystemWatcher(dir, "*.ini")
+                    {
+                        NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName,
+                        EnableRaisingEvents = true
+                    };
+                    _watcher.Created += OnFileChanged;
+                    _watcher.Changed += OnFileChanged;
+                    CurrentDirPath = dir;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public void SyncNow()
         {
-            if (!IsLoggedIn || Interlocked.CompareExchange(ref _syncing, 1, 0) != 0)
+            if (!IsEnabled)
+            {
+                Dispose();
+                return;
+            }
+
+            if (Interlocked.CompareExchange(ref _syncing, 1, 0) != 0)
             {
                 return;
             }
+
             try
             {
-                var dir = GetEffectiveDirectory();
-                if (string.IsNullOrEmpty(dir))
+                if (EnsureWatcherCreated())
                 {
-                    return;
+                    var serverFiles = GetServerFiles();
+                    if (serverFiles != null)
+                    {
+                        ShowSyncNotification("Downloaded", Pull(CurrentDirPath, serverFiles));
+                        ShowSyncNotification("Uploaded", Push(CurrentDirPath, serverFiles));
+                    }
                 }
-                var serverFiles = GetServerFiles();
-                ShowSyncNotification("Downloaded", Pull(dir, serverFiles));
-                ShowSyncNotification("Uploaded", Push(dir, serverFiles));
             }
             finally
             {
@@ -141,10 +145,6 @@ namespace EQTool.Services
             {
                 try
                 {
-                    if (!UIFileName.IsUiPairFile(meta.FileName))
-                    {
-                        continue;
-                    }
                     var path = Path.Combine(dir, meta.FileName);
                     if (File.Exists(path) && meta.LastModifiedUtc <= File.GetLastWriteTimeUtc(path).Add(Epsilon))
                     {
@@ -169,10 +169,7 @@ namespace EQTool.Services
                 try
                 {
                     var fileName = Path.GetFileName(path);
-                    if (!UIFileName.TryParse(fileName, out var info))
-                    {
-                        continue;
-                    }
+                    _ = UIFileName.TryParse(fileName, out var info);
                     var meta = serverFiles.FirstOrDefault(m => string.Equals(m.FileName, fileName, StringComparison.OrdinalIgnoreCase));
                     if (meta != null && File.GetLastWriteTimeUtc(path) <= meta.LastModifiedUtc.Add(Epsilon))
                     {
@@ -192,10 +189,6 @@ namespace EQTool.Services
         {
             try
             {
-                if (!Directory.Exists(dir))
-                {
-                    return new List<string>();
-                }
                 return Directory.GetFiles(dir, "*.ini", SearchOption.TopDirectoryOnly)
                     .Where(f => UIFileName.IsUiPairFile(Path.GetFileName(f)))
                     .ToList();
@@ -209,10 +202,6 @@ namespace EQTool.Services
         // only a login is checked here: the watcher tests the SyncUIFiles toggle before calling
         private bool UploadFile(string path, string fileName, UIFileNameInfo info)
         {
-            if (!IsLoggedIn || !File.Exists(path))
-            {
-                return false;
-            }
             try
             {
                 lock (_uploadLock)
@@ -227,8 +216,6 @@ namespace EQTool.Services
                     var hash = ComputeHash(text);
                     if (_syncedHash.TryGetValue(key, out var synced) && synced == hash)
                     {
-                        // Already on the server: a duplicate watcher event, a save
-                        // that changed nothing, or our own downloaded write.
                         return false;
                     }
 
@@ -261,14 +248,8 @@ namespace EQTool.Services
         {
             try
             {
-                var directory = Path.GetDirectoryName(path);
-                if (!string.IsNullOrEmpty(directory))
-                {
-                    _ = Directory.CreateDirectory(directory);
-                }
                 _syncedHash[Path.GetFileName(path).ToLowerInvariant()] = ComputeHash(download.Contents);
                 File.WriteAllText(path, download.Contents);
-                // Match the server mtime so newer-wins comparisons stay correct.
                 File.SetLastWriteTimeUtc(path, download.LastModifiedUtc);
                 return true;
             }
@@ -305,7 +286,7 @@ namespace EQTool.Services
             return null;
         }
 
-        private static void ShowSyncNotification(string verb, List<string> files)
+        private void ShowSyncNotification(string verb, List<string> files)
         {
             if (files.Count == 0)
             {
@@ -326,11 +307,10 @@ namespace EQTool.Services
 
             try
             {
-                var app = App.Current as App;
-                _ = (app?.Dispatcher.BeginInvoke((Action)(() =>
+                appDispatcher.DispatchUI(() =>
                 {
-                    app.ShowBalloonTip(4000, "UI Files Synced", message, System.Windows.Forms.ToolTipIcon.Info);
-                })));
+                    (App.Current as App).ShowBalloonTip(4000, "UI Files Synced", message, System.Windows.Forms.ToolTipIcon.Info);
+                });
             }
             catch { }
         }
@@ -346,11 +326,8 @@ namespace EQTool.Services
 
         public List<UIFileMetadata> GetServerFiles()
         {
-            if (!IsLoggedIn)
-            {
-                return new List<UIFileMetadata>();
-            }
-            return SendJson<List<UIFileMetadata>>(BaseUrl + "/api/uifile/list") ?? new List<UIFileMetadata>();
+            var ret = SendJson<List<UIFileMetadata>>(BaseUrl + "/api/uifile/list");
+            return ret?.Where(a => UIFileName.IsUiPairFile(a.FileName))?.ToList();
         }
 
         // no login needed - this only reads the EQ folder
@@ -373,6 +350,7 @@ namespace EQTool.Services
             {
                 return false;
             }
+            _ = _syncedHash.TryRemove(fileName.ToLowerInvariant(), out _);
             var response = Send(HttpMethod.Delete, BaseUrl + "/api/uifile/delete?fileName=" + Uri.EscapeDataString(fileName));
             return response != null && response.IsSuccessStatusCode;
         }
