@@ -142,9 +142,16 @@ namespace EQTool.Services
             try
             {
                 var json = JsonConvert.SerializeObject(request);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiToken);
-                _ = _httpClient.PostAsync("https://pigparse.azurewebsites.net/api/inventory/upload", content).Result;
+                // The token goes on the request rather than on _httpClient.DefaultRequestHeaders.
+                // Watcher events arrive in bursts and each one posts from its own task, so several
+                // of these can be in flight at once; mutating the shared client's default headers
+                // races with whatever request another thread is building off them.
+                var message = new HttpRequestMessage(HttpMethod.Post, "https://pigparse.azurewebsites.net/api/inventory/upload")
+                {
+                    Content = new StringContent(json, Encoding.UTF8, "application/json")
+                };
+                message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiToken);
+                _ = _httpClient.SendAsync(message).Result;
             }
             catch { }
         }

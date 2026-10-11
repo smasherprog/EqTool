@@ -259,8 +259,14 @@ namespace EQTool.UI
 
         private void RemoveTimerBarRow(TimerBarData timerdata)
         {
+            // Removing the same row twice runs the row-shifting loops below a second time and
+            // pulls every row underneath it up one too many. RemoveChainRow and RemoveMessageRow
+            // both guard this way already.
+            if (!timerBarDatas.Remove(timerdata))
+            {
+                return;
+            }
             var rowremoved = Grid.GetRow(timerdata.ChildrenInRow.FirstOrDefault());
-            _ = timerBarDatas.Remove(timerdata);
             foreach (var item in timerdata.ChildrenInRow)
             {
                 ChainStackPanel.Children.Remove(item);
