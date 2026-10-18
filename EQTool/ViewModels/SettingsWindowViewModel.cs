@@ -74,15 +74,19 @@ namespace EQTool.ViewModels
                 SelectedPlayerClasses.Add(listitem);
             }
             InstalledVoices = new ObservableCollection<string>();
-#if !LINUX
-            InstalledVoices = new ObservableCollection<string>(new System.Speech.Synthesis.SpeechSynthesizer().GetInstalledVoices().Select(a => a.VoiceInfo.Name).ToList());
-#endif
-
             SelectedVoice = this.toolSettings.SelectedVoice;
-            if (string.IsNullOrWhiteSpace(SelectedVoice))
+#if !LINUX
+            using (var synth = new System.Speech.Synthesis.SpeechSynthesizer())
             {
-                SelectedVoice = InstalledVoices.FirstOrDefault();
+                // disabled voices are listed too, but selecting one throws
+                InstalledVoices = new ObservableCollection<string>(synth.GetInstalledVoices().Where(a => a.Enabled).Select(a => a.VoiceInfo.Name).ToList());
+                // a voice saved on another PC, or since uninstalled, falls back to the default voice
+                if (InstalledVoices.Count > 0 && !InstalledVoices.Contains(SelectedVoice))
+                {
+                    SelectedVoice = synth.Voice.Name;
+                }
             }
+#endif
         }
 
         public int GlobalFontSize
