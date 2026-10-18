@@ -13,6 +13,8 @@ namespace EQTool.Services
     public class EQToolSettingsLoad
     {
         private static readonly string settingsFilePath = Paths.InExecutableDirectory("settings.json");
+        private static readonly string backupFilePath = settingsFilePath + ".bak";
+        private static readonly string tempFilePath = settingsFilePath + ".tmp";
         private readonly FindEq findEq;
         private readonly LoggingService loggingService;
         private readonly object filelock = new object();
@@ -23,47 +25,12 @@ namespace EQTool.Services
             this.loggingService = loggingService;
         }
 
-        public EQToolSettings Load(int counter = 0)
+        public EQToolSettings Load()
         {
-            if (File.Exists(settingsFilePath))
+            var loaded = Load(settingsFilePath) ?? Load(backupFilePath);
+            if (loaded != null)
             {
-                try
-                {
-                    var json = File.ReadAllText(settingsFilePath);
-                    var ret1 = JsonConvert.DeserializeObject<EQToolSettings>(json);
-                    if (ret1 != null)
-                    {
-                        if (ret1.Players == null)
-                        {
-                            ret1.Players = new System.Collections.Generic.List<PlayerInfo>();
-                        }
-
-                        foreach (var item in ret1.Players)
-                        {
-                            if (item.ShowSpellsForClasses == null)
-                            {
-                                item.ShowSpellsForClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
-                            }
-                        }
-                        AddMissingEnums(ret1);
-                        if (SyncBuiltInTriggers(ret1))
-                        {
-                            Save(ret1);
-                        }
-                        return ret1;
-                    }
-                }
-                catch (Exception e)
-                {
-                    if (counter++ < 3)
-                    {
-                        Thread.Sleep(1000);
-                        return Load(counter);
-                    }
-
-                    loggingService.Log(e.ToString(), EventType.Error, null);
-
-                }
+                return loaded;
             }
             var match = findEq.LoadEQPath();
             var ret = new EQToolSettings
@@ -103,6 +70,52 @@ namespace EQTool.Services
             AddMissingEnums(ret);
             _ = SyncBuiltInTriggers(ret);
             return ret;
+        }
+
+        private EQToolSettings Load(string path, int counter = 0)
+        {
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+            try
+            {
+                var json = File.ReadAllText(path);
+                var ret1 = JsonConvert.DeserializeObject<EQToolSettings>(json);
+                if (ret1 == null)
+                {
+                    return null;
+                }
+                if (ret1.Players == null)
+                {
+                    ret1.Players = new System.Collections.Generic.List<PlayerInfo>();
+                }
+
+                foreach (var item in ret1.Players)
+                {
+                    if (item.ShowSpellsForClasses == null)
+                    {
+                        item.ShowSpellsForClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
+                    }
+                }
+                AddMissingEnums(ret1);
+                if (SyncBuiltInTriggers(ret1))
+                {
+                    Save(ret1);
+                }
+                return ret1;
+            }
+            catch (Exception e)
+            {
+                if (counter++ < 3)
+                {
+                    Thread.Sleep(1000);
+                    return Load(path, counter);
+                }
+
+                loggingService.Log(e.ToString(), EventType.Error, null);
+            }
+            return null;
         }
 
         // Keeps the built-in triggers in settings.Triggers in sync with the definitions in code.
@@ -313,7 +326,15 @@ namespace EQTool.Services
 #endif
                 lock (filelock)
                 {
-                    File.WriteAllText(settingsFilePath, txt);
+                    File.WriteAllText(tempFilePath, txt);
+                    if (File.Exists(settingsFilePath))
+                    {
+                        File.Replace(tempFilePath, settingsFilePath, backupFilePath);
+                    }
+                    else
+                    {
+                        File.Move(tempFilePath, settingsFilePath);
+                    }
                 }
             }
             catch (Exception)

@@ -17,7 +17,7 @@ namespace EQToolShared
     // share the "<name>_<serverToken>.ini" suffix; the UI layout file adds a
     // "UI_" prefix. Server tokens mirror the mapping used elsewhere in the app
     // (see SettingsGeneral.SelectMasterUIFile / ActivePlayerInfo.GetInfoFromString):
-    //   P1999Green -> Green, P1999Blue -> Blue, P1999PVP -> Red.
+    //   P1999Green -> Green, project1999 -> Blue, P1999PVP -> Red.
     // Anything that does not end in a recognized token (e.g. Quarm) is not a pair
     // file and is ignored by the sync.
     public static class UIFileName
@@ -66,7 +66,7 @@ namespace EQToolShared
             {
                 server = Servers.Green;
             }
-            else if (string.Equals(serverToken, "P1999Blue", StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(serverToken, "project1999", StringComparison.OrdinalIgnoreCase))
             {
                 server = Servers.Blue;
             }

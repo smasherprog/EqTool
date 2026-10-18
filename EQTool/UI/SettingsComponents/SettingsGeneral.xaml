@@ -223,17 +223,6 @@
                         </StackPanel>
                     </GroupBox>
 
-                    <GroupBox Header="Login Middlemand" Margin="0,0,0,6">
-                        <StackPanel Orientation="Vertical" Margin="4">
-                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
-                                <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
-                                <CheckBox VerticalAlignment="Center" Name="LoginMiddleMandCheckBox" Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox>
-                            </StackPanel>
-                            <TextBlock Foreground="Gray" TextWrapping="Wrap" Margin="0,2,0,0"
-                                       Text="Login Middlemand is a copy of the code from https://github.com/Zaela/p99-login-middlemand. Please report any issues on discord!"/>
-                        </StackPanel>
-                    </GroupBox>
-
                     <GroupBox Header="Triggers" Margin="0,0,0,6">
                         <StackPanel Orientation="Vertical" Margin="4">
                             <StackPanel Orientation="Horizontal" Margin="0,2,0,2">

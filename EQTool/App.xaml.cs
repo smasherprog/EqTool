@@ -2,7 +2,6 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
-using EQTool.Services.P99LoginMiddlemand;
 using EQTool.UI;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
@@ -316,18 +315,6 @@ namespace EQTool
 #else
             SystemTrayIcon.Icon = EQTool.Properties.Resources.pig;
 #endif
-            if (EQToolSettings.LoginMiddleMand)
-            {
-                var loginmiddlemand = container.Resolve<LoginMiddlemand>();
-                if (loginmiddlemand.IsConfiguredCorrectly())
-                {
-                    loginmiddlemand.StartListening();
-                }
-                else
-                {
-                    EQToolSettings.LoginMiddleMand = false;
-                }
-            }
             var hasvalideqdir = FindEq.IsValidEqFolder(EQToolSettings.DefaultEqDirectory);
             if (!hasvalideqdir || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
@@ -651,8 +638,6 @@ namespace EQTool
 
         private void OnExit(object sender, EventArgs e)
         {
-            var loginmiddlemand = container.Resolve<LoginMiddlemand>();
-            loginmiddlemand.StopListening();
             System.Windows.Application.Current.Shutdown();
         }
 

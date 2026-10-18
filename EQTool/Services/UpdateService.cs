@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using EQTool.Services.P99LoginMiddlemand;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -110,16 +109,14 @@ namespace EQTool.Services
             {
                 IAppDispatcher appDispatcher = null;
                 LoggingService loggingService = null;
-                LoginMiddlemand loginMiddlemand = null;
                 try
                 {
                     appDispatcher = container.Resolve<IAppDispatcher>();
                     loggingService = container.Resolve<LoggingService>();
-                    loginMiddlemand = container.Resolve<LoginMiddlemand>();
                 }
                 catch { }
 
-                CheckForUpdates(currentversion1, versiontype, appDispatcher, loggingService, loginMiddlemand, firstRun);
+                CheckForUpdates(currentversion1, versiontype, appDispatcher, loggingService, firstRun);
             });
         }
 #if DEBUG
@@ -127,7 +124,7 @@ namespace EQTool.Services
 #else
         private const bool IsDebug = false;
 #endif
-        public static void CheckForUpdates(string currentversion1, string versiontype, IAppDispatcher appDispatcher, LoggingService loggingService, LoginMiddlemand loginMiddlemand, bool firstRun)
+        public static void CheckForUpdates(string currentversion1, string versiontype, IAppDispatcher appDispatcher, LoggingService loggingService, bool firstRun)
         {
             try
             {
@@ -173,7 +170,6 @@ namespace EQTool.Services
                         _ = System.IO.Directory.CreateDirectory(newVersionDir);
                         File.WriteAllBytes(Paths.Combine(newVersionDir, filename), fileBytes);
                     }
-                    loginMiddlemand?.StopListening();
                     appDispatcher?.DispatchUI(() =>
                     {
                         System.Windows.Application.Current.Shutdown();

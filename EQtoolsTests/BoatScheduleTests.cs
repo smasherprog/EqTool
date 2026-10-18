@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
 using EQTool.Services.Parsing;
@@ -32,6 +33,23 @@ namespace EQtoolsTests
                     Boat = item,
                     TotalDuration = TimeSpan.FromSeconds(item.TripTimeInSeconds)
                 });
+            }
+        }
+
+        [TestMethod]
+        public void BoatAnnouncementsRaiseBoatEvent()
+        {
+            var logParser = container.Resolve<LogParser>();
+            var logEvents = container.Resolve<LogEvents>();
+            BoatEvent boatEvent = null;
+            logEvents.BoatEvent += (s, e) => boatEvent = e;
+            foreach (var item in Zones.Boats.Where(a => !string.IsNullOrWhiteSpace(a.StartAnnoucement)))
+            {
+                boatEvent = null;
+                logParser.Push(item.StartAnnoucement, DateTime.Now);
+                Assert.IsNotNull(boatEvent, item.StartAnnoucement);
+                Assert.AreEqual(item.Boat, boatEvent.Boat);
+                Assert.AreEqual(item.StartPoint, boatEvent.StartPoint);
             }
         }
 

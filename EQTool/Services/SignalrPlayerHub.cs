@@ -181,7 +181,7 @@ namespace EQTool.Models
             {
                 _ = LastDragonRoars.RemoveAll(a => a.Spell.name == e.Spell.name);//make sure to remove it before adding
                 LastDragonRoars.Add(e);
-                debugOutput.WriteLine($"{e.Spell.name}-({LastPlayer.X},{LastPlayer.Y},{LastPlayer.Z})", OutputType.Map, MessageType.RemoteMessageSent);
+                debugOutput.WriteLine($"{e.Spell.name}-({LastPlayer?.X},{LastPlayer?.Y},{LastPlayer?.Z})", OutputType.Map, MessageType.RemoteMessageSent);
                 InvokeAsync("DragonRoarEvent", new SignalRDragonRoar
                 {
                     SpellName = e.Spell.name,

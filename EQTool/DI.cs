@@ -3,7 +3,6 @@ using Autofac.Features.ResolveAnything;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
-using EQTool.Services.P99LoginMiddlemand;
 using EQTool.ViewModels;
 using System;
 using System.Linq;
@@ -18,7 +17,6 @@ namespace EQTool
             _ = builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             _ = builder.RegisterType<Services.LogEvents>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.EQToolSettingsLoad>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<LoginMiddlemand>().AsSelf().SingleInstance();
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
             foreach (var type in types)
             {

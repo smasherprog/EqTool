@@ -20,7 +20,6 @@ Features:
 <li>Added Bard Swarm Count trigger.</li>
 <li>Boat timers are build int!</li>
 <li>Full trigger system: create your own triggers with display text, text-to-speech, sounds, timers, and counters — plus a Built In library of ready-made triggers you can enable with one click.</li>
-<li><b>p99 middlemand</b> ported from https://github.com/Zaela/p99-login-middlemand is now supported!</li>
 <li>Random rolls show up in the triggers window. </li> 
 <li>See others on the map in real time. Also support for NParse map location sharing automatically if location sharing is set to everyone. </li> 
 <li>Kael faction pull timer automatically added for everyone regardless of what zone you are in. </li> 

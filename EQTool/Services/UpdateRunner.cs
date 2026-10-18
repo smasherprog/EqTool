@@ -1,5 +1,4 @@
-﻿using EQTool.Services.P99LoginMiddlemand;
-using EQTool.ViewModels;
+﻿using EQTool.ViewModels;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -13,13 +12,11 @@ namespace EQTool.Services
         private readonly IAppDispatcher appDispatcher;
         private readonly LogParser logParser;
         private readonly LoggingService loggingService;
-        private readonly LoginMiddlemand loginMiddlemand;
 
-        public UpdateRunner(SpellWindowViewModel spellWindowViewModel, IAppDispatcher appDispatcher, LogParser logParser, LoggingService loggingService, LoginMiddlemand loginMiddlemand)
+        public UpdateRunner(SpellWindowViewModel spellWindowViewModel, IAppDispatcher appDispatcher, LogParser logParser, LoggingService loggingService)
         {
             this.spellWindowViewModel = spellWindowViewModel;
             this.loggingService = loggingService;
-            this.loginMiddlemand = loginMiddlemand;
             this.appDispatcher = appDispatcher;
             this.logParser = logParser;
             timer = new System.Timers.Timer(1000 * 60);
@@ -59,7 +56,7 @@ namespace EQTool.Services
                 var idletime = GetIdleTime();
                 if (spellWindowViewModel?.SpellList.Count() < 2 && (DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                 {
-                    UpdateService.CheckForUpdates(App.Version, App.VersionType, appDispatcher, loggingService, loginMiddlemand, false);
+                    UpdateService.CheckForUpdates(App.Version, App.VersionType, appDispatcher, loggingService, false);
                 }
             }
             finally

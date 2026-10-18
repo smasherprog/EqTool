@@ -10,7 +10,8 @@ namespace EQtoolsTests
         [TestMethod]
         [DataRow("UI_Pigy_P1999Green.ini", "Pigy", Servers.Green, true)]
         [DataRow("Pigy_P1999Green.ini", "Pigy", Servers.Green, false)]
-        [DataRow("UI_Bob_P1999Blue.ini", "Bob", Servers.Blue, true)]
+        [DataRow("UI_Jineldar_project1999.ini", "Jineldar", Servers.Blue, true)]
+        [DataRow("Jineldar_project1999.ini", "Jineldar", Servers.Blue, false)]
         [DataRow("UI_Killer_P1999PVP.ini", "Killer", Servers.Red, true)]
         [DataRow("Killer_P1999PVP.ini", "Killer", Servers.Red, false)]
         public void ParsesPairFiles(string fileName, string expectedName, Servers expectedServer, bool expectedIsUi)

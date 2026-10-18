@@ -1,7 +1,6 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Map;
-using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SettingsComponents;
@@ -31,11 +30,9 @@ namespace EQTool.UI.SettingsComponents
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly EQSpells spells;
         private readonly DamageParser damageLogParser;
-        private readonly CommsParser playerCommsParser;
         private readonly IAppDispatcher appDispatcher;
         private readonly LogParser logParser;
         private readonly MapLoad mapLoad;
-        private readonly LoginMiddlemand loginMiddlemand;
         private readonly SettingsTestRunOverlay settingsTestRunOverlay;
         private readonly WindowFactory windowFactory;
         private readonly LogEvents logEvents;
@@ -52,9 +49,7 @@ namespace EQTool.UI.SettingsComponents
             MapLoad mapLoad,
             IAppDispatcher appDispatcher,
             DamageParser damageLogParse,
-            CommsParser playerCommsParser,
             EQSpells spells,
-            LoginMiddlemand loginMiddlemand,
             EQToolSettings settings,
             DebugOutput debugOutput,
             EQToolSettingsLoad toolSettingsLoad,
@@ -69,14 +64,12 @@ namespace EQTool.UI.SettingsComponents
             this.textToSpeach = textToSpeach;
             this.settingsManagementViewModel = settingsManagementViewModel;
             this.debugOutput = debugOutput;
-            this.loginMiddlemand = loginMiddlemand;
             this.logParser = logParser;
             this.logEvents = logEvents;
             this.mapLoad = mapLoad;
             this.windowFactory = windowFactory;
             this.appDispatcher = appDispatcher;
             damageLogParser = damageLogParse;
-            this.playerCommsParser = playerCommsParser;
             this.spells = spells;
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
@@ -143,10 +136,6 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.EqLogPath = logfounddata.Location;
             }
             SettingsWindowData.Update();
-            if (loginMiddlemand.Running)
-            {
-                LoginMiddleMandCheckBox.IsChecked = true;
-            }
             var player = SettingsWindowData.ActivePlayer.Player;
 
             if (player?.ShowSpellsForClasses != null)
@@ -917,55 +906,6 @@ namespace EQTool.UI.SettingsComponents
             settingsTestRunOverlay.RunTest(OverlayTypes.RootBreakEvent);
         }
 
-        private void LoginMiddleMandToggle(object sender, RoutedEventArgs e)
-        {
-            var s = sender as System.Windows.Controls.CheckBox;
-            if (s.IsChecked == true)
-            {
-                if (loginMiddlemand.IsConfiguredCorrectly())
-                {
-                    loginMiddlemand.StartListening();
-                    settings.LoginMiddleMand = true;
-                    SaveConfig();
-                }
-                else
-                {
-                    var result = System.Windows.MessageBox.Show("Your eqhost.txt file is not setup correctly to use LoginMiddlemand. Would you like to use default settings?", "LoginMiddlemand Configuration", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        loginMiddlemand.ApplyDefaultConfiguration();
-                        settings.LoginMiddleMand = true;
-                        SaveConfig();
-
-                        if (IsEqRunning())
-                        {
-                            _ = System.Windows.MessageBox.Show("You must exit EQ before you can start using LoginMiddlemand! Please close Everquest and restart it!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        }
-                        loginMiddlemand.StartListening();
-                    }
-                    else
-                    {
-                        s.IsChecked = false;
-                    }
-                }
-            }
-            else
-            {
-                settings.LoginMiddleMand = false;
-                SaveConfig();
-                var result = System.Windows.MessageBox.Show("Would you like your eqhosts.txt file to be reverted to use eqemulator default login server?", "Revert LoginMiddlemand Configuration", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
-                {
-                    loginMiddlemand.RevertDefaultConfiguration();
-                    if (IsEqRunning())
-                    {
-                        _ = System.Windows.MessageBox.Show("You must exit EQ before Everquest will use these settings! Please close Everquest and restart it!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-                }
-                loginMiddlemand.StopListening();
-            }
-        }
-
         private void testDeathLoop(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.DeathLoopEvent);
@@ -973,6 +913,10 @@ namespace EQTool.UI.SettingsComponents
 
         private void selectallVisual(object sender, RoutedEventArgs e)
         {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
             // make button behavior a toggle button, just use the first one in the list as the indicator
             if (SettingsWindowData.ActivePlayer.Player.FTEOverlay)
             {
@@ -998,6 +942,10 @@ namespace EQTool.UI.SettingsComponents
         }
         private void selectallAudio(object sender, RoutedEventArgs e)
         {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
             // make button behavior a toggle button, just use the first one in the list as the indicator
             if (SettingsWindowData.ActivePlayer.Player.FTEAudio)
             {
@@ -1201,7 +1149,7 @@ namespace EQTool.UI.SettingsComponents
             var classlist = string.Empty;
             foreach (var player in classes)
             {
-                var serverPart = "P1999Blue.ini";
+                var serverPart = "project1999.ini";
                 if (player.Server == Servers.Red)
                 {
                     serverPart = "P1999PVP.ini";
@@ -1231,7 +1179,7 @@ namespace EQTool.UI.SettingsComponents
             {
                 foreach (var player in classes)
                 {
-                    var serverPart = "P1999Blue.ini";
+                    var serverPart = "project1999.ini";
                     if (player.Server == Servers.Red)
                     {
                         serverPart = "P1999PVP.ini";
@@ -1348,6 +1296,10 @@ namespace EQTool.UI.SettingsComponents
             if (selected == "P1999Red")
             {
                 return "P1999PVP";
+            }
+            if (selected == "P1999Blue")
+            {
+                return "project1999";
             }
             return selected ?? "P1999Green";
         }

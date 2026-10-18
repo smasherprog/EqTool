@@ -56,6 +56,10 @@ namespace EQTool.Services
             _ = this.eqLogParsers.Remove(commsparser);
             this.eqLogParsers.Insert(0, commsparser);
 
+            var boatparser = this.eqLogParsers.OfType<BoatParser>().FirstOrDefault();
+            _ = this.eqLogParsers.Remove(boatparser);
+            this.eqLogParsers.Insert(0, boatparser);
+
             var perparser = this.eqLogParsers.OfType<PetParser>().FirstOrDefault();
             _ = this.eqLogParsers.Remove(perparser);
             this.eqLogParsers.Insert(0, perparser);

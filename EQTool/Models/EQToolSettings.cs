@@ -171,7 +171,6 @@ namespace EQTool.Models
         public string DiscordUsername { get; set; }
         public string DiscordId { get; set; }
         public string DiscordApiToken { get; set; }
-        public bool LoginMiddleMand { get; set; }
 
         public bool LogArchiveEnabled { get; set; }
 
