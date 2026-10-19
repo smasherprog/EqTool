@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Media.Media3D;
 
@@ -16,11 +17,17 @@ namespace EQTool.Services.Map
     {
         private readonly LoggingService loggingService;
         private readonly ActivePlayer activePlayer;
-        private const string CurrentMapVersion = "cachedmaps_4";
+        private const string CurrentMapVersion = "cachedmaps_5";
+        private const string MapResourcePrefix = "EQTool.map_files.";
         public MapLoad(LoggingService loggingService, ActivePlayer activePlayer)
         {
             this.loggingService = loggingService;
             this.activePlayer = activePlayer;
+        }
+
+        private static bool IsMapFileForZone(string fileName, string zone)
+        {
+            return Regex.IsMatch(fileName, "^" + Regex.Escape(zone) + @"(_\d+)?\.txt$", RegexOptions.IgnoreCase);
         }
         public ParsedData Load(string zone)
         {
@@ -35,7 +42,7 @@ namespace EQTool.Services.Map
 
             if (System.IO.Directory.Exists(checkformanualmaps))
             {
-                var resourcenames = Directory.GetFiles(checkformanualmaps, zone + "*.txt").ToList();
+                var resourcenames = Directory.GetFiles(checkformanualmaps, zone + "*.txt").Where(a => IsMapFileForZone(Path.GetFileName(a), zone)).ToList();
                 foreach (var item in resourcenames)
                 {
                     using (var stream = new FileStream(item, FileMode.Open, FileAccess.Read))
@@ -72,7 +79,7 @@ namespace EQTool.Services.Map
             if (!lines.Any())
             {
                 var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
-                var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.map_files." + zone)).ToList();
+                var resourcenames = list.Where(a => a.StartsWith(MapResourcePrefix, StringComparison.OrdinalIgnoreCase) && IsMapFileForZone(a.Substring(MapResourcePrefix.Length), zone)).ToList();
                 foreach (var item in resourcenames)
                 {
                     using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(item))

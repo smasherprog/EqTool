@@ -412,7 +412,7 @@ namespace EQTool.Models
         public const string SpellWornOffBuiltInId = "builtin:spell-worn-off";
         public static Trigger CreateSpellWornOff()
         {
-            return Build(SpellWornOffBuiltInId, "Spell Worn Off", @"^Your (?<spell>[\w ]+) spell has worn off\.", true, "{spell} faded", "{spell} faded", "Combat");
+            return Build(SpellWornOffBuiltInId, "Spell Worn Off", @"^Your (?<spell>.+) spell has worn off\.", true, "{spell} faded", "{spell} faded", "Combat");
         }
 
         // "You have entered <zone>." -> "You zoned into <zone>" alert. Ported from the alert

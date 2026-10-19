@@ -187,7 +187,7 @@ namespace EQTool.Services.Handlers
                 }
                 else if (spell.name == "Innerflame Discipline")
                 {
-                    float baseseconds = 60 * 60;
+                    float baseseconds = 30 * 60;
                     float levelrange = 60 - 56;
                     float secondsrange = (30 - 26) * 60;
                     var secondsperlevelrange = secondsrange / levelrange;

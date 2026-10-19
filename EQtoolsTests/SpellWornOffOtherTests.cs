@@ -24,6 +24,17 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        [DataRow("Your Turgur's Insects spell has worn off.", "Turgur's Insects")]
+        [DataRow("Your Selo`s Consonant Chain spell has worn off.", "Selo`s Consonant Chain")]
+        public void SpellNameWithApostrophe(string line, string spellName)
+        {
+            var e = parser.MatchWornOffOther(line, DateTime.Now, 0);
+
+            Assert.IsNotNull(e);
+            Assert.AreEqual(spellName, e.SpellName);
+        }
+
+        [TestMethod]
         public void VenomOfTheSnake()
         {
             var now = DateTime.Now;

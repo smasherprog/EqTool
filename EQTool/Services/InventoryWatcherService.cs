@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -57,8 +58,13 @@ namespace EQTool.Services
                 return;
             }
 
-            var characterName = _activePlayer.Player?.Name;
-            var server = _activePlayer.Player?.Server;
+            var fileName = Path.GetFileNameWithoutExtension(e.FullPath);
+            var suffixIndex = fileName.LastIndexOf("-Inventory", StringComparison.OrdinalIgnoreCase);
+            var characterName = suffixIndex > 0 ? fileName.Substring(0, suffixIndex) : _activePlayer.Player?.Name;
+            var player = string.Equals(_activePlayer.Player?.Name, characterName, StringComparison.OrdinalIgnoreCase)
+                ? _activePlayer.Player
+                : _settings.Players?.FirstOrDefault(a => string.Equals(a.Name, characterName, StringComparison.OrdinalIgnoreCase));
+            var server = player?.Server;
             if (string.IsNullOrEmpty(characterName) || server == null)
             {
                 return;

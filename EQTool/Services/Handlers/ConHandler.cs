@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels.MobInfoComponents;
-using EQToolShared.APIModels.ItemControllerModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +35,6 @@ namespace EQTool.Services.Handlers
             else
             {
                 mobInfoManagementViewModel.MobInfoItemType = ViewModels.SettingsComponents.MobInfoItemType.Mob;
-                var items = mobInfoViewModel.KnownLoot.Where(a => a.HasUrl == Visibility.Visible).Select(a => a.Name?.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
                 Task.Factory.StartNew(() =>
                 {
                     try
@@ -44,15 +42,17 @@ namespace EQTool.Services.Handlers
                         if (e.Name != mobInfoViewModel.Name)
                         {
                             var result = wikiApi.GetData(e.Name);
-                            var itemprices = new List<Item>();
-                            if (activePlayer?.Player?.Server != null && items.Any())
-                            {
-                                itemprices = pigParseApi.GetData(items, activePlayer.Player.Server.Value);
-                            }
+                            var items = new List<string>();
                             this.appDispatcher.DispatchUI(() =>
                             {
                                 mobInfoViewModel.Results = result;
-                                if (activePlayer?.Player?.Server != null && items.Any())
+                                items = mobInfoViewModel.KnownLoot.Where(a => a.HasUrl == Visibility.Visible).Select(a => a.Name?.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+                            });
+                            var server = activePlayer?.Player?.Server;
+                            if (server != null && items.Any())
+                            {
+                                var itemprices = pigParseApi.GetData(items, server.Value);
+                                this.appDispatcher.DispatchUI(() =>
                                 {
                                     foreach (var item in itemprices)
                                     {
@@ -63,8 +63,8 @@ namespace EQTool.Services.Handlers
                                             loot.PriceUrl = $"https://pigparse.azurewebsites.net/ItemDetails/{item.EQitemId}";
                                         }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
 
                     }

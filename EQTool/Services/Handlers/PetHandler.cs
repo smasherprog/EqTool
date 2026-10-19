@@ -94,8 +94,15 @@ namespace EQTool.Services.Handlers
 
             // other pet commands (follow, guard, sit) are visible from every nearby pet, so they
             // cannot distinguish ours from someone else's
-            else if (e.Incident == PetEvent.PetIncident.LEADER
-                || e.Incident == PetEvent.PetIncident.PETATTACK)
+            else if (e.Incident == PetEvent.PetIncident.LEADER)
+            {
+                if (e.LeaderName == activePlayer.Player?.Name)
+                {
+                    playerPet.PetName = e.PetName;
+                }
+            }
+
+            else if (e.Incident == PetEvent.PetIncident.PETATTACK)
             {
                 playerPet.PetName = e.PetName;
             }

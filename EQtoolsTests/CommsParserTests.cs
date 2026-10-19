@@ -36,6 +36,29 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void TestChannel_FromOthers()
+        {
+            var match = parser.Match("Hanbox tells chchain:2, '001 CH -- Beefwich'", DateTime.Now, 0);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual("Hanbox", match.Sender);
+            Assert.AreEqual("chchain:2", match.Receiver);
+            Assert.AreEqual("001 CH -- Beefwich", match.Content);
+            Assert.AreEqual(CommsEvent.Channel.CHANNEL, match.TheChannel);
+        }
+
+        [TestMethod]
+        public void TestRaid_FromOthers()
+        {
+            var match = parser.Match("Hanbox tells the raid,  '001 CH -- Beefwich'", DateTime.Now, 0);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual("Hanbox", match.Sender);
+            Assert.AreEqual("001 CH -- Beefwich", match.Content);
+            Assert.AreEqual(CommsEvent.Channel.RAID, match.TheChannel);
+        }
+
+        [TestMethod]
         public void TestTell_FromOthers()
         {
             //[Sat Mar 21 17:55:33 2020] a spectre tells you, 'Attacking a spectre Master.'

@@ -484,7 +484,7 @@ namespace EQTool
             var authService = new DiscordAuthService();
             _ = authService.LoginAsync().ContinueWith(t =>
             {
-                var result = t.Result;
+                var result = t.Status == TaskStatus.RanToCompletion ? t.Result : null;
                 Dispatcher.Invoke(() =>
                 {
                     DiscordLoginMenuItem.Enabled = true;

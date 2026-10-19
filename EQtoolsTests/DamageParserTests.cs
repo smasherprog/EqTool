@@ -34,6 +34,14 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void DamageLogParser_GuildChatIsNotDamage()
+        {
+            var match = parser.Match("Soandso tells the guild, 'Trakanon hits Tank for 900 points of damage.'", DateTime.Now, 0);
+
+            Assert.IsNull(match);
+        }
+
+        [TestMethod]
         public void DamageLogParser_NonMelleTest()
         {
             var now = DateTime.Now;

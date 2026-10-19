@@ -172,69 +172,72 @@ namespace EQToolApis.Services
                             _ = Interlocked.Add(ref dBData.TotalEQAuctionPlayers, 1);
                         }
 
-                        var m = new DB.Models.EQTunnelMessageV2
+                        foreach (var auctionTypeItems in discordpricingdata.Items.GroupBy(a => a.AuctionType))
                         {
-                            AuctionType = discordpricingdata.Items.FirstOrDefault().AuctionType,
-                            EQAuctionPlayerId = eqplayer.EQAuctionPlayerId,
-                            DiscordMessageId = item.id,
-                            Server = server,
-                            TunnelTimestamp = item.timestamp,
-                            EQTunnelAuctionItems = []
-                        };
-
-                        foreach (var it in discordpricingdata.Items)
-                        {
-                            var eqitem = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == it.Name && a.Server == server);
-                            if (eqitem == null)
+                            var m = new DB.Models.EQTunnelMessageV2
                             {
-                                eqitem = new EQitemV2
-                                {
-                                    ItemName = it.Name,
-                                    Server = server
-                                };
-                                _ = dbcontext.EQitemsV2.Add(eqitem);
-                                _ = dbcontext.SaveChanges();
-                                _ = Interlocked.Add(ref dBData.TotalUniqueItems, 1);
-                            }
-                            if (eqitem.TotalWTBLast90DaysCount > 3000)
-                            {
-                                var iteminthrottlelist = ThrottleList[(int)server].FirstOrDefault(a => a.ItemId == eqitem.EQitemId);
-                                if (iteminthrottlelist == null)
-                                {
-                                    iteminthrottlelist = new ThrottledItem { ItemId = eqitem.EQitemId, LastAdd = DateTime.Now };
-                                    ThrottleList[(int)server].Add(iteminthrottlelist);
-                                }
-                                else if ((DateTime.Now - iteminthrottlelist.LastAdd).TotalMinutes < 5)
-                                {
-                                    continue;
-                                }
-                                iteminthrottlelist.LastAdd = DateTime.Now;
-                            }
-
-                            var auctionitem = new EQTunnelAuctionItemV2
-                            {
+                                AuctionType = auctionTypeItems.Key,
+                                EQAuctionPlayerId = eqplayer.EQAuctionPlayerId,
+                                DiscordMessageId = item.id,
                                 Server = server,
-                                AuctionPrice = it.Price,
-                                EQitemId = eqitem.EQitemId
+                                TunnelTimestamp = item.timestamp,
+                                EQTunnelAuctionItems = []
                             };
-                            //  ignore bogus prices
-                            if (eqitem.TotalWTSLast6MonthsCount > 100 && eqitem.TotalWTSLast6MonthsAverage > 0)
+
+                            foreach (var it in auctionTypeItems)
                             {
-                                if (it.Price > eqitem.TotalWTSLast6MonthsAverage * 7)
+                                var eqitem = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == it.Name && a.Server == server);
+                                if (eqitem == null)
                                 {
-                                    auctionitem.AuctionPrice = null;
+                                    eqitem = new EQitemV2
+                                    {
+                                        ItemName = it.Name,
+                                        Server = server
+                                    };
+                                    _ = dbcontext.EQitemsV2.Add(eqitem);
+                                    _ = dbcontext.SaveChanges();
+                                    _ = Interlocked.Add(ref dBData.TotalUniqueItems, 1);
                                 }
-                                else if (it.Price < eqitem.TotalWTSLast6MonthsAverage * .1)
+                                if (eqitem.TotalWTBLast90DaysCount > 3000)
                                 {
-                                    auctionitem.AuctionPrice = null;
+                                    var iteminthrottlelist = ThrottleList[(int)server].FirstOrDefault(a => a.ItemId == eqitem.EQitemId);
+                                    if (iteminthrottlelist == null)
+                                    {
+                                        iteminthrottlelist = new ThrottledItem { ItemId = eqitem.EQitemId, LastAdd = DateTime.Now };
+                                        ThrottleList[(int)server].Add(iteminthrottlelist);
+                                    }
+                                    else if ((DateTime.Now - iteminthrottlelist.LastAdd).TotalMinutes < 5)
+                                    {
+                                        continue;
+                                    }
+                                    iteminthrottlelist.LastAdd = DateTime.Now;
                                 }
+
+                                var auctionitem = new EQTunnelAuctionItemV2
+                                {
+                                    Server = server,
+                                    AuctionPrice = it.Price,
+                                    EQitemId = eqitem.EQitemId
+                                };
+                                //  ignore bogus prices
+                                if (eqitem.TotalWTSLast6MonthsCount > 100 && eqitem.TotalWTSLast6MonthsAverage > 0)
+                                {
+                                    if (it.Price > eqitem.TotalWTSLast6MonthsAverage * 7)
+                                    {
+                                        auctionitem.AuctionPrice = null;
+                                    }
+                                    else if (it.Price < eqitem.TotalWTSLast6MonthsAverage * .1)
+                                    {
+                                        auctionitem.AuctionPrice = null;
+                                    }
+                                }
+                                m.EQTunnelAuctionItems.Add(auctionitem);
+                                _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelAuctionItems, 1);
                             }
-                            m.EQTunnelAuctionItems.Add(auctionitem);
-                            _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelAuctionItems, 1);
+                            _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelMessages, 1);
+                            _ = dbcontext.EQTunnelMessagesV2.Add(m);
+                            messagesinserted.Add(m);
                         }
-                        _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelMessages, 1);
-                        _ = dbcontext.EQTunnelMessagesV2.Add(m);
-                        messagesinserted.Add(m);
                     }
                 }
                 _ = dbcontext.SaveChanges();

@@ -15,7 +15,7 @@ namespace EQTool.Models
         public const string You = "You";
         public const string SpaceYou = " You ";
         public const string SpellHasWornoff = "spell has worn off.";
-        private const string InvisMessage = " fades away";
+        private const string InvisMessage = "fades away";
 
         // If it's this long they deserve a timer.
         public static TimeSpan MinimumRecastForYouCooldownTimer = TimeSpan.FromSeconds(18);
@@ -206,7 +206,7 @@ namespace EQTool.Models
 
                 if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
                 {
-                    if (mappedspell.cast_on_other.Contains(InvisMessage))
+                    if (mappedspell.cast_on_other.StartsWith(InvisMessage))
                     {
                         Debug.WriteLine("Skipping Other invis spell. Cant detect difference between gate and invis");
                     }

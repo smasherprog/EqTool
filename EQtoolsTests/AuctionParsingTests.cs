@@ -36,6 +36,14 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void ItemNameAtEndIsNotSplit()
+        {
+            var result = discordAuctionParse.Parse("Mulzmulz auctions, 'WTS Flawless Diamond'");
+            Assert.HasCount(1, result.Items);
+            Assert.AreEqual("Flawless Diamond", result.Items[0].Name);
+        }
+
+        [TestMethod]
         public void Parse2()
         {
             var result = discordAuctionParse.Parse("Mulzmulz auctions, 'Djinni Blood'");

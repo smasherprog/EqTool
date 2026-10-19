@@ -406,7 +406,7 @@ namespace EQTool.UI.SettingsComponents
             {
                 var t = DateTime.Now;
                 var format = "ddd MMM dd HH:mm:ss yyyy";
-                var msg = "[" + t.ToString(format) + "] You have entered " + player.Zone;
+                var msg = "[" + t.ToString(format, CultureInfo.InvariantCulture) + "] You have entered " + player.Zone;
                 logParser.Push(msg);
                 SaveConfig();
             }
@@ -490,7 +490,7 @@ namespace EQTool.UI.SettingsComponents
                                 var indexline = line.IndexOf("]");
                                 var msgwithout = line.Substring(indexline);
                                 var format = "ddd MMM dd HH:mm:ss yyyy";
-                                msgwithout = "[" + t.ToString(format) + msgwithout;
+                                msgwithout = "[" + t.ToString(format, CultureInfo.InvariantCulture) + msgwithout;
                                 logParser.Push(msgwithout);
                             }
                         }
@@ -550,7 +550,7 @@ namespace EQTool.UI.SettingsComponents
             if (!logtext.StartsWith("["))
             {
                 var format = "ddd MMM dd HH:mm:ss yyyy";
-                logtext = "[" + timeStamp.ToString(format) + "] " + logtext;
+                logtext = "[" + timeStamp.ToString(format, CultureInfo.InvariantCulture) + "] " + logtext;
             }
             logParser.Push(logtext);
         }
@@ -614,7 +614,7 @@ namespace EQTool.UI.SettingsComponents
                                     var indexline = line.IndexOf("]");
                                     var msgwithout = line.Substring(indexline);
                                     var format = "ddd MMM dd HH:mm:ss yyyy";
-                                    msgwithout = "[" + t.ToString(format) + msgwithout;
+                                    msgwithout = "[" + t.ToString(format, CultureInfo.InvariantCulture) + msgwithout;
                                     logParser.Push(msgwithout);
                                 }
                             }
@@ -685,7 +685,7 @@ namespace EQTool.UI.SettingsComponents
                                 var indexline = line.IndexOf("]");
                                 var msgwithout = line.Substring(indexline);
                                 var format = "ddd MMM dd HH:mm:ss yyyy";
-                                msgwithout = "[" + t.ToString(format) + msgwithout;
+                                msgwithout = "[" + t.ToString(format, CultureInfo.InvariantCulture) + msgwithout;
                                 logParser.Push(msgwithout);
                             }
                         }

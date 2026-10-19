@@ -84,6 +84,12 @@ namespace EQTool.Models
                 Debug.WriteLine(ex.ToString());
             }
 
+            connection.Reconnected += connectionId =>
+            {
+                JoinServerGroup();
+                return Task.CompletedTask;
+            };
+            this.logEvents.AfterPlayerChangedEvent += (s, e) => JoinServerGroup();
             this.logEvents.PlayerLocationEvent += SendMyLocationToOthers;
             this.logEvents.CampEvent += LogParser_CampEvent;
             this.logEvents.DragonRoarEvent += SendDragonRoarToOthers;
@@ -132,7 +138,7 @@ namespace EQTool.Models
                     await connection.StartAsync();
                     try
                     {
-                        InvokeAsync("JoinServerGroup", activePlayer?.Player?.Server);
+                        JoinServerGroup();
                     }
                     catch { }
                     debugOutput.WriteLine($"SignalR Connected", OutputType.Map, MessageType.Success);
@@ -144,6 +150,11 @@ namespace EQTool.Models
                     await Task.Delay(5000);
                 }
             }
+        }
+
+        private void JoinServerGroup()
+        {
+            InvokeAsync("JoinServerGroup", activePlayer?.Player?.Server);
         }
 
         private void SendMyLocationToOthers(object sender, PlayerLocationEvent e)

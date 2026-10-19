@@ -16,6 +16,8 @@ namespace EQTool.Services.Parsing
         private const string patternInternalTell = @"^(?<sender>.+) -> (?<receiver>.+): (?<content>.+)";
         private const string patternIsNotOnline = @"^(?<content>.+) is not online at this time.";
         private const string patternSays = @"^(?<sender>.+) (say|says),? '(?<content>.+)'";
+        private const string patternRaid = @"^(?<sender>.+) ((tell your raid)|(tells the raid)), +'(?<content>.+)'";
+        private const string patternChannel = @"^(?<sender>.+) tells? (?<receiver>[^ ,]+:\d+), '(?<content>.+)'";
         private const string patternTold = @"^(?<sender>.+) (told|tells) (?<receiver>.+), '(?<content>.+)'";
         private const string patternAuctions = @"^(?<sender>.+) auction(s)?, '(?<content>.+)'";
         private const string patternOutOfCharacter = @"^(?<sender>.+) say(s)? out of character, '(?<content>.+)'";
@@ -27,6 +29,8 @@ namespace EQTool.Services.Parsing
         private readonly Regex regexInternalTell = new Regex(patternInternalTell, RegexOptions.Compiled);
         private readonly Regex regexIsNotOnline = new Regex(patternIsNotOnline, RegexOptions.Compiled);
         private readonly Regex regexSays = new Regex(patternSays, RegexOptions.Compiled);
+        private readonly Regex regexRaid = new Regex(patternRaid, RegexOptions.Compiled);
+        private readonly Regex regexChannel = new Regex(patternChannel, RegexOptions.Compiled);
         private readonly Regex regexTold = new Regex(patternTold, RegexOptions.Compiled);
         private readonly Regex regexAuctions = new Regex(patternAuctions, RegexOptions.Compiled);
         private readonly Regex regexOutOfCharacter = new Regex(patternOutOfCharacter, RegexOptions.Compiled);
@@ -162,6 +166,36 @@ namespace EQTool.Services.Parsing
                 };
             }
 
+
+            match = regexRaid.Match(line);
+            if (match.Success)
+            {
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = string.Empty,
+                    Sender = match.Groups["sender"].Value,
+                    TheChannel = CommsEvent.Channel.RAID,
+                    TimeStamp = timestamp
+                };
+            }
+
+            match = regexChannel.Match(line);
+            if (match.Success)
+            {
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = match.Groups["receiver"].Value,
+                    Sender = match.Groups["sender"].Value,
+                    TheChannel = CommsEvent.Channel.CHANNEL,
+                    TimeStamp = timestamp
+                };
+            }
 
             //You told Qdyil, 'not even sure'
             //[Sat Mar 21 17:45:14 2020] Thalistair tells you, 'omw'

@@ -7,7 +7,7 @@ namespace EQTool.Services.Parsing
     public class SpellWornOffOtherParser : IEqLogParser
     {
         //https://regex101.com/r/5u7bs7/1
-        private const string wornOffPattern = @"^Your (?<spell_name>[\w ]+) spell has worn off\.";
+        private const string wornOffPattern = @"^Your (?<spell_name>.+) spell has worn off\.";
         private readonly Regex wornOffRegex = new Regex(wornOffPattern, RegexOptions.Compiled);
 
         private readonly LogEvents logEvents;

@@ -6,6 +6,7 @@ using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 
 namespace EQTool.Services
@@ -102,7 +103,7 @@ namespace EQTool.Services
             {
                 var format = "ddd MMM dd HH:mm:ss yyyy";
                 var d = datetime;
-                logtext = "[" + d.ToString(format) + "] " + logtext;
+                logtext = "[" + d.ToString(format, CultureInfo.InvariantCulture) + "] " + logtext;
             }
             Push(logtext);
         }

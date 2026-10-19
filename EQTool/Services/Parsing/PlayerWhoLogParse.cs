@@ -63,7 +63,7 @@ namespace EQTool.Services.Parsing
 
         public EQToolShared.APIModels.PlayerControllerModels.Player ParsePlayerInfo(string message)
         {
-            if (!message.StartsWith("AFK") && !message.StartsWith("["))
+            if (!message.StartsWith("AFK") && !message.StartsWith("[") && !message.StartsWith("<LINKDEAD>"))
             {
                 return null;
             }

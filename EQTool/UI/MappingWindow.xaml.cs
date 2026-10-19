@@ -210,6 +210,7 @@ namespace EQTool.UI
                 logEvents.YouZonedEvent -= LogParser_PlayerZonedEvent;
                 logEvents.WelcomeEvent -= LogEvents_WelcomeEvent;
                 logEvents.SlainEvent -= LogParser_DeathEvent;
+                logEvents.AfterPlayerChangedEvent -= LogEvents_PayerChangedEvent;
                 logEvents.OtherPlayerLocationReceivedRemoteEvent -= LogEvents_OtherPlayerLocationReceivedRemoteEvent;
                 logEvents.PlayerDisconnectReceivedRemoteEvent -= LogEvents_PlayerDisconnectReceivedRemoteEvent;
             }

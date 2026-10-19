@@ -16,6 +16,8 @@ namespace EQTool.Services
 
     public class DiscordAuthService
     {
+        private static readonly TimeSpan LoginTimeout = TimeSpan.FromMinutes(5);
+
         private static int GetAvailablePort()
         {
             var listener = new TcpListener(IPAddress.Loopback, 0);
@@ -39,7 +41,14 @@ namespace EQTool.Services
                 var loginUrl = $"https://pigparse.azurewebsites.net/Account/Login?desktop_port={port}";
                 Process.Start(new ProcessStartInfo { FileName = loginUrl, UseShellExecute = true });
 
-                var context = httpListener.GetContext();
+                var contextTask = httpListener.GetContextAsync();
+                if (!contextTask.Wait(LoginTimeout))
+                {
+                    _ = contextTask.ContinueWith(t => t.Exception, TaskContinuationOptions.OnlyOnFaulted);
+                    httpListener.Stop();
+                    return null;
+                }
+                var context = contextTask.Result;
 
                 var responseHtml = "<html><body style='font-family:sans-serif;text-align:center;padding-top:60px'>" +
                                    "<h2>Login successful!</h2><p>You can close this window and return to Pigparse.</p>" +

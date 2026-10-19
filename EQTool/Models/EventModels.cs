@@ -106,7 +106,9 @@ namespace EQTool.Models
             AUCTION = 0b_0001_0000,
             OOC = 0b_0010_0000,
             SHOUT = 0b_0100_0000,
-            ANY = TELL | SAY | GROUP | GUILD | AUCTION | OOC | SHOUT
+            RAID = 0b_1000_0000,
+            CHANNEL = 0b_1_0000_0000,
+            ANY = TELL | SAY | GROUP | GUILD | AUCTION | OOC | SHOUT | RAID | CHANNEL
         }
 
         public CommsEvent.Channel TheChannel { get; set; }
@@ -140,6 +142,7 @@ namespace EQTool.Models
         }
 
         public string PetName { get; set; }
+        public string LeaderName { get; set; }
         public PetEvent.PetIncident Incident { get; set; }
 
     }

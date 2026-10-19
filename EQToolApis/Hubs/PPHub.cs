@@ -15,14 +15,15 @@ namespace EQToolApis.Hubs
         { 
             if (connections.TryGetValue(Context.ConnectionId, out var player))
             {
-                if (player.Zone != playerLocation.Zone || player.Sharing != playerLocation.Sharing)
+                if (player.GroupName != playerLocation.GroupName)
                 {
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
                     await Groups.AddToGroupAsync(Context.ConnectionId, playerLocation.GroupName);
                     player.Name = playerLocation.Name;
-                    player.GuildName = playerLocation.GuildName;  
+                    player.GuildName = playerLocation.GuildName;
                     player.Server = playerLocation.Server;
                     player.Zone = playerLocation.Zone;
+                    player.Sharing = playerLocation.Sharing;
                     player.TrackingDistance = playerLocation.TrackingDistance;
                 }
             }

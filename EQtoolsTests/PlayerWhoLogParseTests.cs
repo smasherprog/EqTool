@@ -36,6 +36,18 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void LinkdeadTest()
+        {
+            var service = container.Resolve<EQTool.Services.Parsing.PlayerWhoLogParse>();
+            var guess = service.ParsePlayerInfo("<LINKDEAD>[60 Warlord] Soandso (Human) <The Drift>");
+            Assert.IsNotNull(guess);
+            Assert.AreEqual("Soandso", guess.Name);
+            Assert.AreEqual("The Drift", guess.GuildName);
+            Assert.AreEqual(60, guess.Level);
+            Assert.AreEqual(PlayerClasses.Warrior, guess.PlayerClass);
+        }
+
+        [TestMethod]
         public void ClericTest60()
         {
             var service = container.Resolve<EQTool.Services.Parsing.PlayerWhoLogParse>();

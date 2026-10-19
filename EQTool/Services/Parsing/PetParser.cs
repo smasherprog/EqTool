@@ -65,6 +65,7 @@ namespace EQTool.Services.Parsing
                     TimeStamp = timestamp,
                     LineCounter = lineCounter,
                     PetName = match.Groups["pet_name"].Value,
+                    LeaderName = match.Groups["leader_name"].Value,
                     Incident = petIncident
                 };
             }

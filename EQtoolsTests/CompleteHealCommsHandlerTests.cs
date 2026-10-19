@@ -64,6 +64,20 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void ParseChannel()
+        {
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("001", d.Position);
+                isCalled = true;
+            };
+            logParser.Push("Hanbox tells chchain:2, 'GG 001 CH -- Beefwich'", DateTime.Now);
+            Assert.IsTrue(isCalled);
+        }
+
+        [TestMethod]
         public void Parse4()
         {
             logEvents.CompleteHealEvent += (s, d) =>

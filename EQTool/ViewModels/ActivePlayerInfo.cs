@@ -67,7 +67,8 @@ namespace EQTool.ViewModels
                     if (loggedincharlogfile != null)
                     {
                         var parseinfo = GetInfoFromString(loggedincharlogfile.Name);
-                        var tempplayer = players.FirstOrDefault(a => a.Name == parseinfo.Name);
+                        var tempplayer = players.FirstOrDefault(a => a.Name == parseinfo.Name && a.Server == parseinfo.Server)
+                            ?? players.FirstOrDefault(a => a.Name == parseinfo.Name && a.Server == null);
                         LogFileName = loggedincharlogfile.FullName;
 
                         if (tempplayer == null)

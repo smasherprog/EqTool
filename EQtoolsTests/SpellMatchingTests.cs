@@ -31,6 +31,13 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void GateAndInvisFadesAwayIsNotTracked()
+        {
+            Assert.IsFalse(spells.CastOtherSpells.ContainsKey("fades away."));
+            Assert.IsTrue(spells.CastOtherSpells.ContainsKey("is surrounded by an aura which shimmers, and then fades away."));
+        }
+
+        [TestMethod]
         public void TestMethod1()
         {
             Assert.IsNotNull(spells);

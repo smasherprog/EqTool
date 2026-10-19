@@ -40,6 +40,17 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void OtherPlayersPetLeaderIsIgnored()
+        {
+            var logParser = container.Resolve<EQTool.Services.LogParser>();
+            logParser.Push("Gobober says 'My leader is Otherguy.'", System.DateTime.Now);
+            Assert.AreNotEqual("Gobober", playerPet.PetName);
+
+            logParser.Push("Gabober says 'My leader is pigy.'", System.DateTime.Now);
+            Assert.AreEqual("Gabober", playerPet.PetName);
+        }
+
+        [TestMethod]
         public void TestFindRank()
         {
             var petSpell = pets.PetSpellDictionary["Emissary of Thule"];

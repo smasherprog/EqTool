@@ -706,9 +706,9 @@ namespace EQTool.ViewModels
                     Canvas.SetTop(_selectedElement, mousePosition.Y + _draggingDelta.Y);
                     if (_selectedElement is MapWidget m)
                     {
-                        var point = new Point(Canvas.GetLeft(_selectedElement), Canvas.GetTop(_selectedElement));
-                        point = _selectedElement.RenderTransform.Inverse.Transform(point);
-                        m.TimerInfo.Location = _selectedElement.RenderTransform.Inverse.Transform(point);
+                        var point = new Point(Canvas.GetLeft(_selectedElement) + Transform.Value.OffsetX, Canvas.GetTop(_selectedElement) + Transform.Value.OffsetY);
+                        point = Transform.Inverse.Transform(point);
+                        m.TimerInfo.Location = new Point(-(point.X + MapOffset.X), -(point.Y + MapOffset.Y));
                     }
                 }
             }
@@ -893,6 +893,7 @@ namespace EQTool.ViewModels
                 var p = Players.FirstOrDefault(a => a.Player.Name == e.Name);
                 if (p != null)
                 {
+                    _ = Players.Remove(p);
                     RemoveFromCanvas(p);
                 }
             });
