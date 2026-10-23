@@ -20,11 +20,15 @@ namespace EQTool.Services
     {
         private const string BaseUrl = "https://pigparse.azurewebsites.net";
         private static readonly TimeSpan Epsilon = TimeSpan.FromSeconds(10);
-        private const int SettleMilliseconds = 1500;
+        // EQ rewrites the same files several times in quick succession, so watcher events
+        // are queued and only pushed once this long has passed with no further changes.
+        private const int DebounceMilliseconds = 10000;
 
         private readonly EQToolSettings _settings;
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly ConcurrentDictionary<string, string> _syncedHash = new ConcurrentDictionary<string, string>();
+        private readonly ConcurrentDictionary<string, UIFileNameInfo> _pendingUploads = new ConcurrentDictionary<string, UIFileNameInfo>(StringComparer.OrdinalIgnoreCase);
+        private readonly Timer _debounceTimer;
         private readonly object _uploadLock = new object();
         private int _syncing;
         private FileSystemWatcher _watcher;
@@ -35,6 +39,11 @@ namespace EQTool.Services
         {
             this.appDispatcher = appDispatcher;
             _settings = settings;
+            _debounceTimer = new Timer(_ =>
+            {
+                try { FlushPendingUploads(); }
+                catch { }
+            }, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         private bool IsLoggedIn =>
@@ -69,15 +78,22 @@ namespace EQTool.Services
             {
                 return;
             }
-            var fileName = Path.GetFileName(e.FullPath);
-            RunInBackground(() =>
+            _pendingUploads[e.FullPath] = info;
+            _ = _debounceTimer.Change(DebounceMilliseconds, Timeout.Infinite);
+        }
+
+        private void FlushPendingUploads()
+        {
+            var uploaded = new List<string>();
+            foreach (var path in _pendingUploads.Keys)
             {
-                Thread.Sleep(SettleMilliseconds);
-                if (UploadFile(e.FullPath, fileName, info))
+                var fileName = Path.GetFileName(path);
+                if (_pendingUploads.TryRemove(path, out var info) && IsEnabled && UploadFile(path, fileName, info))
                 {
-                    ShowSyncNotification("Uploaded", new List<string> { fileName });
+                    uploaded.Add(fileName);
                 }
-            });
+            }
+            ShowSyncNotification("Uploaded", uploaded);
         }
 
         private bool EnsureWatcherCreated()
