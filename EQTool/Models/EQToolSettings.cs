@@ -152,6 +152,7 @@ namespace EQTool.Models
         public List<TriggerFolder> TriggerFolders { get; set; } = new List<TriggerFolder>();
         public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
+        public bool SnapWindows { get; set; }
 
         public bool SyncUIFiles { get; set; }
 

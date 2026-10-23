@@ -55,6 +55,9 @@ namespace EQTool.UI
         // The size the single center message used to be drawn at, kept so stacked messages look the same.
         private const double MessageFontSize = 44;
 
+        // The overlay is see-through, so snapping to or from it would line windows up against edges nobody can see.
+        protected override bool CanSnap => false;
+
         public EventOverlay(LogEvents logEvents, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, ConsoleViewModel consoleViewModel)
             : base(settings.OverlayWindowState, toolSettingsLoad, settings, consoleViewModel)
         {

@@ -204,6 +204,16 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public bool SnapWindows
+        {
+            get => toolSettings.SnapWindows;
+            set
+            {
+                toolSettings.SnapWindows = value;
+                OnPropertyChanged();
+            }
+        }
         public bool YouOnlySpells
         {
             get => toolSettings.YouOnlySpells;

@@ -565,6 +565,7 @@
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\BaseSaveStateWindow.cs" />
+    <Compile Include="UI\BaseSaveStateWindow.Snapping.cs" />
     <Page Include="UI\Console.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

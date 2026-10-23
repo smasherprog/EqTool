@@ -153,6 +153,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="On top" FontWeight="Bold" HorizontalAlignment="Center" Margin="8,0,8,4"/>
@@ -173,6 +174,13 @@
                             <TextBlock Grid.Row="4" Grid.Column="0" Text="Map" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
                             <CheckBox  Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings"/>
                             <Slider    Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Value="{Binding MapWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150" Margin="8,2,0,2"/>
+
+                            <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,8,0,2">
+                                <TextBlock Text="Snap windows" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,0,8,0"
+                                           ToolTip="Windows snap together when dragged close to each other or to a screen edge, and snapped windows move together. Hold Shift while dragging to move one window on its own."/>
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding SnapWindows}" Click="Savesettings"/>
+                                <TextBlock Text="(hold Shift to drag one window alone)" Foreground="Gray" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                            </StackPanel>
                         </Grid>
                     </GroupBox>
 
