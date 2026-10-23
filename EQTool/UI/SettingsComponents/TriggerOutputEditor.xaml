@@ -17,6 +17,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -52,6 +53,11 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+                <ComboBox Grid.Row="0" Grid.Column="3" Width="55" Margin="6,2,0,2" VerticalAlignment="Center"
+                          IsEnabled="{Binding DisplayTextEnabled}"
+                          ItemsSource="{x:Static models:TriggerOutput.DisplayTextFontSizes}"
+                          SelectedItem="{Binding DisplayTextFontSize, Mode=TwoWay}"
+                          ToolTip="Display text font size"/>
             </Grid>
         </GroupBox>
 

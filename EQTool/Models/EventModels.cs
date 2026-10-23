@@ -290,6 +290,8 @@ namespace EQTool.Models
         public string Text { get; set; }
         public System.Windows.Media.Brush ForeGround { get; set; }
         public TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(5);
+        // Optional text size; falls back to the overlay default when null.
+        public double? FontSize { get; set; }
     }
 
     public class TimerBarEvent

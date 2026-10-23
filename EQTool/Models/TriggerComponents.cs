@@ -64,6 +64,16 @@ namespace EQTool.Models
         private string _DisplayTextColor = "Red";
         public string DisplayTextColor { get => _DisplayTextColor; set => Set(ref _DisplayTextColor, value); }
 
+
+        public const int DefaultDisplayTextFontSize = 44;
+        public static readonly List<int> DisplayTextFontSizes = new List<int>
+        {
+            12, 16, 20, 24, 28, 32, 36, 40, 44, 48
+        };
+
+        private int _DisplayTextFontSize = DefaultDisplayTextFontSize;
+        public int DisplayTextFontSize { get => _DisplayTextFontSize; set => Set(ref _DisplayTextFontSize, value); }
+
         private TriggerAudioType _AudioType = TriggerAudioType.None;
         public TriggerAudioType AudioType
         {

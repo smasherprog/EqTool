@@ -82,10 +82,10 @@ namespace EQTool.UI
 
         private void LogEvents_OverlayEvent(object sender, OverlayEvent e)
         {
-            appDispatcher.DispatchUI(() => ShowMessage(e.Text, e.ForeGround, e.Duration));
+            appDispatcher.DispatchUI(() => ShowMessage(e.Text, e.ForeGround, e.Duration, e.FontSize));
         }
 
-        private void ShowMessage(string text, Brush foreground, TimeSpan duration)
+        private void ShowMessage(string text, Brush foreground, TimeSpan duration, double? fontSize = null)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -105,7 +105,9 @@ namespace EQTool.UI
                 {
                     Text = text,
                     Foreground = foreground ?? Brushes.Red,
-                    FontSize = MessageFontSize,
+                    // a hand-edited or corrupt settings file could carry a non-positive size, which
+                    // WPF rejects, so fall back to the default rather than throwing
+                    FontSize = fontSize.HasValue && fontSize.Value > 0 ? fontSize.Value : MessageFontSize,
                     FontWeight = FontWeights.Medium,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,

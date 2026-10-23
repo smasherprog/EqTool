@@ -28,7 +28,7 @@ namespace EQTool.Services
             {
                 var text = expand(output.DisplayText);
                 var color = TriggerColors.ToBrush(output.DisplayTextColor, Brushes.Red);
-                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = color, Duration = TimeSpan.FromSeconds(5) });
+                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = color, Duration = TimeSpan.FromSeconds(5), FontSize = output.DisplayTextFontSize });
             }
 
             if (output.AudioType == TriggerAudioType.TextToSpeech && !string.IsNullOrWhiteSpace(output.TtsText))
