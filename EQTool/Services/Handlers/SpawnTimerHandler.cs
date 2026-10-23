@@ -75,6 +75,7 @@ namespace EQTool.Services.Handlers
                         Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
                         TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                        ExpiredLingerDuration = TimeSpan.FromMinutes(2),
                         UpdatedDateTime = DateTime.Now,
                         ProgressBarColor = Brushes.DarkSeaGreen
                     });

@@ -6,6 +6,9 @@ namespace EQTool.ViewModels.SpellWindow
     {
         public TimeSpan TotalDuration { get; set; }
 
+        // how long the timer stays in the list after reaching zero, counting negative, before it is removed
+        public TimeSpan ExpiredLingerDuration { get; set; } = TimeSpan.Zero;
+
         private TimeSpan _TotalRemainingDuration = TimeSpan.Zero;
         public TimeSpan TotalRemainingDuration
         {
@@ -17,29 +20,41 @@ namespace EQTool.ViewModels.SpellWindow
                 {
                     PercentLeft = (int)(_TotalRemainingDuration.TotalSeconds / TotalDuration.TotalSeconds * 100);
                 }
+                else
+                {
+                    PercentLeft = 0;
+                }
 
                 OnPropertyChanged(nameof(SecondsLeftPretty));
                 OnPropertyChanged(nameof(PercentLeft));
+                OnPropertyChanged(nameof(IsExpired));
             }
         }
         public int PercentLeft { get; set; } = 100;
+
+        public bool IsExpired => _TotalRemainingDuration.TotalSeconds <= 0;
 
         public string SecondsLeftPretty
         {
             get
             {
+                var remaining = _TotalRemainingDuration.Duration();
                 var st = "";
-                if (_TotalRemainingDuration.Hours > 0)
+                if (remaining.Hours > 0)
                 {
-                    st += _TotalRemainingDuration.Hours + "h ";
+                    st += remaining.Hours + "h ";
                 }
-                if (_TotalRemainingDuration.Minutes > 0)
+                if (remaining.Minutes > 0)
                 {
-                    st += _TotalRemainingDuration.Minutes + "m ";
+                    st += remaining.Minutes + "m ";
                 }
-                if (_TotalRemainingDuration.Seconds > 0)
+                if (remaining.Seconds > 0)
                 {
-                    st += _TotalRemainingDuration.Seconds + "s";
+                    st += remaining.Seconds + "s";
+                }
+                if (IsExpired && st.Length > 0)
+                {
+                    st = "-" + st;
                 }
                 return st;
             }

@@ -57,7 +57,17 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding PercentLeft}" Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding PercentLeft}" Maximum="100"  Foreground="{Binding ProgressBarColor}">
+                                <ProgressBar.Style>
+                                    <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsExpired}" Value="True">
+                                                <Setter Property="Background" Value="IndianRed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ProgressBar.Style>
+                            </ProgressBar>
                             <StackPanel Orientation="Horizontal" Grid.Column="0" >
                                 <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasIcon}">
                                     <Image.Source>

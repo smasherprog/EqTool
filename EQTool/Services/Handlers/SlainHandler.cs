@@ -192,8 +192,9 @@ namespace EQTool.Services.Handlers
             var add = new TimerViewModel
             {
                 Name = "--Dead-- " + e.Victim,
-                TotalDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
-                TotalRemainingDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
+                TotalDuration = TimeSpan.FromSeconds(60),
+                TotalRemainingDuration = TimeSpan.FromSeconds(60),
+                ExpiredLingerDuration = TimeSpan.FromMinutes(2),
                 Icon = spell.SpellIcon,
                 Rect = spell.Rect,
                 PercentLeft = 100,

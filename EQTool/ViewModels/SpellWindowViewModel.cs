@@ -249,12 +249,12 @@ namespace EQTool.ViewModels
                 RaidModeEnabled = RaidModeDetection && player?.PlayerClass != null && SpellGroupCount > 10;
                 var itemstoremove = new List<BaseTriggerViewModel>();
 
-                //run all timers remaining duration down, and remove any that are expired
+                //run all timers remaining duration down, and remove any that are expired (some linger counting negative first)
                 var timerTypes = new List<SpellViewModelType>() { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
                 {
                     item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
-                    if (item.TotalRemainingDuration.TotalSeconds <= 0)
+                    if (item.TotalRemainingDuration <= -item.ExpiredLingerDuration)
                     {
                         itemstoremove.Add(item);
                     }

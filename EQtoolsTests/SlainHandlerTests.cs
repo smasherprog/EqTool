@@ -438,6 +438,27 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void DeadTimerLingersTwoMinutesPastExpiration()
+        {
+            logParser.Push("You have slain a frost giant scout!", DateTime.Now);
+            var timer = spellWindowViewModel.SpellList.OfType<TimerViewModel>().Single(a => a.Name == "--Dead-- a frost giant scout");
+            timer.TotalRemainingDuration = TimeSpan.FromSeconds(1);
+
+            spellWindowViewModel.UpdateSpells(31000);
+            Assert.Contains(timer, spellWindowViewModel.SpellList);
+            Assert.IsTrue(timer.IsExpired);
+            Assert.AreEqual(0, timer.PercentLeft);
+            Assert.AreEqual("-30s", timer.SecondsLeftPretty);
+
+            spellWindowViewModel.UpdateSpells(60000);
+            Assert.Contains(timer, spellWindowViewModel.SpellList);
+            Assert.AreEqual("-1m 30s", timer.SecondsLeftPretty);
+
+            spellWindowViewModel.UpdateSpells(30000);
+            Assert.DoesNotContain(timer, spellWindowViewModel.SpellList);
+        }
+
+        [TestMethod]
         public void SlainNeriakTest()
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
