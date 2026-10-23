@@ -17,6 +17,7 @@ Instructions:
 Features:
 <br/>
 <ul>
+<li>Window snapping: drag a window near another window or a screen edge and it snaps into place. Snapped windows move together as a group, and holding Shift while dragging moves one window on its own. Turn it on in Settings -> General -> Overlay Windows -> Snap windows.</li>
 <li>Added Bard Swarm Count trigger.</li>
 <li>Boat timers are build int!</li>
 <li>Full trigger system: create your own triggers with display text, text-to-speech, sounds, timers, and counters — plus a Built In library of ready-made triggers you can enable with one click.</li>
@@ -275,4 +276,14 @@ Examples:
 <li>You can move the timer around by dragging it.</li>
 <li>You can delete the timer by right clicking over it and  clicking the delete option.</li>
 <li>Timer color starts at Green and changes to Red the closer it gets to zero time remaining. Timers will last for 4 minutes after the time has expired then automatically remove themselves.</li>
+</ul>
+
+<h4>How do I snap windows together?</h4>
+<ul>
+<li>Go to Settings -> General and check "Snap windows" in the Overlay Windows section. It is off by default.</li>
+<li>Drag a window close to another window or to the edge of the screen and it snaps into place. Windows snapped side by side also line up their tops or bottoms, and stacked windows line up their sides.</li>
+<li>When you drag a window, every window snapped to it moves along with it, including windows snapped to those windows.</li>
+<li>To pull a window out of a group, hold Shift when you start dragging it. That window moves on its own and the rest stay where they are.</li>
+<li>There is nothing to set up for groups: any windows that are touching when you start a drag move together, so groups still work after restarting the program.</li>
+<li>The event overlay does not snap, and minimized or maximized windows are left out.</li>
 </ul>
