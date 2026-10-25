@@ -17,7 +17,7 @@ namespace EQTool.Services.Map
     {
         private readonly LoggingService loggingService;
         private readonly ActivePlayer activePlayer;
-        private const string CurrentMapVersion = "cachedmaps_5";
+        private const string CurrentMapVersion = "cachedmaps_6";
         private const string MapResourcePrefix = "EQTool.map_files.";
         public MapLoad(LoggingService loggingService, ActivePlayer activePlayer)
         {
@@ -56,11 +56,11 @@ namespace EQTool.Services.Map
             }
             CleanCachedMaps(false);
             checkformanualmaps = Paths.InExecutableDirectory(CurrentMapVersion);
-            if (System.IO.File.Exists(Paths.Combine(checkformanualmaps, zone + ".bin")))
+            if (System.IO.File.Exists(Paths.Combine(checkformanualmaps, zone + ".json")))
             {
                 try
                 {
-                    var data = BinarySerializer.ReadFromBinaryFile<ParsedData>(Paths.Combine(checkformanualmaps, zone + ".bin"));
+                    var data = CacheSerializer.ReadFromFile<ParsedData>(Paths.Combine(checkformanualmaps, zone + ".json"));
                     stop.Stop();
                     Debug.WriteLine($"Time to load map from Cache {zone} {stop.ElapsedMilliseconds}");
                     return data;
@@ -97,7 +97,7 @@ namespace EQTool.Services.Map
             Debug.WriteLine($"Time to load map {zone} {stop.ElapsedMilliseconds}");
             try
             {
-                BinarySerializer.WriteToBinaryFile(Paths.Combine(checkformanualmaps, zone + ".bin"), d);
+                CacheSerializer.WriteToFile(Paths.Combine(checkformanualmaps, zone + ".json"), d);
             }
             catch (Exception ex)
             {

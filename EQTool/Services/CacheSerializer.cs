@@ -1,23 +1,25 @@
-﻿using System.IO;
+﻿using Newtonsoft.Json;
+using System.IO;
 
 namespace EQTool.Services
 {
-    public static class BinarySerializer
+    // Reads and writes the map and spell caches. These were BinaryFormatter files until .NET removed
+    // BinaryFormatter, so bump a cache's name whenever the shape of what it stores changes.
+    public static class CacheSerializer
     {
-        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite)
+        public static void WriteToFile<T>(string filePath, T objectToWrite)
         {
-            using (Stream stream = File.Open(filePath, FileMode.Create))
+            using (var writer = new StreamWriter(filePath))
             {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binaryFormatter.Serialize(stream, objectToWrite);
+                JsonSerializer.Create().Serialize(writer, objectToWrite);
             }
         }
-        public static T ReadFromBinaryFile<T>(string filePath)
+
+        public static T ReadFromFile<T>(string filePath)
         {
-            using (Stream stream = File.Open(filePath, FileMode.Open))
+            using (var reader = new JsonTextReader(new StreamReader(filePath)))
             {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
+                return JsonSerializer.Create().Deserialize<T>(reader);
             }
         }
     }

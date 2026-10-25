@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -42,13 +41,13 @@ namespace EQTool
         private Autofac.IContainer container;
         private System.Windows.Forms.NotifyIcon SystemTrayIcon;
 
-        private System.Windows.Forms.MenuItem MapMenuItem;
-        private System.Windows.Forms.MenuItem SpellsMenuItem;
-        private System.Windows.Forms.MenuItem DpsMeterMenuItem;
-        private System.Windows.Forms.MenuItem OverlayMenuItem;
-        private System.Windows.Forms.MenuItem SettingsMenuItem;
-        private System.Windows.Forms.MenuItem MobInfoMenuItem;
-        private System.Windows.Forms.MenuItem DiscordLoginMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MapMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SpellsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DpsMeterMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OverlayMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SettingsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MobInfoMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DiscordLoginMenuItem;
 
         private EQToolSettings _EQToolSettings;
 #if DEBUG
@@ -211,7 +210,6 @@ namespace EQTool
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            ServicePointManager.ServerCertificateValidationCallback += (sender1, cert, chain, sslPolicyErrors) => true;
             if (ShouldShutDownDueToNoWriteAccess())
             {
                 App.Current.Shutdown();
@@ -272,43 +270,46 @@ namespace EQTool
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             container.Resolve<Services.LogArchiveService>().TryArchiveLogs();
 
-            SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
-            SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
-            MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
-            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
-            OverlayMenuItem = new System.Windows.Forms.MenuItem("Overlay", ToggleOverlayWindow);
-            MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
-            var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
-            var whythepig = new System.Windows.Forms.MenuItem("Pigparse Discord", WhyThePig);
-            var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
-            DiscordLoginMenuItem = new System.Windows.Forms.MenuItem(
+            SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem("Settings", null, ToggleSettingsWindow);
+            SpellsMenuItem = new System.Windows.Forms.ToolStripMenuItem("Triggers", null, ToggleSpellsWindow);
+            MapMenuItem = new System.Windows.Forms.ToolStripMenuItem("Map", null, ToggleMapWindow);
+            DpsMeterMenuItem = new System.Windows.Forms.ToolStripMenuItem("Dps", null, ToggleDPSWindow);
+            OverlayMenuItem = new System.Windows.Forms.ToolStripMenuItem("Overlay", null, ToggleOverlayWindow);
+            MobInfoMenuItem = new System.Windows.Forms.ToolStripMenuItem("Mob Info", null, ToggleMobInfoWindow);
+            var gitHubMenuItem = new System.Windows.Forms.ToolStripMenuItem("Suggestions", null, Suggestions);
+            var whythepig = new System.Windows.Forms.ToolStripMenuItem("Pigparse Discord", null, WhyThePig);
+            var updates = new System.Windows.Forms.ToolStripMenuItem("Check for Update", null, CheckForUpdates);
+            DiscordLoginMenuItem = new System.Windows.Forms.ToolStripMenuItem(
                 string.IsNullOrEmpty(EQToolSettings.DiscordUsername) ? "Login with Discord" : $"Discord: {EQToolSettings.DiscordUsername}",
+                null,
                 ToggleDiscordLogin);
 
-            var version = new System.Windows.Forms.MenuItem(Version)
+            var version = new System.Windows.Forms.ToolStripMenuItem(Version)
             {
                 Enabled = false
             };
             ToggleMenuButtons(false);
+            var contextMenu = new System.Windows.Forms.ContextMenuStrip();
+            contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
+            {
+                //GroupSuggestionsMenuItem,
+                whythepig,
+                DiscordLoginMenuItem,
+                OverlayMenuItem,
+                DpsMeterMenuItem,
+                MapMenuItem,
+                SpellsMenuItem,
+                MobInfoMenuItem,
+                SettingsMenuItem,
+                gitHubMenuItem,
+                updates,
+                version,
+                new System.Windows.Forms.ToolStripMenuItem("Exit", null, OnExit)
+            });
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
                 Visible = true,
-                ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
-                {
-                    //GroupSuggestionsMenuItem,
-                    whythepig,
-                    DiscordLoginMenuItem,
-                    OverlayMenuItem,
-                    DpsMeterMenuItem,
-                    MapMenuItem,
-                    SpellsMenuItem,
-                    MobInfoMenuItem,
-                    SettingsMenuItem,
-                    gitHubMenuItem,
-                    updates,
-                    version,
-                    new System.Windows.Forms.MenuItem("Exit", OnExit)
-                }),
+                ContextMenuStrip = contextMenu,
             };
 #if BETA || DEBUG
             SystemTrayIcon.Icon = EQTool.Properties.Resources.sickpic;
@@ -513,7 +514,7 @@ namespace EQTool
             });
         }
 
-        private void ToggleWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
+        private void ToggleWindow<T>(System.Windows.Forms.ToolStripMenuItem m) where T : BaseSaveStateWindow
         {
             var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
             m.Checked = !m.Checked;
@@ -543,7 +544,7 @@ namespace EQTool
             }
         }
 
-        private void OpenWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
+        private void OpenWindow<T>(System.Windows.Forms.ToolStripMenuItem m) where T : BaseSaveStateWindow
         {
             var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
             if (w != null)
@@ -567,37 +568,37 @@ namespace EQTool
 
         public void ToggleMapWindow(object sender, EventArgs e)
         {
-            var s = (System.Windows.Forms.MenuItem)sender;
+            var s = (System.Windows.Forms.ToolStripMenuItem)sender;
             ToggleWindow<MappingWindow>(s);
         }
 
         public void ToggleDPSWindow(object sender, EventArgs e)
         {
-            var s = (System.Windows.Forms.MenuItem)sender;
+            var s = (System.Windows.Forms.ToolStripMenuItem)sender;
             ToggleWindow<DPSMeter>(s);
         }
 
         public void ToggleOverlayWindow(object sender, EventArgs e)
         {
-            var s = (System.Windows.Forms.MenuItem)sender;
+            var s = (System.Windows.Forms.ToolStripMenuItem)sender;
             ToggleWindow<EventOverlay>(s);
         }
 
         public void ToggleMobInfoWindow(object sender, EventArgs e)
         {
-            var s = (System.Windows.Forms.MenuItem)sender;
+            var s = (System.Windows.Forms.ToolStripMenuItem)sender;
             ToggleWindow<MobInfo>(s);
         }
 
         public void ToggleSettingsWindow(object sender, EventArgs e)
         {
-            var s = (System.Windows.Forms.MenuItem)sender;
+            var s = (System.Windows.Forms.ToolStripMenuItem)sender;
             ToggleWindow<SettingManagement>(s);
         }
 
         public void ToggleSpellsWindow(object sender, EventArgs e)
         {
-            var s = (System.Windows.Forms.MenuItem)sender;
+            var s = (System.Windows.Forms.ToolStripMenuItem)sender;
             ToggleWindow<SpellWindow>(s);
         }
 
