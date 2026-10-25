@@ -1,4 +1,5 @@
 using EQTool.Models;
+using System;
 using System.Linq;
 
 namespace EQTool.Services.Handlers
@@ -13,6 +14,7 @@ namespace EQTool.Services.Handlers
             this.executor = executor;
             this.timerManager = timerManager;
             logEvents.LineEvent += LogEvents_LineEvent;
+            logEvents.SpellLandedEvent += LogEvents_SpellLandedEvent;
         }
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
@@ -20,7 +22,7 @@ namespace EQTool.Services.Handlers
             var currentZone = activePlayer?.Player?.Zone;
             var currentServer = activePlayer?.Player?.Server;
             var currentPlayerName = activePlayer?.Player?.Name ?? string.Empty;
-            foreach (var trigger in eQToolSettings.Triggers.Where(a => a.TriggerEnabled).ToList())
+            foreach (var trigger in eQToolSettings.Triggers.Where(a => a.TriggerEnabled && !a.IsSpellTrigger).ToList())
             {
                 try
                 {
@@ -50,14 +52,7 @@ namespace EQTool.Services.Handlers
                         continue;
                     }
 
-                    // bump the {COUNTER} tally before expanding any output so it reflects this match
-                    trigger.CurrentCounter++;
-
-                    executor.Execute(trigger.GetEffectiveBasic(), trigger.Expand);
-
-                    // Timer and Counter tabs; the manager owns the enabled/configured checks
-                    timerManager.HandleTimerMatch(trigger);
-                    timerManager.HandleCounterMatch(trigger);
+                    FireLogLineTrigger(trigger);
                 }
                 catch (System.Exception ex)
                 {
@@ -71,6 +66,78 @@ namespace EQTool.Services.Handlers
                 // A line is consumed by the first matching trigger; stop checking the rest.
                 return;
             }
+        }
+
+        private void LogEvents_SpellLandedEvent(object sender, SpellLandedEvent e)
+        {
+            if (e.Spell == null)
+            {
+                return;
+            }
+
+            var currentZone = activePlayer?.Player?.Zone;
+            var currentServer = activePlayer?.Player?.Server;
+            var currentPlayerName = activePlayer?.Player?.Name ?? string.Empty;
+            foreach (var trigger in eQToolSettings.Triggers.Where(a => a.TriggerEnabled && a.IsSpellTrigger).ToList())
+            {
+                try
+                {
+                    if (!trigger.MatchesZone(currentZone) || !trigger.MatchesServer(currentServer))
+                    {
+                        continue;
+                    }
+
+                    trigger.PlayerName = currentPlayerName;
+                    if (!trigger.MatchesSpell(e.Spell.name, e.TargetName))
+                    {
+                        continue;
+                    }
+
+                    FireSpellTrigger(trigger, e);
+                }
+                catch (System.Exception ex)
+                {
+                    App.LogUnhandledException(ex, $"TriggerHandler trigger '{trigger.TriggerName}'", activePlayer?.Player?.Server);
+                }
+
+                // Like log lines, a landing is consumed by the first matching trigger.
+                return;
+            }
+        }
+
+        // Raised for every trigger fired, so the editor's Test button can tell whether the live
+        // loop fired the trigger it is testing.
+        public event EventHandler<Trigger> TriggerFired;
+
+        // Runs the outputs of a log-line trigger whose Matches just succeeded (setting its
+        // placeholder values). Public so the editor's Test button can fire a trigger the live
+        // loop skipped.
+        public void FireLogLineTrigger(Trigger trigger)
+        {
+            FireBasic(trigger);
+
+            // Timer and Counter tabs; the manager owns the enabled/configured checks
+            timerManager.HandleTimerMatch(trigger);
+            timerManager.HandleCounterMatch(trigger);
+        }
+
+        // Spell-trigger counterpart of FireLogLineTrigger, for a landing MatchesSpell accepted.
+        public void FireSpellTrigger(Trigger trigger, SpellLandedEvent landed)
+        {
+            FireBasic(trigger);
+
+            // Spell triggers have no Timer or Counter tab; Timer Ending / Timer Ended run
+            // off the spell's own duration.
+            timerManager.HandleSpellMatch(trigger, landed.Spell.name, landed.TargetName, landed.Duration);
+        }
+
+        private void FireBasic(Trigger trigger)
+        {
+            // bump the {COUNTER} tally before expanding any output so it reflects this match
+            trigger.CurrentCounter++;
+
+            executor.Execute(trigger.GetEffectiveBasic(), trigger.Expand);
+            TriggerFired?.Invoke(this, trigger);
         }
     }
 }

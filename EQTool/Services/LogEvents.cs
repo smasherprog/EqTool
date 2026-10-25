@@ -228,6 +228,12 @@ namespace EQTool.Services
             SpellCastOnOtherEvent?.Invoke(this, e);
         }
 
+        public event EventHandler<SpellLandedEvent> SpellLandedEvent;
+        public void Handle(SpellLandedEvent e)
+        {
+            SpellLandedEvent?.Invoke(this, e);
+        }
+
         public event EventHandler<MendWoundsEvent> MendWoundsEvent;
         public void Handle(MendWoundsEvent e)
         {

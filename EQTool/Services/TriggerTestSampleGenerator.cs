@@ -50,6 +50,25 @@ namespace EQTool.Services
             }
         }
 
+        // A spell trigger fires on the spell's landing message: the "on you" text when the trigger
+        // accepts the player as a target, otherwise (or when the spell has none) someone else's.
+        public static string Generate(Spell spell, SpellTriggerTarget target)
+        {
+            if (spell == null)
+            {
+                return string.Empty;
+            }
+            if (target != SpellTriggerTarget.Others && !string.IsNullOrWhiteSpace(spell.cast_on_you))
+            {
+                return spell.cast_on_you;
+            }
+            if (target != SpellTriggerTarget.You && !string.IsNullOrWhiteSpace(spell.cast_on_other))
+            {
+                return SampleWord + " " + spell.cast_on_other;
+            }
+            return string.Empty;
+        }
+
         private static string ParseSequence(string s, ref int pos)
         {
             var sb = new StringBuilder();
