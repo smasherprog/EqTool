@@ -67,6 +67,14 @@ namespace EQTool.Services
             }
             var name = trigger.Expand(string.IsNullOrWhiteSpace(trigger.Timer.TimerName) ? trigger.TriggerName : trigger.Timer.TimerName);
 
+            // Decided under the lock, run after it. DispatchUI blocks on the UI thread when called
+            // from anywhere else, and this runs on LogParser's thread pool timer, so dispatching
+            // while holding sync deadlocks against Tick() - which runs on the UI thread and takes
+            // sync every 250ms. Tick() already defers its own output for the same reason.
+            TimerViewModel restarted = null;
+            TimerViewModel added = null;
+            var fireBar = false;
+
             lock (sync)
             {
                 var existing = activeTimers.FirstOrDefault(a => string.Equals(a.ViewModel.Name, name, StringComparison.OrdinalIgnoreCase));
@@ -84,13 +92,7 @@ namespace EQTool.Services
                             existing.EndTimeUtc = DateTime.UtcNow.Add(duration);
                             existing.Duration = duration;
                             existing.EndingFired = false;
-                            appDispatcher.DispatchUI(() =>
-                            {
-                                existing.ViewModel.TotalDuration = duration;
-                                existing.ViewModel.TotalRemainingDuration = duration;
-                            });
-                            FireOverlayBar(trigger, name, duration);
-                            return;
+                            restarted = existing.ViewModel;
                         }
                         break;
                     case TimerRestartBehavior.StartNewTimer:
@@ -98,32 +100,52 @@ namespace EQTool.Services
                         break;
                 }
 
-                var vm = new TimerViewModel
+                if (restarted == null)
                 {
-                    PercentLeft = 100,
-                    GroupName = CustomTimer.CustomerTime,
-                    Name = name,
-                    TotalDuration = duration,
-                    TotalRemainingDuration = duration,
-                    UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = TriggerColors.ToBrush(trigger.Timer.BarColor, Brushes.MediumPurple)
-                };
-                var iconName = string.IsNullOrWhiteSpace(trigger.Timer.IconName) ? "Feign Death" : trigger.Timer.IconName;
-                if (spells.AllSpells.TryGetValue(iconName, out var spell) || spells.AllSpells.TryGetValue("Feign Death", out spell))
-                {
-                    vm.Rect = spell.Rect;
-                    vm.Icon = spell.SpellIcon;
-                }
+                    var vm = new TimerViewModel
+                    {
+                        PercentLeft = 100,
+                        GroupName = CustomTimer.CustomerTime,
+                        Name = name,
+                        TotalDuration = duration,
+                        TotalRemainingDuration = duration,
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = TriggerColors.ToBrush(trigger.Timer.BarColor, Brushes.MediumPurple)
+                    };
+                    var iconName = string.IsNullOrWhiteSpace(trigger.Timer.IconName) ? "Feign Death" : trigger.Timer.IconName;
+                    if (spells.AllSpells.TryGetValue(iconName, out var spell) || spells.AllSpells.TryGetValue("Feign Death", out spell))
+                    {
+                        vm.Rect = spell.Rect;
+                        vm.Icon = spell.SpellIcon;
+                    }
 
-                activeTimers.Add(new ActiveTimer
+                    activeTimers.Add(new ActiveTimer
+                    {
+                        Trigger = trigger,
+                        ViewModel = vm,
+                        EndTimeUtc = DateTime.UtcNow.Add(duration),
+                        Duration = duration,
+                        EndingFired = false
+                    });
+                    added = vm;
+                }
+                fireBar = true;
+            }
+
+            if (restarted != null)
+            {
+                appDispatcher.DispatchUI(() =>
                 {
-                    Trigger = trigger,
-                    ViewModel = vm,
-                    EndTimeUtc = DateTime.UtcNow.Add(duration),
-                    Duration = duration,
-                    EndingFired = false
+                    restarted.TotalDuration = duration;
+                    restarted.TotalRemainingDuration = duration;
                 });
-                spellWindowViewModel.TryAdd(vm, allowDuplicates: true);
+            }
+            else if (added != null)
+            {
+                spellWindowViewModel.TryAdd(added, allowDuplicates: true);
+            }
+            if (fireBar)
+            {
                 FireOverlayBar(trigger, name, duration);
             }
         }
@@ -174,6 +196,10 @@ namespace EQTool.Services
             var now = DateTime.UtcNow;
             var endingToFire = new List<ActiveTimer>();
             var endedToFire = new List<ActiveTimer>();
+            // Re-armed repeating timers, dispatched after the lock for the same reason the
+            // output lists below are: FireOverlayBar re-enters the event pipeline, and holding
+            // sync across that invites the same deadlock HandleTimerMatch had.
+            var rearmedToFire = new List<ActiveTimer>();
 
             lock (sync)
             {
@@ -203,13 +229,7 @@ namespace EQTool.Services
                             // re-arm a repeating timer
                             t.EndTimeUtc = now.Add(t.Duration);
                             t.EndingFired = false;
-                            appDispatcher.DispatchUI(() =>
-                            {
-                                t.ViewModel.TotalDuration = t.Duration;
-                                t.ViewModel.TotalRemainingDuration = t.Duration;
-                                spellWindowViewModel.TryAdd(t.ViewModel, allowDuplicates: true);
-                            });
-                            FireOverlayBar(t.Trigger, t.ViewModel.Name, t.Duration);
+                            rearmedToFire.Add(t);
                         }
                         else
                         {
@@ -229,6 +249,17 @@ namespace EQTool.Services
                 }
             }
 
+            foreach (var t in rearmedToFire)
+            {
+                var rearmed = t;
+                appDispatcher.DispatchUI(() =>
+                {
+                    rearmed.ViewModel.TotalDuration = rearmed.Duration;
+                    rearmed.ViewModel.TotalRemainingDuration = rearmed.Duration;
+                    spellWindowViewModel.TryAdd(rearmed.ViewModel, allowDuplicates: true);
+                });
+                FireOverlayBar(rearmed.Trigger, rearmed.ViewModel.Name, rearmed.Duration);
+            }
             foreach (var t in endingToFire)
             {
                 executor.Execute(t.Trigger.TimerEnding.Output, t.Trigger.Expand);
