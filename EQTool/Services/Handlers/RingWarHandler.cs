@@ -24,6 +24,11 @@ namespace EQTool.Services.Handlers
             var startingtime = 0;
             for (var round = 1; round <= 3; round++)
             {
+                if (round == 2)
+                {
+                    startingtime += 5;
+                }
+
                 for (var i = 1; i <= 7; i++)
                 {
                     startingtime += 210;
@@ -43,7 +48,7 @@ namespace EQTool.Services.Handlers
                 startingtime += 300;
                 if (round == 3)
                 {
-                    startingtime += 9;
+                    startingtime += 6;
                 }
 
                 spellWindowViewModel.TryAdd(new TimerViewModel
