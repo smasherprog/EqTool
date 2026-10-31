@@ -37,6 +37,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Trigger Name" VerticalAlignment="Center" Margin="0,2,8,2"/>
@@ -47,8 +48,18 @@
                     <TextBlock Grid.Row="1" Grid.Column="1" Foreground="Red"
                                Visibility="{Binding TriggerNameErrorMessgeVisible}" Text="{Binding TriggerNameErrorMessge}"/>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Search Text" VerticalAlignment="Center" Margin="0,2,8,2"/>
-                    <Grid Grid.Row="2" Grid.Column="1" Margin="0,2,0,2">
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Trigger On" VerticalAlignment="Center" Margin="0,2,8,2"/>
+                    <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,2,0,2" HorizontalAlignment="Left" MinWidth="140"
+                              IsEnabled="{Binding IsEditable}"
+                              ItemsSource="{Binding EventTypeOptions}"
+                              SelectedValuePath="Key" DisplayMemberPath="Value"
+                              SelectedValue="{Binding EventType, Mode=TwoWay}"
+                              ToolTip="Log Text matches each log line against the search text. Spell fires when the chosen spell lands."/>
+
+                    <!-- Row 3/4 hold either the log-text inputs or the spell inputs, depending on Trigger On. -->
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Search Text" VerticalAlignment="Center" Margin="0,2,8,2"
+                               Visibility="{Binding LogLineVisibility}"/>
+                    <Grid Grid.Row="3" Grid.Column="1" Margin="0,2,0,2" Visibility="{Binding LogLineVisibility}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
@@ -63,33 +74,75 @@
                                 Content="Copy Regex" Click="CopyRegex"
                                 ToolTip="Copy this trigger's effective regular expression to the clipboard"/>
                     </Grid>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Foreground="Red"
+                    <TextBlock Grid.Row="4" Grid.Column="1" Foreground="Red"
                                Visibility="{Binding SearchTextErrorMessgeVisible}" Text="{Binding SearchTextErrorMessge}"/>
 
-                    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,2,0,2"
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Spell" VerticalAlignment="Center" Margin="0,2,8,2"
+                               Visibility="{Binding SpellVisibility}"/>
+                    <Grid Grid.Row="3" Grid.Column="1" Margin="0,2,0,2" Visibility="{Binding SpellVisibility}"
+                          IsEnabled="{Binding IsEditable}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- Thousands of spells: the virtualizing panel keeps the dropdown responsive,
+                             and typing jumps to the first spell with that name prefix. -->
+                        <ComboBox Grid.Column="0" IsEditable="True" IsTextSearchEnabled="True"
+                                  TextSearch.TextPath="name"
+                                  BorderBrush="{Binding SpellBorderBrush}"
+                                  ItemsSource="{Binding SpellOptions}"
+                                  Text="{Binding SpellName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}"
+                                  ToolTip="Fire when this spell lands. Use {spell} and {target} in the outputs.">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel/>
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="16" Height="16" Margin="0,0,4,0" Source="{Binding CroppedIcon}"/>
+                                        <TextBlock Text="{Binding name}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Grid.Column="1" Text="Lands On" VerticalAlignment="Center" Margin="12,0,6,0"/>
+                        <ComboBox Grid.Column="2" MinWidth="90"
+                                  ItemsSource="{Binding SpellTargetOptions}"
+                                  SelectedValuePath="Key" DisplayMemberPath="Value"
+                                  SelectedValue="{Binding SpellTarget, Mode=TwoWay}"
+                                  ToolTip="Fire only when the spell lands on you, only when it lands on someone else, or either."/>
+                    </Grid>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Foreground="Red"
+                               Visibility="{Binding SpellErrorMessgeVisible}" Text="{Binding SpellErrorMessge}"/>
+
+                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,2,0,2"
                                 IsEnabled="{Binding IsEditable}">
                         <CheckBox Content="Use Regular Expressions" VerticalAlignment="Center" Margin="0,0,16,0"
+                                  Visibility="{Binding LogLineVisibility}"
                                   IsChecked="{Binding UseRegex, Mode=TwoWay}"/>
                         <CheckBox Content="Trigger Enabled" VerticalAlignment="Center"
                                   IsChecked="{Binding TriggerEnabled, Mode=TwoWay}"/>
                     </StackPanel>
 
-                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Category" VerticalAlignment="Center" Margin="0,2,8,2"/>
-                    <ComboBox Grid.Row="5" Grid.Column="1" Margin="0,2,0,2" HorizontalAlignment="Left" MinWidth="140"
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Category" VerticalAlignment="Center" Margin="0,2,8,2"/>
+                    <ComboBox Grid.Row="6" Grid.Column="1" Margin="0,2,0,2" HorizontalAlignment="Left" MinWidth="140"
                               IsEditable="True"
                               IsEnabled="{Binding IsEditable}"
                               ItemsSource="{Binding Categories}"
                               Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Zone" VerticalAlignment="Center" Margin="0,2,8,2"/>
-                    <ComboBox Grid.Row="6" Grid.Column="1" Margin="0,2,0,2" HorizontalAlignment="Left" MinWidth="200"
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Zone" VerticalAlignment="Center" Margin="0,2,8,2"/>
+                    <ComboBox Grid.Row="7" Grid.Column="1" Margin="0,2,0,2" HorizontalAlignment="Left" MinWidth="200"
                               IsEnabled="{Binding IsEditable}"
                               ItemsSource="{Binding ZoneOptions}"
                               SelectedItem="{Binding Zone, Mode=TwoWay}"
                               ToolTip="Only fire this trigger while in this zone. 'All Zones' fires everywhere."/>
 
-                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Comments" VerticalAlignment="Top" Margin="0,4,8,2"/>
-                    <TextBox Grid.Row="7" Grid.Column="1" Margin="0,2,0,2" MinHeight="50"
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Comments" VerticalAlignment="Top" Margin="0,4,8,2"/>
+                    <TextBox Grid.Row="8" Grid.Column="1" Margin="0,2,0,2" MinHeight="50"
                              IsEnabled="{Binding IsEditable}"
                              TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
                              Text="{Binding Comments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -117,8 +170,9 @@
                                                DisplayTextInvalid="{Binding DataContext.BasicTabHasError, RelativeSource={RelativeSource AncestorType={x:Type local:SettingsTrigger}}}"/>
                 </TabItem>
 
-                <!-- Timer -->
-                <TabItem>
+                <!-- Timer (unavailable to spell triggers) -->
+                <TabItem x:Name="TimerTab" IsEnabled="{Binding TimerTabsAvailable}"
+                         ToolTip="{Binding TimerTabsToolTip}" ToolTipService.ShowOnDisabled="True">
                     <TabItem.Header>
                         <TextBlock Text="Timer">
                             <TextBlock.Style>
@@ -259,7 +313,7 @@
                     </TabItem.Header>
                     <StackPanel Margin="6">
                         <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
-                            <CheckBox Content="Notify when timer is down to" VerticalAlignment="Center" Margin="0,0,8,0"
+                            <CheckBox Content="{Binding TimerEndingLabel}" VerticalAlignment="Center" Margin="0,0,8,0"
                                       IsChecked="{Binding TimerEnding.Enabled, Mode=TwoWay}"/>
                             <TextBox Width="40" Style="{StaticResource NumberBox}" IsEnabled="{Binding TimerEnding.Enabled}" BorderBrush="{Binding TimerEndingBorderBrush}">
                                 <TextBox.Text>
@@ -313,14 +367,15 @@
                         </TextBlock>
                     </TabItem.Header>
                     <StackPanel Margin="6">
-                        <CheckBox Content="Notify when timer ends" Margin="0,2,0,2"
+                        <CheckBox Content="{Binding TimerEndedLabel}" Margin="0,2,0,2"
                                   IsChecked="{Binding TimerEnded.Enabled, Mode=TwoWay}"/>
                         <local:TriggerOutputEditor DataContext="{Binding TimerEnded.Output}" IsEnabled="{Binding TimerEnded.Enabled}"/>
                     </StackPanel>
                 </TabItem>
 
-                <!-- Counter -->
-                <TabItem>
+                <!-- Counter (unavailable to spell triggers) -->
+                <TabItem x:Name="CounterTab" IsEnabled="{Binding TimerTabsAvailable}"
+                         ToolTip="{Binding TimerTabsToolTip}" ToolTipService.ShowOnDisabled="True">
                     <TabItem.Header>
                         <TextBlock Text="Counter">
                             <TextBlock.Style>

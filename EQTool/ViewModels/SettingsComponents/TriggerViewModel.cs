@@ -177,6 +177,9 @@ namespace EQTool.Models
         public bool IsBuiltIn => Model.IsBuiltIn;
         public bool IsEditable => !Model.IsBuiltIn;
 
+        // A new trigger only joins the list the live handler checks when it is first saved.
+        public bool IsSaved => toolSettings.Triggers.Contains(Model);
+
         public string TriggerName
         {
             get => Model.TriggerName;
@@ -215,6 +218,97 @@ namespace EQTool.Models
                 RefreshValidation();
             }
         }
+
+        // Switching the event type keeps the other type's settings (search text, spell, timer) so
+        // switching back restores them; only the active type's fields are validated and used.
+        public TriggerEventType EventType
+        {
+            get => Model.EventType;
+            set
+            {
+                Model.EventType = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsSpellTrigger));
+                OnPropertyChanged(nameof(LogLineVisibility));
+                OnPropertyChanged(nameof(SpellVisibility));
+                OnPropertyChanged(nameof(TimerTabsAvailable));
+                OnPropertyChanged(nameof(TimerTabsToolTip));
+                OnPropertyChanged(nameof(TimerEndingLabel));
+                OnPropertyChanged(nameof(TimerEndedLabel));
+                RefreshValidation();
+            }
+        }
+
+        public bool IsSpellTrigger => Model.IsSpellTrigger;
+
+        public Visibility LogLineVisibility => IsSpellTrigger ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility SpellVisibility => IsSpellTrigger ? Visibility.Visible : Visibility.Collapsed;
+
+        public List<KeyValuePair<TriggerEventType, string>> EventTypeOptions => new List<KeyValuePair<TriggerEventType, string>>
+        {
+            new KeyValuePair<TriggerEventType, string>(TriggerEventType.LogLine, "Log Text"),
+            new KeyValuePair<TriggerEventType, string>(TriggerEventType.Spell, "Spell"),
+        };
+
+        public string SpellName
+        {
+            get => Model.SpellName;
+            set
+            {
+                Model.SpellName = value;
+                OnPropertyChanged();
+                RefreshValidation();
+            }
+        }
+
+        public SpellTriggerTarget SpellTarget
+        {
+            get => Model.SpellTarget;
+            set { Model.SpellTarget = value; OnPropertyChanged(); }
+        }
+
+        public List<KeyValuePair<SpellTriggerTarget, string>> SpellTargetOptions => new List<KeyValuePair<SpellTriggerTarget, string>>
+        {
+            new KeyValuePair<SpellTriggerTarget, string>(SpellTriggerTarget.Anyone, "Anyone"),
+            new KeyValuePair<SpellTriggerTarget, string>(SpellTriggerTarget.You, "You"),
+            new KeyValuePair<SpellTriggerTarget, string>(SpellTriggerTarget.Others, "Others"),
+        };
+
+        private List<Spell> _spellOptions;
+        public List<Spell> SpellOptions
+        {
+            get
+            {
+                if (_spellOptions == null)
+                {
+                    _spellOptions = eqSpells?.AllSpells.Values
+                        .Where(a => 
+                        !string.IsNullOrWhiteSpace(a.name) && 
+                        a.HasSpellIcon && 
+                        a.buffduration > 0 && 
+                        a.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Beneficial &&
+                        a.Classes.Any())
+                        .OrderBy(a => a.name, StringComparer.OrdinalIgnoreCase)
+                        .ToList();
+                }
+                return _spellOptions;
+            }
+        }
+
+        public Spell SelectedSpell =>
+            !string.IsNullOrWhiteSpace(Model.SpellName) && eqSpells != null && eqSpells.AllSpells.TryGetValue(Model.SpellName.Trim(), out var spell)
+                ? spell
+                : null;
+
+        // A spell already has its own duration and the Counter tab only resets the {COUNTER}
+        // tally, so neither tab applies to spell triggers.
+        public bool TimerTabsAvailable => !IsSpellTrigger;
+
+        public string TimerTabsToolTip => IsSpellTrigger ? "Not used by spell triggers. Timer Ending and Timer Ended follow the spell's duration." : null;
+
+        public string TimerEndingLabel => IsSpellTrigger ? "Notify when the spell is down to" : "Notify when timer is down to";
+
+        public string TimerEndedLabel => IsSpellTrigger ? "Notify when the spell wears off" : "Notify when timer ends";
 
         public string Category
         {
@@ -303,6 +397,9 @@ namespace EQTool.Models
             OnPropertyChanged(nameof(SearchTextErrorMessge));
             OnPropertyChanged(nameof(SearchTextErrorMessgeVisible));
             OnPropertyChanged(nameof(SearchTextBorderBrush));
+            OnPropertyChanged(nameof(SpellErrorMessge));
+            OnPropertyChanged(nameof(SpellErrorMessgeVisible));
+            OnPropertyChanged(nameof(SpellBorderBrush));
             OnPropertyChanged(nameof(DisplayTextErrorMessge));
             OnPropertyChanged(nameof(DisplayTextErrorMessgeVisible));
             OnPropertyChanged(nameof(TimerErrorMessge));
@@ -347,6 +444,10 @@ namespace EQTool.Models
         {
             get
             {
+                if (IsSpellTrigger)
+                {
+                    return string.Empty;
+                }
                 if (string.IsNullOrWhiteSpace(Model.SearchText))
                 {
                     return "Search Text is required.";
@@ -376,6 +477,28 @@ namespace EQTool.Models
         public Brush SearchTextBorderBrush =>
             string.IsNullOrWhiteSpace(SearchTextErrorMessge) ? Brushes.Gray : Brushes.Red;
 
+        public string SpellErrorMessge
+        {
+            get
+            {
+                if (!IsSpellTrigger)
+                {
+                    return string.Empty;
+                }
+                if (string.IsNullOrWhiteSpace(Model.SpellName))
+                {
+                    return "Spell is required.";
+                }
+                return SelectedSpell == null ? $"No spell named \"{Model.SpellName.Trim()}\" was found." : string.Empty;
+            }
+        }
+
+        public Visibility SpellErrorMessgeVisible =>
+            string.IsNullOrWhiteSpace(SpellErrorMessge) ? Visibility.Collapsed : Visibility.Visible;
+
+        public Brush SpellBorderBrush =>
+            string.IsNullOrWhiteSpace(SpellErrorMessge) ? Brushes.Gray : Brushes.Red;
+
         public string DisplayTextErrorMessge
         {
             get
@@ -394,8 +517,10 @@ namespace EQTool.Models
         {
             get
             {
+                // the Timer tab is unavailable to spell triggers, so a timer left configured from
+                // before a switch to Spell is ignored rather than blocking the save
                 var timer = Model.Timer;
-                if (timer == null || timer.TimerType == TimerType.NoTimer)
+                if (IsSpellTrigger || timer == null || timer.TimerType == TimerType.NoTimer)
                 {
                     return string.Empty;
                 }
@@ -457,7 +582,7 @@ namespace EQTool.Models
             get
             {
                 var counter = Model.Counter;
-                return counter != null && counter.ResetEnabled && counter.ResetAfter.TotalMilliseconds <= 0
+                return !IsSpellTrigger && counter != null && counter.ResetEnabled && counter.ResetAfter.TotalMilliseconds <= 0
                     ? "Counter reset time must be greater than zero when reset is enabled."
                     : string.Empty;
             }
@@ -488,7 +613,7 @@ namespace EQTool.Models
             return false;
         }
 
-        private bool TimerSelected => Model.Timer != null && Model.Timer.TimerType != TimerType.NoTimer;
+        private bool TimerSelected => !IsSpellTrigger && Model.Timer != null && Model.Timer.TimerType != TimerType.NoTimer;
 
         public Brush TimerNameBorderBrush =>
             TimerSelected && string.IsNullOrWhiteSpace(Model.Timer.TimerName) ? Brushes.Red : Brushes.Gray;
@@ -501,8 +626,7 @@ namespace EQTool.Models
                 ? Brushes.Red : Brushes.Gray;
 
         public Brush CounterDurationBorderBrush =>
-            Model.Counter != null && Model.Counter.ResetEnabled && Model.Counter.ResetAfter.TotalMilliseconds <= 0
-                ? Brushes.Red : Brushes.Gray;
+            !string.IsNullOrWhiteSpace(CounterErrorMessge) ? Brushes.Red : Brushes.Gray;
 
         public bool BasicTabHasError => !string.IsNullOrWhiteSpace(DisplayTextErrorMessge);
         public bool TimerTabHasError => !string.IsNullOrWhiteSpace(TimerErrorMessge);
@@ -535,6 +659,7 @@ namespace EQTool.Models
         public bool IsSavable =>
             string.IsNullOrWhiteSpace(TriggerNameErrorMessge) &&
             string.IsNullOrWhiteSpace(SearchTextErrorMessge) &&
+            string.IsNullOrWhiteSpace(SpellErrorMessge) &&
             string.IsNullOrWhiteSpace(DisplayTextErrorMessge) &&
             string.IsNullOrWhiteSpace(TimerErrorMessge) &&
             string.IsNullOrWhiteSpace(TimerEndingErrorMessge) &&

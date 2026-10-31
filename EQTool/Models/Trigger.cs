@@ -96,6 +96,18 @@ namespace EQTool.Models
         [Newtonsoft.Json.JsonIgnore]
         public bool EffectiveUseRegex => UseRegex ?? true;
 
+        // LogLine triggers match SearchText against each log line. Spell triggers instead fire when
+        // the spell tracker resolves a landing of SpellName (see SpellHandlerService), so they never
+        // look at SearchText, and their Timer Ending / Timer Ended outputs follow the spell's own
+        // duration rather than a Timer tab timer.
+        public TriggerEventType EventType { get; set; } = TriggerEventType.LogLine;
+
+        [Newtonsoft.Json.JsonIgnore]
+        public bool IsSpellTrigger => EventType == TriggerEventType.Spell;
+
+        public string SpellName { get; set; }
+        public SpellTriggerTarget SpellTarget { get; set; } = SpellTriggerTarget.Anyone;
+
         public TriggerOutput Basic { get; set; }
 
         // Timer / counter configuration. Null == not configured.
@@ -252,7 +264,39 @@ namespace EQTool.Models
 
         public string Expand(string text)
         {
-            return string.IsNullOrEmpty(text) ? string.Empty : ExpandOutputText(text);
+            return string.IsNullOrEmpty(text) ? string.Empty : ExpandOutputText(text, valueHash);
+        }
+
+        // Expands against a snapshot taken by CaptureValues, so a timer that fires later reports
+        // the match that started it rather than whatever has matched since.
+        public string Expand(string text, Hashtable values)
+        {
+            return string.IsNullOrEmpty(text) ? string.Empty : ExpandOutputText(text, values ?? valueHash);
+        }
+
+        public Hashtable CaptureValues()
+        {
+            return (Hashtable)valueHash.Clone();
+        }
+
+        // Spell triggers match on the spell the tracker resolved, not on log text. A match exposes
+        // {spell} and {target} to the output fields; the player's own landings report "You".
+        public bool MatchesSpell(string spellName, string targetName)
+        {
+            if (string.IsNullOrWhiteSpace(SpellName) || !string.Equals(SpellName.Trim(), spellName, StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            var isYou = string.Equals(targetName, EQSpells.SpaceYou, StringComparison.OrdinalIgnoreCase);
+            if ((SpellTarget == SpellTriggerTarget.You && !isYou) || (SpellTarget == SpellTriggerTarget.Others && isYou))
+            {
+                return false;
+            }
+
+            valueHash["spell"] = spellName;
+            valueHash["target"] = targetName?.Trim() ?? string.Empty;
+            return true;
         }
 
         public bool Matches(string line)
@@ -297,6 +341,11 @@ namespace EQTool.Models
 
         private string ExpandOutputText(string unExpandedText)
         {
+            return ExpandOutputText(unExpandedText, valueHash);
+        }
+
+        private string ExpandOutputText(string unExpandedText, Hashtable values)
+        {
             var rv = unExpandedText.Replace("{c}", PlayerName ?? string.Empty).Replace("{C}", PlayerName ?? string.Empty);
 
             // replace the {COUNTER} macro before the generic placeholder loop, since {COUNTER}
@@ -319,8 +368,8 @@ namespace EQTool.Models
                 var group_name = m.Groups["xxx"].Value;
 
                 // this key should be present, but confirm in case user made a typo
-                return valueHash.ContainsKey(group_name)
-                    ? $"{valueHash[group_name]}"
+                return values.ContainsKey(group_name)
+                    ? $"{values[group_name]}"
                     : m.Value;
             });
             return rv;

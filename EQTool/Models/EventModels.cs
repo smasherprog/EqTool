@@ -182,6 +182,20 @@ namespace EQTool.Models
         public string TargetName { get; set; }
     }
 
+    // Raised by SpellHandlerService once a landing has been resolved to one spell and target (after
+    // cast-time matching and disambiguation). TargetName is EQSpells.SpaceYou for the player, or
+    // UnknownTarget when the spell landed on someone the log doesn't name (charms).
+    // Duration is the one the spell window uses, or zero for spells tracked as counts.
+    public class SpellLandedEvent : BaseLogParseEvent
+    {
+        // reads naturally where {target} is substituted: "Allure on your target wore off"
+        public const string UnknownTarget = "your target";
+
+        public Spell Spell { get; set; }
+        public string TargetName { get; set; }
+        public TimeSpan Duration { get; set; }
+    }
+
     public class ResistSpellEvent : BaseLogParseEvent
     {
         public Spell Spell { get; set; }

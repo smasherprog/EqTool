@@ -12,6 +12,22 @@ namespace EQTool.Models
         SoundFile
     }
 
+    // What fires a trigger. Values are persisted as integers; triggers saved before this existed
+    // have no value and load as LogLine.
+    public enum TriggerEventType
+    {
+        LogLine = 0,
+        Spell = 1
+    }
+
+    // Which landings a spell trigger fires on, relative to the logged-in player.
+    public enum SpellTriggerTarget
+    {
+        Anyone = 0,
+        You = 1,
+        Others = 2
+    }
+
     public enum TimerType
     {
         NoTimer,

@@ -1,5 +1,6 @@
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Handlers;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SettingsComponents;
 using System;
@@ -13,13 +14,17 @@ namespace EQTool.UI.SettingsComponents
     {
         private readonly TreeTrigger treeTrigger;
         private readonly LogParser logParser;
+        private readonly LogEvents logEvents;
+        private readonly TriggerHandler triggerHandler;
         private readonly ActivePlayer activePlayer;
         private int validationErrorCount = 0;
 
-        public SettingsTrigger(TreeTrigger treeTrigger, LogParser logParser, ActivePlayer activePlayer)
+        public SettingsTrigger(TreeTrigger treeTrigger, LogParser logParser, LogEvents logEvents, TriggerHandler triggerHandler, ActivePlayer activePlayer)
         {
             this.treeTrigger = treeTrigger;
             this.logParser = logParser;
+            this.logEvents = logEvents;
+            this.triggerHandler = triggerHandler;
             this.activePlayer = activePlayer;
             DataContext = treeTrigger.Trigger;
             InitializeComponent();
@@ -37,15 +42,40 @@ namespace EQTool.UI.SettingsComponents
 
             // Pre-fill the Test box with a log line that matches this trigger, so the user can
             // click Test straight away and see it fire (and can edit it to try variations).
-            TestLogLineText.Text = TriggerTestSampleGenerator.Generate(treeTrigger.Trigger.Model, activePlayer.Player?.Name);
+            TestLogLineText.Text = GenerateTestSample();
 
             UpdateSaveEnabled();
+        }
+
+        private string GenerateTestSample()
+        {
+            var vm = treeTrigger.Trigger;
+            return vm.IsSpellTrigger
+                ? TriggerTestSampleGenerator.Generate(vm.SelectedSpell, vm.SpellTarget)
+                : TriggerTestSampleGenerator.Generate(vm.Model, activePlayer.Player?.Name);
         }
 
         private void Trigger_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // any edit can change overall validity (name/search text)
             UpdateSaveEnabled();
+
+            if (e.PropertyName == nameof(TriggerViewModel.EventType) ||
+                e.PropertyName == nameof(TriggerViewModel.SpellName) ||
+                e.PropertyName == nameof(TriggerViewModel.SpellTarget))
+            {
+                // a spell trigger starts with no spell picked, so its sample has to follow the pick
+                TestLogLineText.Text = GenerateTestSample();
+                TestResultText.Text = string.Empty;
+            }
+
+            // A disabled tab that is already selected keeps showing its content, so move off the
+            // Timer / Counter tabs when the trigger becomes a spell trigger.
+            if (e.PropertyName == nameof(TriggerViewModel.EventType) && treeTrigger.Trigger.IsSpellTrigger &&
+                (EditorTabs.SelectedItem == TimerTab || EditorTabs.SelectedItem == CounterTab))
+            {
+                EditorTabs.SelectedIndex = 0;
+            }
         }
 
         private void OnValidationError(object sender, ValidationErrorEventArgs e)
@@ -82,7 +112,8 @@ namespace EQTool.UI.SettingsComponents
                 return;
             }
 
-            var trigger = (DataContext as TriggerViewModel)?.Model;
+            var vm = DataContext as TriggerViewModel;
+            var trigger = vm?.Model;
             if (trigger == null)
             {
                 return;
@@ -95,16 +126,84 @@ namespace EQTool.UI.SettingsComponents
             {
                 activePlayer.Player.Zone = trigger.Zone;
             }
-            logParser.Push(line, DateTime.Now);
-            if (trigger.Matches(line))
+
+            // {c} expands to the current player, as it does when the live handler fires the trigger
+            trigger.PlayerName = activePlayer.Player.Name ?? string.Empty;
+
+            // The live handler only fires saved, enabled triggers, and gives each line (or landing)
+            // to the first trigger that matches it, so note whether it fires this one while the line
+            // runs through the parser (synchronously, since this is the UI thread).
+            var firedLive = false;
+            void OnTriggerFired(object s, Trigger fired)
             {
-                TestResultText.Text = "Matched — outputs/timers fired.";
-                TestResultText.Foreground = Brushes.Green;
+                firedLive |= fired == trigger;
             }
-            else
+
+            // A spell trigger matches what the spell tracker makes of the line, so also catch the
+            // landing it resolves.
+            SpellLandedEvent landing = null;
+            void OnSpellLanded(object s, SpellLandedEvent landed)
+            {
+                if (landing == null && landed.Spell != null && trigger.MatchesSpell(landed.Spell.name, landed.TargetName))
+                {
+                    landing = landed;
+                }
+            }
+
+            triggerHandler.TriggerFired += OnTriggerFired;
+            if (trigger.IsSpellTrigger)
+            {
+                logEvents.SpellLandedEvent += OnSpellLanded;
+            }
+            try
+            {
+                logParser.Push(line, DateTime.Now);
+            }
+            finally
+            {
+                triggerHandler.TriggerFired -= OnTriggerFired;
+                logEvents.SpellLandedEvent -= OnSpellLanded;
+            }
+
+            var matched = trigger.IsSpellTrigger ? landing != null : trigger.Matches(line);
+            if (!matched)
             {
                 TestResultText.Text = "No match.";
                 TestResultText.Foreground = Brushes.DarkRed;
+                return;
+            }
+
+            if (!firedLive)
+            {
+                if (landing != null)
+                {
+                    triggerHandler.FireSpellTrigger(trigger, landing);
+                }
+                else
+                {
+                    triggerHandler.FireLogLineTrigger(trigger);
+                }
+            }
+
+            if (!vm.IsSaved)
+            {
+                TestResultText.Text = "Matched — outputs/timers fired for this test only. Click Save to make it fire in game.";
+                TestResultText.Foreground = Brushes.DarkOrange;
+            }
+            else if (!trigger.TriggerEnabled)
+            {
+                TestResultText.Text = "Matched — outputs/timers fired for this test only. Check Trigger Enabled to make it fire in game.";
+                TestResultText.Foreground = Brushes.DarkOrange;
+            }
+            else if (!firedLive)
+            {
+                TestResultText.Text = "Matched — outputs/timers fired for this test, but the trigger didn't fire on its own (an earlier trigger may match this first).";
+                TestResultText.Foreground = Brushes.DarkOrange;
+            }
+            else
+            {
+                TestResultText.Text = "Matched — outputs/timers fired.";
+                TestResultText.Foreground = Brushes.Green;
             }
         }
 

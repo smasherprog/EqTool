@@ -38,7 +38,7 @@ namespace EQTool.Services.Handlers
                         if (spell == null)
                         {
                             eQSpells.AllSpells.TryGetValue(e.Spell.name, out var s);
-                            spellHandlerService.Handle(s, currentarget, 0, e.TimeStamp);
+                            spellHandlerService.Handle(s, currentarget, 0, e.TimeStamp, landed: false);
                         }
                         else
                         {
