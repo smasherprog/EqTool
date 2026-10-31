@@ -235,6 +235,7 @@ namespace EQTool
                 }
             }
             catch { }
+
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             try
             {
