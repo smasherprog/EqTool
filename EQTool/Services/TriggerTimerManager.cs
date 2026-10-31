@@ -177,6 +177,20 @@ namespace EQTool.Services
             }
         }
 
+        public void Remove(BaseTriggerViewModel row)
+        {
+            if (row == null)
+            {
+                return;
+            }
+
+            lock (sync)
+            {
+                _ = activeTimers.RemoveAll(a => a.ViewModel == row ||
+                    (a.IsSpellTimer && row.GroupName == EQSpells.SpaceYou && string.Equals(a.SpellName, row.Name, StringComparison.OrdinalIgnoreCase)));
+            }
+        }
+
         // A spell timer can run for hours with no spell window row of its own to dismiss, so it is
         // dropped once its trigger no longer stands behind it: switched to another spell or type,
         // or (when it started live) disabled or deleted.

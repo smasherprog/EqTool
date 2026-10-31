@@ -168,10 +168,13 @@ namespace EQTool.ViewModels.SettingsComponents
                 .ThenBy(c => c.Name, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
-            parent.Children.Clear();
-            foreach (var c in ordered)
+            for (var i = 0; i < ordered.Count; i++)
             {
-                parent.Children.Add(c);
+                var current = parent.Children.IndexOf(ordered[i]);
+                if (current != i)
+                {
+                    parent.Children.Move(current, i);
+                }
             }
         }
 

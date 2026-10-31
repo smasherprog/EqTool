@@ -17,6 +17,7 @@ namespace EQTool.UI
         private readonly SettingsWindowViewModel settingsWindowViewModel;
         private readonly IAppDispatcher appDispatcher;
         private readonly SlainHandler slainHandler;
+        private readonly TriggerTimerManager triggerTimerManager;
 
         public SpellWindow(
             TimersService timersService,
@@ -28,9 +29,11 @@ namespace EQTool.UI
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher, ConsoleViewModel consoleViewModel,
             SlainHandler slainHandler,
-            LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings, consoleViewModel)
+            LoggingService loggingService,
+            TriggerTimerManager triggerTimerManager) : base(settings.SpellWindowState, toolSettingsLoad, settings, consoleViewModel)
         {
             this.slainHandler = slainHandler;
+            this.triggerTimerManager = triggerTimerManager;
             this.appDispatcher = appDispatcher;
             this.settingsWindowViewModel = settingsWindowViewModel;
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
@@ -45,6 +48,7 @@ namespace EQTool.UI
             appDispatcher.DispatchUI(() =>
             {
                 _ = spellWindowViewModel.SpellList.Remove(name as BaseTriggerViewModel);
+                triggerTimerManager.Remove(name as BaseTriggerViewModel);
             });
         }
 
@@ -57,6 +61,7 @@ namespace EQTool.UI
                 foreach (var item in items)
                 {
                     _ = spellWindowViewModel.SpellList.Remove(item);
+                    triggerTimerManager.Remove(item);
                 }
             });
         }
