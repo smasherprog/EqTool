@@ -152,6 +152,13 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+
+  <!-- Shipped builds carry their own runtime so users do not have to install .NET, and so the
+       self-updater can move a user off the .NET Framework build without a runtime prompt. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' Or '$(Configuration)' == 'Beta' Or '$(Configuration)' == 'Linux'">
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
   <PropertyGroup>
     <ApplicationIcon>Images\logo.ico</ApplicationIcon>
   </PropertyGroup>
