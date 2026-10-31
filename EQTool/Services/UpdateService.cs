@@ -72,6 +72,11 @@ namespace EQTool.Services
 
         private const string programName = "EQTool.exe";
 
+        private static string VersionNumber(string version)
+        {
+            return new string(version.Where(a => char.IsDigit(a) || a == '.').ToArray()).Trim('.');
+        }
+
         public static UpdateStatus ApplyUpdate(string parameter)
         {
             if (!string.IsNullOrWhiteSpace(parameter))
@@ -144,14 +149,13 @@ namespace EQTool.Services
                     currentversion = currentversion1.Replace(versiontype, string.Empty);
                 }
 
-                var version = new string(currentversion.Where(a => char.IsDigit(a) || a == '.').ToArray());
-                version = version.Trim('.');
+                var version = VersionNumber(currentversion);
                 var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                 var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
                 var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null && a.prerelease == prerelease && a.assets != null && a.assets.Any()).ToList();
                 var release = releases.FirstOrDefault();
                 var downloadurl = release.assets.Where(a => !string.IsNullOrWhiteSpace(a.browser_download_url) && a.browser_download_url.Contains(VersionType)).Select(a => a.browser_download_url).FirstOrDefault();
-                var newversion = release.tag_name;
+                var newversion = VersionNumber(release.tag_name);
                 if (version != newversion && !IsDebug)
                 {
                     appDispatcher?.DispatchUI(() =>
@@ -176,10 +180,6 @@ namespace EQTool.Services
                         _ = System.IO.Directory.CreateDirectory(newVersionDir);
                         File.WriteAllBytes(Paths.Combine(newVersionDir, filename), fileBytes);
                     }
-                    appDispatcher?.DispatchUI(() =>
-                    {
-                        System.Windows.Application.Current.Shutdown();
-                    });
                     var path = Paths.Combine(newVersionDir, programName);
                     _ = System.Diagnostics.Process.Start(new ProcessStartInfo
                     {
@@ -187,6 +187,10 @@ namespace EQTool.Services
                         Arguments = "ping",
                         UseShellExecute = true,
                         WorkingDirectory = newVersionDir
+                    });
+                    appDispatcher?.DispatchUI(() =>
+                    {
+                        System.Windows.Application.Current.Shutdown();
                     });
                 }
             }
