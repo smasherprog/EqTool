@@ -97,7 +97,7 @@ namespace EQTool.Models
         public bool EffectiveUseRegex => UseRegex ?? true;
 
         // LogLine triggers match SearchText against each log line. Spell triggers instead fire when
-        // the spell tracker resolves a landing of SpellName (see SpellHandlerService), so they never
+        // the spell tracker resolves a landing of SpellName on the player (see SpellHandlerService), so they never
         // look at SearchText, and their Timer Ending / Timer Ended outputs follow the spell's own
         // duration rather than a Timer tab timer.
         public TriggerEventType EventType { get; set; } = TriggerEventType.LogLine;
@@ -106,7 +106,6 @@ namespace EQTool.Models
         public bool IsSpellTrigger => EventType == TriggerEventType.Spell;
 
         public string SpellName { get; set; }
-        public SpellTriggerTarget SpellTarget { get; set; } = SpellTriggerTarget.Anyone;
 
         public TriggerOutput Basic { get; set; }
 
@@ -280,22 +279,15 @@ namespace EQTool.Models
         }
 
         // Spell triggers match on the spell the tracker resolved, not on log text. A match exposes
-        // {spell} and {target} to the output fields; the player's own landings report "You".
-        public bool MatchesSpell(string spellName, string targetName)
+        // {spell} to the output fields.
+        public bool MatchesSpell(string spellName)
         {
             if (string.IsNullOrWhiteSpace(SpellName) || !string.Equals(SpellName.Trim(), spellName, StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
-            var isYou = string.Equals(targetName, EQSpells.SpaceYou, StringComparison.OrdinalIgnoreCase);
-            if ((SpellTarget == SpellTriggerTarget.You && !isYou) || (SpellTarget == SpellTriggerTarget.Others && isYou))
-            {
-                return false;
-            }
-
             valueHash["spell"] = spellName;
-            valueHash["target"] = targetName?.Trim() ?? string.Empty;
             return true;
         }
 

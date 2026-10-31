@@ -20,14 +20,6 @@ namespace EQTool.Models
         Spell = 1
     }
 
-    // Which landings a spell trigger fires on, relative to the logged-in player.
-    public enum SpellTriggerTarget
-    {
-        Anyone = 0,
-        You = 1,
-        Others = 2
-    }
-
     public enum TimerType
     {
         NoTimer,

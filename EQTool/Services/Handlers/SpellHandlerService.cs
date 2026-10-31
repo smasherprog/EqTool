@@ -98,9 +98,7 @@ namespace EQTool.Services.Handlers
             this.logEvents = logEvents;
         }
 
-        // landed is false when a caller only wants the spell window updated, e.g. a resisted
-        // counted spell still gets its counter row but must not reach spell triggers as a landing
-        public void Handle(Spell spell, string targetName, int delayOffset, DateTime timestamp, bool landed = true)
+        public void Handle(Spell spell, string targetName, int delayOffset, DateTime timestamp)
         {
             var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
             var grpname = targetName;
@@ -321,18 +319,16 @@ namespace EQTool.Services.Handlers
                 }
             }
 
-            if (!landed)
+            // Charms never log a landing, so they reach here guessed from the cast and filed under
+            // " You " for the spell window. They land on someone else, though.
+            if (targetName != EQSpells.SpaceYou || AllCharmSpells.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
             }
 
-            // Charms never log a landing, so they reach here guessed from the cast and filed under
-            // " You " for the spell window. They land on someone else, though, so report that.
-            var isCharm = AllCharmSpells.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase));
             logEvents.Handle(new SpellLandedEvent
             {
                 Spell = spell,
-                TargetName = isCharm && targetName == EQSpells.SpaceYou ? SpellLandedEvent.UnknownTarget : targetName,
                 Duration = landedDuration,
                 TimeStamp = timestamp
             });

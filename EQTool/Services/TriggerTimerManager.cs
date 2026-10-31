@@ -1,5 +1,4 @@
 using EQTool.Models;
-using EQTool.Services.Handlers;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
@@ -26,7 +25,6 @@ namespace EQTool.Services
             // Set for a spell trigger's timer, which tracks the landed spell and has no ViewModel
             // of its own (the spell is already listed in the spell window).
             public string SpellName;
-            public string SpellTarget;
             public bool IsSpellTimer => SpellName != null;
 
             // whether the trigger was saved and enabled when this timer (re)started, as opposed to
@@ -69,18 +67,7 @@ namespace EQTool.Services
             ticker.Tick += (s, e) => Tick();
             ticker.Start();
 
-            logEvents.SpellWornOffSelfEvent += (s, e) => EndSpellTimers(e.SpellNames, self: true);
-            logEvents.SpellWornOffOtherEvent += LogEvents_SpellWornOffOtherEvent;
-        }
-
-        private void LogEvents_SpellWornOffOtherEvent(object sender, SpellWornOffOtherEvent e)
-        {
-            // a charm break arrives as this generic message; like the spell window, read it as
-            // whichever charm spell is running
-            var spellNames = e.Line == "Your charm spell has worn off."
-                ? SpellHandlerService.AllCharmSpells
-                : new List<string> { e.SpellName };
-            EndSpellTimers(spellNames, self: false);
+            logEvents.SpellWornOffSelfEvent += (s, e) => EndSpellTimers(e.SpellNames);
         }
 
         public void HandleTimerMatch(Trigger trigger)
@@ -160,8 +147,8 @@ namespace EQTool.Services
         }
 
         // Arms Timer Ending / Timer Ended for a spell trigger using the landed spell's duration.
-        // One timer per trigger and target: the spell landing again on the same target refreshes it.
-        public void HandleSpellMatch(Trigger trigger, string spellName, string targetName, TimeSpan duration)
+        // One timer per trigger: the spell landing again refreshes it.
+        public void HandleSpellMatch(Trigger trigger, string spellName, TimeSpan duration)
         {
             if (trigger == null || duration.TotalMilliseconds <= 0)
             {
@@ -174,10 +161,10 @@ namespace EQTool.Services
 
             lock (sync)
             {
-                var existing = activeTimers.FirstOrDefault(a => a.IsSpellTimer && a.Trigger == trigger && string.Equals(a.SpellTarget, targetName, StringComparison.OrdinalIgnoreCase));
+                var existing = activeTimers.FirstOrDefault(a => a.IsSpellTimer && a.Trigger == trigger);
                 if (existing == null)
                 {
-                    existing = new ActiveTimer { Trigger = trigger, SpellName = spellName, SpellTarget = targetName };
+                    existing = new ActiveTimer { Trigger = trigger, SpellName = spellName };
                     activeTimers.Add(existing);
                 }
                 existing.EndTimeUtc = DateTime.UtcNow.Add(duration);
@@ -209,7 +196,7 @@ namespace EQTool.Services
         // A spell can end before its computed duration (dispelled, root broke, clicked off), so its
         // "worn off" message ends the matching spell timer and fires Timer Ended then. Like the spell
         // window, this only acts when the message identifies a single timer.
-        private void EndSpellTimers(List<string> spellNames, bool self)
+        private void EndSpellTimers(List<string> spellNames)
         {
             if (spellNames == null || !spellNames.Any())
             {
@@ -220,7 +207,6 @@ namespace EQTool.Services
             lock (sync)
             {
                 var matches = activeTimers.Where(a => a.IsSpellTimer && !IsAbandoned(a) &&
-                    string.Equals(a.SpellTarget, EQSpells.SpaceYou, StringComparison.OrdinalIgnoreCase) == self &&
                     spellNames.Any(n => string.Equals(n, a.SpellName, StringComparison.OrdinalIgnoreCase))).ToList();
                 if (matches.Count != 1)
                 {

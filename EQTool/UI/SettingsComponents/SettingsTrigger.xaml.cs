@@ -51,7 +51,7 @@ namespace EQTool.UI.SettingsComponents
         {
             var vm = treeTrigger.Trigger;
             return vm.IsSpellTrigger
-                ? TriggerTestSampleGenerator.Generate(vm.SelectedSpell, vm.SpellTarget)
+                ? TriggerTestSampleGenerator.Generate(vm.SelectedSpell)
                 : TriggerTestSampleGenerator.Generate(vm.Model, activePlayer.Player?.Name);
         }
 
@@ -61,8 +61,7 @@ namespace EQTool.UI.SettingsComponents
             UpdateSaveEnabled();
 
             if (e.PropertyName == nameof(TriggerViewModel.EventType) ||
-                e.PropertyName == nameof(TriggerViewModel.SpellName) ||
-                e.PropertyName == nameof(TriggerViewModel.SpellTarget))
+                e.PropertyName == nameof(TriggerViewModel.SpellName))
             {
                 // a spell trigger starts with no spell picked, so its sample has to follow the pick
                 TestLogLineText.Text = GenerateTestSample();
@@ -144,7 +143,7 @@ namespace EQTool.UI.SettingsComponents
             SpellLandedEvent landing = null;
             void OnSpellLanded(object s, SpellLandedEvent landed)
             {
-                if (landing == null && landed.Spell != null && trigger.MatchesSpell(landed.Spell.name, landed.TargetName))
+                if (landing == null && landed.Spell != null && trigger.MatchesSpell(landed.Spell.name))
                 {
                     landing = landed;
                 }

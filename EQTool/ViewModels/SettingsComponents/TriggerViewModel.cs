@@ -261,19 +261,6 @@ namespace EQTool.Models
             }
         }
 
-        public SpellTriggerTarget SpellTarget
-        {
-            get => Model.SpellTarget;
-            set { Model.SpellTarget = value; OnPropertyChanged(); }
-        }
-
-        public List<KeyValuePair<SpellTriggerTarget, string>> SpellTargetOptions => new List<KeyValuePair<SpellTriggerTarget, string>>
-        {
-            new KeyValuePair<SpellTriggerTarget, string>(SpellTriggerTarget.Anyone, "Anyone"),
-            new KeyValuePair<SpellTriggerTarget, string>(SpellTriggerTarget.You, "You"),
-            new KeyValuePair<SpellTriggerTarget, string>(SpellTriggerTarget.Others, "Others"),
-        };
-
         private List<Spell> _spellOptions;
         public List<Spell> SpellOptions
         {

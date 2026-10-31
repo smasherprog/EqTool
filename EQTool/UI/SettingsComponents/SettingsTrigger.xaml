@@ -79,42 +79,30 @@
 
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="Spell" VerticalAlignment="Center" Margin="0,2,8,2"
                                Visibility="{Binding SpellVisibility}"/>
-                    <Grid Grid.Row="3" Grid.Column="1" Margin="0,2,0,2" Visibility="{Binding SpellVisibility}"
-                          IsEnabled="{Binding IsEditable}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <!-- Thousands of spells: the virtualizing panel keeps the dropdown responsive,
-                             and typing jumps to the first spell with that name prefix. -->
-                        <ComboBox Grid.Column="0" IsEditable="True" IsTextSearchEnabled="True"
-                                  TextSearch.TextPath="name"
-                                  BorderBrush="{Binding SpellBorderBrush}"
-                                  ItemsSource="{Binding SpellOptions}"
-                                  Text="{Binding SpellName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}"
-                                  ToolTip="Fire when this spell lands. Use {spell} and {target} in the outputs.">
-                            <ComboBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel/>
-                                </ItemsPanelTemplate>
-                            </ComboBox.ItemsPanel>
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="16" Height="16" Margin="0,0,4,0" Source="{Binding CroppedIcon}"/>
-                                        <TextBlock Text="{Binding name}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBlock Grid.Column="1" Text="Lands On" VerticalAlignment="Center" Margin="12,0,6,0"/>
-                        <ComboBox Grid.Column="2" MinWidth="90"
-                                  ItemsSource="{Binding SpellTargetOptions}"
-                                  SelectedValuePath="Key" DisplayMemberPath="Value"
-                                  SelectedValue="{Binding SpellTarget, Mode=TwoWay}"
-                                  ToolTip="Fire only when the spell lands on you, only when it lands on someone else, or either."/>
-                    </Grid>
+                    <!-- Thousands of spells: the virtualizing panel keeps the dropdown responsive,
+                         and typing jumps to the first spell with that name prefix. -->
+                    <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,2,0,2" Visibility="{Binding SpellVisibility}"
+                              IsEnabled="{Binding IsEditable}"
+                              IsEditable="True" IsTextSearchEnabled="True"
+                              TextSearch.TextPath="name"
+                              BorderBrush="{Binding SpellBorderBrush}"
+                              ItemsSource="{Binding SpellOptions}"
+                              Text="{Binding SpellName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}"
+                              ToolTip="Fire when this spell lands on you. Use {spell} in the outputs.">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16" Margin="0,0,4,0" Source="{Binding CroppedIcon}"/>
+                                    <TextBlock Text="{Binding name}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <TextBlock Grid.Row="4" Grid.Column="1" Foreground="Red"
                                Visibility="{Binding SpellErrorMessgeVisible}" Text="{Binding SpellErrorMessge}"/>
 

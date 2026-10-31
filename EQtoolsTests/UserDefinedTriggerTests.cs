@@ -61,7 +61,7 @@ namespace EQtoolsTests
             return spoken;
         }
 
-        private Trigger AddSpellTrigger(string spellName, SpellTriggerTarget target, string audioText)
+        private Trigger AddSpellTrigger(string spellName, string audioText)
         {
             var trigger = new Trigger
             {
@@ -69,7 +69,6 @@ namespace EQtoolsTests
                 TriggerName = "Spell Trigger",
                 EventType = TriggerEventType.Spell,
                 SpellName = spellName,
-                SpellTarget = target,
                 AudioTextEnabled = audioText != null,
                 AudioText = audioText
             };
@@ -80,32 +79,21 @@ namespace EQtoolsTests
         [TestMethod]
         public void SpellTriggerFiresWhenSpellLandsOnYou()
         {
-            _ = AddSpellTrigger("Frostreaver's Blessing", SpellTriggerTarget.You, "{spell} on {target}");
+            _ = AddSpellTrigger("Frostreaver's Blessing", "{spell} landed");
             var spoken = CaptureSpeech();
 
             logParser.Push("You feel the blessing of ancient Coldain heroes.", DateTime.Now);
 
-            CollectionAssert.Contains(spoken, "Frostreaver's Blessing on You");
+            CollectionAssert.Contains(spoken, "Frostreaver's Blessing landed");
         }
 
         [TestMethod]
-        public void SpellTriggerFiresWhenSpellLandsOnSomeoneElse()
+        public void SpellTriggerIgnoresLandingsOnSomeoneElse()
         {
-            _ = AddSpellTrigger("Divine Barrier", SpellTriggerTarget.Others, "{spell} on {target}");
+            _ = AddSpellTrigger("Divine Barrier", "landed");
             var spoken = CaptureSpeech();
 
             logParser.Push("Someone is surrounded by a divine barrier.", DateTime.Now);
-
-            CollectionAssert.Contains(spoken, "Divine Barrier on Someone");
-        }
-
-        [TestMethod]
-        public void SpellTriggerSkipsLandingsOnTheWrongTarget()
-        {
-            _ = AddSpellTrigger("Frostreaver's Blessing", SpellTriggerTarget.Others, "landed");
-            var spoken = CaptureSpeech();
-
-            logParser.Push("You feel the blessing of ancient Coldain heroes.", DateTime.Now);
 
             CollectionAssert.DoesNotContain(spoken, "landed");
         }
@@ -114,7 +102,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void SpellTriggerIgnoresItsSearchText()
         {
-            var trigger = AddSpellTrigger("Frostreaver's Blessing", SpellTriggerTarget.Anyone, "landed");
+            var trigger = AddSpellTrigger("Frostreaver's Blessing", "landed");
             trigger.SearchText = "^Can you hear me now?";
             var spoken = CaptureSpeech();
 
@@ -126,28 +114,27 @@ namespace EQtoolsTests
         [TestMethod]
         public void SpellTriggerTimerEndedFiresWhenTheSpellWearsOff()
         {
-            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
-            player.Player.Level = 53;
-            var trigger = AddSpellTrigger("Envenomed Bolt", SpellTriggerTarget.Others, null);
+            player.Player.Level = 60;
+            var trigger = AddSpellTrigger("Aegolism", null);
             trigger.TimerEnded = new TriggerTimerEnded
             {
                 Enabled = true,
-                Output = new TriggerOutput { AudioType = TriggerAudioType.TextToSpeech, TtsText = "{spell} on {target} wore off" }
+                Output = new TriggerOutput { AudioType = TriggerAudioType.TextToSpeech, TtsText = "{spell} wore off" }
             };
             var spoken = CaptureSpeech();
 
-            logParser.Push("Someone has been poisoned.", DateTime.Now);
+            logParser.Push("You are filled with the power of Aegolism.", DateTime.Now);
             Assert.IsEmpty(spoken);
-            logParser.Push("Your Envenomed Bolt spell has worn off.", DateTime.Now.AddSeconds(40));
+            logParser.Push("Your aegolism fades.", DateTime.Now.AddSeconds(40));
 
-            CollectionAssert.Contains(spoken, "Envenomed Bolt on Someone wore off");
+            CollectionAssert.Contains(spoken, "Aegolism wore off");
         }
 
         [TestMethod]
         public void SpellTriggerTimerEndingShowsOverlayText()
         {
             player.Player.Level = 60;
-            var trigger = AddSpellTrigger("Aegolism", SpellTriggerTarget.You, null);
+            var trigger = AddSpellTrigger("Aegolism", null);
             trigger.TimerEnding = new TriggerTimerEnding
             {
                 Enabled = true,
@@ -172,7 +159,7 @@ namespace EQtoolsTests
         private Trigger AddAegolismTimerTrigger(TriggerTimerEnding ending, TriggerTimerEnded ended)
         {
             player.Player.Level = 60;
-            var trigger = AddSpellTrigger("Aegolism", SpellTriggerTarget.You, null);
+            var trigger = AddSpellTrigger("Aegolism", null);
             trigger.TimerEnding = ending ?? new TriggerTimerEnding();
             trigger.TimerEnded = ended ?? new TriggerTimerEnded();
             return trigger;
@@ -233,56 +220,30 @@ namespace EQtoolsTests
             CollectionAssert.Contains(spoken, "wore off");
         }
 
-        // A resisted counted spell still gets a counter row in the spell window, but it didn't land.
         [TestMethod]
-        public void SpellTriggerIgnoresAResistedSpell()
-        {
-            _ = AddSpellTrigger("Rage of Vallon", SpellTriggerTarget.Anyone, "landed");
-            var spoken = CaptureSpeech();
-            var d = DateTime.Now;
-
-            logParser.Push("You slash Bristlebane Puppet for 31 points of damage.", d);
-            logParser.Push("Your target resisted the Rage of Vallon spell.", d);
-            CollectionAssert.DoesNotContain(spoken, "landed");
-
-            logParser.Push("Bristlebane Puppet is weakened by the Rage of Vallon.", d.AddSeconds(1));
-            CollectionAssert.Contains(spoken, "landed");
-        }
-
-        // Charms never log a landing (it is guessed from the cast) and break with a generic message.
-        [TestMethod]
-        public void CharmSpellTriggerFiresOnSomeoneElseAndEndsOnTheCharmBreak()
+        public void CharmSpellTriggerIgnoresTheLandingGuessedFromTheCast()
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Enchanter;
             player.Player.Level = 60;
-            var trigger = AddSpellTrigger("Allure", SpellTriggerTarget.Others, "{spell} on {target}");
-            trigger.TimerEnded = new TriggerTimerEnded
-            {
-                Enabled = true,
-                Output = new TriggerOutput { AudioType = TriggerAudioType.TextToSpeech, TtsText = "{spell} broke" }
-            };
+            _ = AddSpellTrigger("Allure", "landed");
             var spoken = CaptureSpeech();
             var d = DateTime.Now;
 
             logParser.Push("You begin casting Allure.", d);
             logParser.Push("You can't use that command right now...", d.AddSeconds(10));
-            CollectionAssert.Contains(spoken, "Allure on your target");
 
-            logParser.Push("Your charm spell has worn off.", d.AddSeconds(30));
-            CollectionAssert.Contains(spoken, "Allure broke");
+            CollectionAssert.DoesNotContain(spoken, "landed");
         }
 
         // The editor pre-fills its Test box with this sample, so it has to actually fire the trigger.
         [TestMethod]
-        [DataRow("Frostreaver's Blessing", SpellTriggerTarget.You)]
-        [DataRow("Divine Barrier", SpellTriggerTarget.Others)]
-        public void SpellTriggerSampleLineFiresTheTrigger(string spellName, SpellTriggerTarget target)
+        public void SpellTriggerSampleLineFiresTheTrigger()
         {
-            _ = AddSpellTrigger(spellName, target, "landed");
+            _ = AddSpellTrigger("Frostreaver's Blessing", "landed");
             var spoken = CaptureSpeech();
-            var spell = container.Resolve<EQSpells>().AllSpells[spellName];
+            var spell = container.Resolve<EQSpells>().AllSpells["Frostreaver's Blessing"];
 
-            var sample = TriggerTestSampleGenerator.Generate(spell, target);
+            var sample = TriggerTestSampleGenerator.Generate(spell);
             Assert.IsFalse(string.IsNullOrEmpty(sample));
             logParser.Push(sample, DateTime.Now);
 

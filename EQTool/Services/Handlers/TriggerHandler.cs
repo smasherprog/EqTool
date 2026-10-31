@@ -88,7 +88,7 @@ namespace EQTool.Services.Handlers
                     }
 
                     trigger.PlayerName = currentPlayerName;
-                    if (!trigger.MatchesSpell(e.Spell.name, e.TargetName))
+                    if (!trigger.MatchesSpell(e.Spell.name))
                     {
                         continue;
                     }
@@ -128,7 +128,7 @@ namespace EQTool.Services.Handlers
 
             // Spell triggers have no Timer or Counter tab; Timer Ending / Timer Ended run
             // off the spell's own duration.
-            timerManager.HandleSpellMatch(trigger, landed.Spell.name, landed.TargetName, landed.Duration);
+            timerManager.HandleSpellMatch(trigger, landed.Spell.name, landed.Duration);
         }
 
         private void FireBasic(Trigger trigger)
