@@ -22,6 +22,12 @@ namespace EQTool.Services
             {
                 File.Copy(file, Paths.Combine(targetPath, Path.GetFileName(file)), true);
             }
+            foreach (var directory in Directory.GetDirectories(sourcePath))
+            {
+                var targetDirectory = Paths.Combine(targetPath, Path.GetFileName(directory));
+                _ = Directory.CreateDirectory(targetDirectory);
+                _CopyFilesRecursively(directory, targetDirectory);
+            }
         }
         private static void CopyFilesRecursively(string sourcePath, string targetPath)
         {
