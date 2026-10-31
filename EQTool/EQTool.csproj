@@ -159,6 +159,7 @@
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
+  </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Images\logo.ico</ApplicationIcon>
   </PropertyGroup>
