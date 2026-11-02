@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelizeAttribute" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EQToolShared\EQToolShared.csproj" />
     <ProjectReference Include="..\EQTool\EQTool.csproj" />
   </ItemGroup>

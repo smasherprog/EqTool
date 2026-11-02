@@ -107,7 +107,7 @@ namespace EQtoolsTests
             }
 
             var loose = all.Where(x => string.IsNullOrWhiteSpace(x.BuiltInFolder)).Select(x => x.TriggerName).ToList();
-            Assert.AreEqual(0, loose.Count, "These built-ins have no folder: " + string.Join(", ", loose));
+            Assert.IsEmpty(loose, "These built-ins have no folder: " + string.Join(", ", loose));
         }
 
         // Mirrors what SettingsManagementViewModel.ResetTriggersToDefault does: clearing the trigger
@@ -138,10 +138,10 @@ namespace EQtoolsTests
                 .Select(x => x.BuiltInId)
                 .Distinct(System.StringComparer.OrdinalIgnoreCase)
                 .Count();
-            Assert.AreEqual(0, settings.TriggerFolders.Count, "User folders should be gone after reset.");
+            Assert.IsEmpty(settings.TriggerFolders, "User folders should be gone after reset.");
             Assert.IsFalse(settings.Triggers.Any(x => x.TriggerName == "My Trigger"), "User triggers should be gone after reset.");
             Assert.IsTrue(settings.Triggers.All(x => !string.IsNullOrEmpty(x.BuiltInId)), "Only built-in triggers should remain.");
-            Assert.AreEqual(expected, settings.Triggers.Count, "All built-in triggers should be restored.");
+            Assert.HasCount(expected, settings.Triggers, "All built-in triggers should be restored.");
             Assert.IsTrue(settings.Triggers.Where(x => x.BuiltInFolder == "Encounters").All(x => x.TriggerEnabled), "Reset built-ins in the top-level Encounters folder should be enabled by default.");
             Assert.IsTrue(settings.Triggers.Where(x => x.BuiltInFolder != "Encounters").All(x => !x.TriggerEnabled), "Reset built-ins outside the top-level Encounters folder should be disabled by default.");
             Assert.IsTrue(settings.Triggers.All(x => !x.Customized), "No built-in should remain customized after reset.");
@@ -172,7 +172,7 @@ namespace EQtoolsTests
 
             Assert.IsTrue(changed, "Adopting a duplicate should be reported so it gets persisted.");
             var matches = settings.Triggers.Where(x => x.TriggerName == "Can't See Target").ToList();
-            Assert.AreEqual(1, matches.Count, "The duplicate and the seeded built-in should merge into one trigger.");
+            Assert.HasCount(1, matches, "The duplicate and the seeded built-in should merge into one trigger.");
             var merged = matches[0];
             Assert.AreEqual("builtin:cant-see-target", merged.BuiltInId);
             Assert.IsTrue(merged.IsBuiltIn);
@@ -233,7 +233,7 @@ namespace EQtoolsTests
             var user = settings.Triggers.SingleOrDefault(x => x.TriggerName == "my silver breath");
             Assert.IsNotNull(user, "An ambiguous duplicate should stay a user trigger.");
             Assert.IsNull(user.BuiltInId);
-            Assert.AreEqual(before + 1, settings.Triggers.Count);
+            Assert.HasCount(before + 1, settings.Triggers);
         }
 
         // If the user already customized the built-in itself, a same-named user trigger is left
@@ -331,7 +331,7 @@ namespace EQtoolsTests
                 .Where(x => x.EffectiveUseRegex && x.SearchText.StartsWith("{") && !x.SearchText.StartsWith("{c}", System.StringComparison.OrdinalIgnoreCase))
                 .Select(x => x.TriggerName)
                 .ToList();
-            Assert.AreEqual(0, unanchored.Count, "Add ^ to: " + string.Join(", ", unanchored));
+            Assert.IsEmpty(unanchored, "Add ^ to: " + string.Join(", ", unanchored));
         }
 
         // "You are drowning" alerts with both display text and TTS audio.

@@ -23,7 +23,7 @@ namespace EQtoolsTests
                 }
             }
 
-            Assert.AreEqual(0, failures.Count,
+            Assert.IsEmpty(failures,
                 "These built-in triggers produced a non-matching sample:\n" + string.Join("\n", failures));
         }
 

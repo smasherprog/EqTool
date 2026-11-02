@@ -43,7 +43,7 @@ namespace EQtoolsTests
             var failures = TriggerColors.Names
                 .Where(n => RelativeLuminance(ColorOf(n)) < 0.10)
                 .ToList();
-            Assert.AreEqual(0, failures.Count,
+            Assert.IsEmpty(failures,
                 "These palette colors are too dark to read on the overlay: " + string.Join(", ", failures));
         }
 
@@ -70,7 +70,7 @@ namespace EQtoolsTests
                     }
                 }
             }
-            Assert.AreEqual(0, tooClose.Count, "These palette colors are too similar: " + string.Join(", ", tooClose));
+            Assert.IsEmpty(tooClose, "These palette colors are too similar: " + string.Join(", ", tooClose));
         }
     }
 }

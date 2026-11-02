@@ -27,7 +27,7 @@ namespace EQtoolsTests
         {
             var lines = fileReader.ReadNext(Paths.Combine(FilePath, "log1.txt"));
             Assert.IsNotNull(lines);
-            Assert.AreEqual(0, lines.Count);
+            Assert.IsEmpty(lines);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace EQtoolsTests
                 });
 
                 var lines = new FileReader().ReadNext(path);
-                Assert.AreEqual(1, lines.Count);
+                Assert.HasCount(1, lines);
                 Assert.AreEqual(LogLine(now.AddSeconds(-5), "You have entered The Wakening Lands."), lines[0]);
             }
             finally
@@ -96,12 +96,12 @@ namespace EQtoolsTests
                 var reader = new FileReader();
 
                 var lines = reader.ReadNext(path);
-                Assert.AreEqual(1, lines.Count);
+                Assert.HasCount(1, lines);
                 Assert.AreEqual(LogLine(now, "Welcome to EverQuest!"), lines[0]);
 
                 File.AppendAllText(path, zoneLine.Substring(zoneLine.Length - 11) + "\r\n");
                 lines = reader.ReadNext(path);
-                Assert.AreEqual(1, lines.Count);
+                Assert.HasCount(1, lines);
                 Assert.AreEqual(zoneLine, lines[0]);
             }
             finally
@@ -133,7 +133,7 @@ namespace EQtoolsTests
                 }
 
                 var lines = reader.ReadNext(path);
-                Assert.AreEqual(1, lines.Count);
+                Assert.HasCount(1, lines);
                 Assert.AreEqual(LogLine(now, "Welcome to EverQuest!"), lines[0]);
             }
             finally
@@ -158,11 +158,11 @@ namespace EQtoolsTests
                 _ = reader.ReadNext(path);
 
                 File.AppendAllText(path, "[Sun Oct 11 14:23:45 2026] You have ent");
-                Assert.AreEqual(0, reader.ReadNext(path).Count);
+                Assert.IsEmpty(reader.ReadNext(path));
 
                 File.AppendAllText(path, "ered Nektulos Forest.\r\n");
                 var lines = reader.ReadNext(path);
-                Assert.AreEqual(1, lines.Count);
+                Assert.HasCount(1, lines);
                 Assert.AreEqual("[Sun Oct 11 14:23:45 2026] You have entered Nektulos Forest.", lines[0]);
             }
             finally
