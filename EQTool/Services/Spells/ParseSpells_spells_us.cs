@@ -178,16 +178,16 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(Paths.Combine(settings.DefaultEqDirectory, spellfile));
             if (spellsfile.Exists)
             {
-                var spellCacheName = $"SpellCache{servers}_2";
+                var spellCacheName = $"SpellCache{servers}_3";
                 if (!isdebug)
                 {
-                    spellCacheName = new string(spellCacheName.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
+                    spellCacheName = new string(spellCacheName.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".json";
                     if (File.Exists(spellCacheName))
                     {
                         try
                         {
                             var spellFilePath = Paths.InExecutableDirectory(spellCacheName);
-                            _Spells = BinarySerializer.ReadFromBinaryFile<List<SpellBase>>(spellFilePath);
+                            _Spells = CacheSerializer.ReadFromFile<List<SpellBase>>(spellFilePath);
                             stopwatch.Stop();
                             Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
                             return _Spells;
@@ -432,7 +432,7 @@ namespace EQTool.Services
                 }
                 try
                 {
-                    BinarySerializer.WriteToBinaryFile(Paths.InExecutableDirectory(spellCacheName), _Spells);
+                    CacheSerializer.WriteToFile(Paths.InExecutableDirectory(spellCacheName), _Spells);
                 }
                 catch (Exception ex)
                 {

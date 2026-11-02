@@ -213,6 +213,7 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(spellCooldown);
             }
 
+            var landedDuration = TimeSpan.Zero;
             var needscount = SpellsThatNeedCounts.Contains(spellname);
             if (needscount)
             {
@@ -314,8 +315,23 @@ namespace EQTool.Services.Handlers
                     };
 
                     spellWindowViewModel.TryAdd(vm, overWrite);
+                    landedDuration = spellduration;
                 }
             }
+
+            // Charms never log a landing, so they reach here guessed from the cast and filed under
+            // " You " for the spell window. They land on someone else, though.
+            if (targetName != EQSpells.SpaceYou || AllCharmSpells.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+
+            logEvents.Handle(new SpellLandedEvent
+            {
+                Spell = spell,
+                Duration = landedDuration,
+                TimeStamp = timestamp
+            });
         }
     }
 }

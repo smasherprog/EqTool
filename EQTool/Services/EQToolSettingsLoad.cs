@@ -170,6 +170,12 @@ namespace EQTool.Services
                     // duplicate (which predate folders and sit at the tree root).
                     continue;
                 }
+                if (t.IsSpellTrigger)
+                {
+                    // Spell triggers postdate the legacy duplicates, and every built-in is a
+                    // log-line trigger, so a name match here is a coincidence.
+                    continue;
+                }
                 var def = FindBuiltInMatch(defs.Values, t);
                 if (def == null || claimed.Contains(def.BuiltInId))
                 {

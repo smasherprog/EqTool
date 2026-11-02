@@ -1,0 +1,156 @@
+name: 5.$(Year:yy).$(Date:Md).$(Rev:r)
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - README.md
+      - EQToolApis/
+
+pr: none
+
+pool:
+  vmImage: windows-2022
+
+jobs:
+  - job: Tests
+    steps:
+      - task: UseDotNet@2
+        inputs:
+          version: 10.x
+
+      - task: DotNetCoreCLI@2
+        displayName: Test
+        inputs:
+          command: test
+          projects: EQtoolsTests/EQtoolsTests.csproj
+          arguments: -c Test
+
+  - job: WinBuild
+    displayName: Win Build
+    dependsOn: Tests
+    steps:
+      - task: UseDotNet@2
+        inputs:
+          version: 10.x
+
+      - task: SetAssemblyVersion@2021
+        inputs:
+          SourceDirectory: EQTool/Properties
+          BuildNumber: $(Build.BuildNumber)
+          VersionFormat: \d+\.\d+\.\d+\.\d+
+          SetAssemblyVersion: true
+
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          command: build
+          projects: EQTool/EQTool.csproj
+          arguments: -c Release
+
+      - task: ArtifactSigning@1
+        inputs:
+          AzureTenantID: 16c02a30-f723-464e-914b-92241c9ae33b
+          AzureClientID: 0150fdc5-d3df-490f-8906-18736eaf6899
+          AzureClientSecret: $(SigningClientSecret)
+          ExcludeInteractiveBrowserCredential: true
+          Endpoint: https://wus2.codesigning.azure.net
+          ArtifactSigningAccountName: pigparseTrustedAccount
+          CertificateProfileName: PigParseCertificate
+          Files: $(Build.SourcesDirectory)/EQTool/bin/Release/EQTool.exe
+          FileDigest: SHA256
+          TimestampRfc3161: http://timestamp.acs.microsoft.com
+          TimestampDigest: SHA256
+
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: EQTool/bin/Release
+          includeRootFolder: false
+          archiveType: zip
+          archiveFile: $(Build.ArtifactStagingDirectory)/EQTool_P99$(Build.BuildNumber).zip
+
+      - task: GitHubRelease@1
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+        inputs:
+          gitHubConnection: a78f8b0c-086f-47fa-a3a8-136a55983ace
+          repositoryName: $(Build.Repository.Name)
+          action: create
+          target: $(Build.SourceVersion)
+          tagSource: userSpecifiedTag
+          tag: $(Build.BuildNumber)
+          title: Pigparse $(Build.BuildNumber)
+          assets: $(Build.ArtifactStagingDirectory)/*.zip
+          assetUploadMode: delete
+          makeLatest: true
+          addChangeLog: false
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: $(Build.ArtifactStagingDirectory)
+          ArtifactName: drop
+
+  - job: LinuxBuild
+    displayName: Linux Build
+    dependsOn:
+      - Tests
+      - WinBuild
+    steps:
+      - task: UseDotNet@2
+        inputs:
+          version: 10.x
+
+      - task: SetAssemblyVersion@2021
+        inputs:
+          SourceDirectory: EQTool/Properties
+          BuildNumber: $(Build.BuildNumber)
+          VersionFormat: \d+\.\d+\.\d+\.\d+
+          SetAssemblyVersion: true
+
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          command: build
+          projects: EQTool/EQTool.csproj
+          arguments: -c Linux
+
+      - task: ArtifactSigning@1
+        inputs:
+          AzureTenantID: 16c02a30-f723-464e-914b-92241c9ae33b
+          AzureClientID: 0150fdc5-d3df-490f-8906-18736eaf6899
+          AzureClientSecret: $(SigningClientSecret)
+          ExcludeInteractiveBrowserCredential: true
+          Endpoint: https://wus2.codesigning.azure.net
+          ArtifactSigningAccountName: pigparseTrustedAccount
+          CertificateProfileName: PigParseCertificate
+          Files: $(Build.SourcesDirectory)/EQTool/bin/Linux/EQTool.exe
+          FileDigest: SHA256
+          TimestampRfc3161: http://timestamp.acs.microsoft.com
+          TimestampDigest: SHA256
+
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: EQTool/bin/Linux
+          includeRootFolder: false
+          archiveType: zip
+          archiveFile: $(Build.ArtifactStagingDirectory)/EQTool_Linux$(Build.BuildNumber).zip
+
+      - task: GitHubRelease@1
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+        inputs:
+          gitHubConnection: a78f8b0c-086f-47fa-a3a8-136a55983ace
+          repositoryName: $(Build.Repository.Name)
+          action: edit
+          target: $(Build.SourceVersion)
+          tag: $(Build.BuildNumber)
+          assets: $(Build.ArtifactStagingDirectory)/*.zip
+          assetUploadMode: replace
+          makeLatest: true
+          addChangeLog: false
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: $(Build.ArtifactStagingDirectory)
+          ArtifactName: drop

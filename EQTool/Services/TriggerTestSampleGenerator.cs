@@ -50,6 +50,12 @@ namespace EQTool.Services
             }
         }
 
+        // A spell trigger fires on the spell's "on you" landing message.
+        public static string Generate(Spell spell)
+        {
+            return spell?.cast_on_you ?? string.Empty;
+        }
+
         private static string ParseSequence(string s, ref int pos)
         {
             var sb = new StringBuilder();

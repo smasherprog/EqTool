@@ -182,6 +182,15 @@ namespace EQTool.Models
         public string TargetName { get; set; }
     }
 
+    // Raised by SpellHandlerService once a landing on the player has been resolved to one spell
+    // (after cast-time matching and disambiguation).
+    // Duration is the one the spell window uses, or zero for spells tracked as counts.
+    public class SpellLandedEvent : BaseLogParseEvent
+    {
+        public Spell Spell { get; set; }
+        public TimeSpan Duration { get; set; }
+    }
+
     public class ResistSpellEvent : BaseLogParseEvent
     {
         public Spell Spell { get; set; }

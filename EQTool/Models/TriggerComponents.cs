@@ -12,6 +12,14 @@ namespace EQTool.Models
         SoundFile
     }
 
+    // What fires a trigger. Values are persisted as integers; triggers saved before this existed
+    // have no value and load as LogLine.
+    public enum TriggerEventType
+    {
+        LogLine = 0,
+        Spell = 1
+    }
+
     public enum TimerType
     {
         NoTimer,

@@ -96,7 +96,7 @@ namespace EQTool.Services
                 SelectVoice(s.Synthesizer, eQToolSettings.SelectedVoice);
                 s.Synthesizer.Volume = eQToolSettings.GlobalAudioVolume ?? 100;
                 // A power-saving audio device takes a moment to wake and drops the first
-                // samples it is handed, clipping the start of the phrase.
+                // samples it is handed, clipping the start of the phrase.d
                 var prompt = new System.Speech.Synthesis.PromptBuilder();
                 prompt.AppendBreak(TimeSpan.FromMilliseconds(250));
                 prompt.AppendText(text);
@@ -105,6 +105,23 @@ namespace EQTool.Services
             catch
             {
             }
+#else
+            var volume = eQToolSettings.GlobalAudioVolume ?? 100;
+            if (string.IsNullOrWhiteSpace(text) || volume == 0)
+            {
+                return;
+            }
+
+            _ = System.Threading.Tasks.Task.Run(() =>
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(@"Z:\usr\bin\spd-say", new[] { "-P", "important", "-i", (volume * 2 - 100).ToString(System.Globalization.CultureInfo.InvariantCulture), "--", text })?.Dispose();
+                }
+                catch
+                {
+                }
+            });
 #endif
         }
     }

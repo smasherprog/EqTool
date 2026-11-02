@@ -2,6 +2,7 @@ using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -17,6 +18,18 @@ namespace EQTool.Services
             public DateTime EndTimeUtc;
             public TimeSpan Duration;
             public bool EndingFired;
+
+            // placeholder values from the match that (re)started this timer
+            public Hashtable Values;
+
+            // Set for a spell trigger's timer, which tracks the landed spell and has no ViewModel
+            // of its own (the spell is already listed in the spell window).
+            public string SpellName;
+            public bool IsSpellTimer => SpellName != null;
+
+            // whether the trigger was saved and enabled when this timer (re)started, as opposed to
+            // being fired from the editor's Test button
+            public bool StartedLive;
         }
 
         private class ActiveCounter
@@ -35,15 +48,17 @@ namespace EQTool.Services
         private readonly TriggerActionExecutor executor;
         private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
+        private readonly EQToolSettings settings;
         private readonly System.Windows.Threading.DispatcherTimer ticker;
 
-        public TriggerTimerManager(SpellWindowViewModel spellWindowViewModel, EQSpells spells, TriggerActionExecutor executor, IAppDispatcher appDispatcher, LogEvents logEvents)
+        public TriggerTimerManager(SpellWindowViewModel spellWindowViewModel, EQSpells spells, TriggerActionExecutor executor, IAppDispatcher appDispatcher, LogEvents logEvents, EQToolSettings settings)
         {
             this.spellWindowViewModel = spellWindowViewModel;
             this.spells = spells;
             this.executor = executor;
             this.appDispatcher = appDispatcher;
             this.logEvents = logEvents;
+            this.settings = settings;
 
             ticker = new System.Windows.Threading.DispatcherTimer
             {
@@ -52,6 +67,7 @@ namespace EQTool.Services
             ticker.Tick += (s, e) => Tick();
             ticker.Start();
 
+            logEvents.SpellWornOffSelfEvent += (s, e) => EndSpellTimers(e.SpellNames);
         }
 
         public void HandleTimerMatch(Trigger trigger)
@@ -69,7 +85,7 @@ namespace EQTool.Services
 
             lock (sync)
             {
-                var existing = activeTimers.FirstOrDefault(a => string.Equals(a.ViewModel.Name, name, StringComparison.OrdinalIgnoreCase));
+                var existing = activeTimers.FirstOrDefault(a => a.ViewModel != null && string.Equals(a.ViewModel.Name, name, StringComparison.OrdinalIgnoreCase));
                 switch (trigger.Timer.RestartBehavior)
                 {
                     case TimerRestartBehavior.DoNothing:
@@ -84,6 +100,7 @@ namespace EQTool.Services
                             existing.EndTimeUtc = DateTime.UtcNow.Add(duration);
                             existing.Duration = duration;
                             existing.EndingFired = false;
+                            existing.Values = trigger.CaptureValues();
                             appDispatcher.DispatchUI(() =>
                             {
                                 existing.ViewModel.TotalDuration = duration;
@@ -121,10 +138,101 @@ namespace EQTool.Services
                     ViewModel = vm,
                     EndTimeUtc = DateTime.UtcNow.Add(duration),
                     Duration = duration,
-                    EndingFired = false
+                    EndingFired = false,
+                    Values = trigger.CaptureValues()
                 });
                 spellWindowViewModel.TryAdd(vm, allowDuplicates: true);
                 FireOverlayBar(trigger, name, duration);
+            }
+        }
+
+        // Arms Timer Ending / Timer Ended for a spell trigger using the landed spell's duration.
+        // One timer per trigger: the spell landing again refreshes it.
+        public void HandleSpellMatch(Trigger trigger, string spellName, TimeSpan duration)
+        {
+            if (trigger == null || duration.TotalMilliseconds <= 0)
+            {
+                return;
+            }
+            if (trigger.TimerEnding?.Enabled != true && trigger.TimerEnded?.Enabled != true)
+            {
+                return;
+            }
+
+            lock (sync)
+            {
+                var existing = activeTimers.FirstOrDefault(a => a.IsSpellTimer && a.Trigger == trigger);
+                if (existing == null)
+                {
+                    existing = new ActiveTimer { Trigger = trigger, SpellName = spellName };
+                    activeTimers.Add(existing);
+                }
+                existing.EndTimeUtc = DateTime.UtcNow.Add(duration);
+                existing.Duration = duration;
+                // The duration depends on caster level, so it can come in at or under the Timer
+                // Ending threshold; the warning is for counting down to it, not for landing below it.
+                existing.EndingFired = trigger.TimerEnding != null && trigger.TimerEnding.Threshold >= duration;
+                existing.Values = trigger.CaptureValues();
+                existing.StartedLive = trigger.TriggerEnabled && settings.Triggers.Contains(trigger);
+            }
+        }
+
+        public void Remove(BaseTriggerViewModel row)
+        {
+            if (row == null)
+            {
+                return;
+            }
+
+            lock (sync)
+            {
+                _ = activeTimers.RemoveAll(a => a.ViewModel == row ||
+                    (a.IsSpellTimer && row.GroupName == EQSpells.SpaceYou && string.Equals(a.SpellName, row.Name, StringComparison.OrdinalIgnoreCase)));
+            }
+        }
+
+        // A spell timer can run for hours with no spell window row of its own to dismiss, so it is
+        // dropped once its trigger no longer stands behind it: switched to another spell or type,
+        // or (when it started live) disabled or deleted.
+        private bool IsAbandoned(ActiveTimer t)
+        {
+            if (!t.IsSpellTimer)
+            {
+                return false;
+            }
+            if (!t.Trigger.IsSpellTrigger || !string.Equals(t.Trigger.SpellName?.Trim(), t.SpellName, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            return t.StartedLive && (!t.Trigger.TriggerEnabled || !settings.Triggers.Contains(t.Trigger));
+        }
+
+        // A spell can end before its computed duration (dispelled, root broke, clicked off), so its
+        // "worn off" message ends the matching spell timer and fires Timer Ended then. Like the spell
+        // window, this only acts when the message identifies a single timer.
+        private void EndSpellTimers(List<string> spellNames)
+        {
+            if (spellNames == null || !spellNames.Any())
+            {
+                return;
+            }
+
+            ActiveTimer ended;
+            lock (sync)
+            {
+                var matches = activeTimers.Where(a => a.IsSpellTimer && !IsAbandoned(a) &&
+                    spellNames.Any(n => string.Equals(n, a.SpellName, StringComparison.OrdinalIgnoreCase))).ToList();
+                if (matches.Count != 1)
+                {
+                    return;
+                }
+                ended = matches[0];
+                _ = activeTimers.Remove(ended);
+            }
+
+            if (ended.Trigger.TimerEnded != null && ended.Trigger.TimerEnded.Enabled)
+            {
+                executor.Execute(ended.Trigger.TimerEnded.Output, text => ended.Trigger.Expand(text, ended.Values));
             }
         }
 
@@ -171,7 +279,12 @@ namespace EQTool.Services
 
         private void Tick()
         {
-            var now = DateTime.UtcNow;
+            Tick(DateTime.UtcNow);
+        }
+
+        // takes the clock as a parameter so tests can step past a timer without waiting on it
+        internal void Tick(DateTime now)
+        {
             var endingToFire = new List<ActiveTimer>();
             var endedToFire = new List<ActiveTimer>();
 
@@ -179,6 +292,12 @@ namespace EQTool.Services
             {
                 foreach (var t in activeTimers.ToList())
                 {
+                    if (IsAbandoned(t))
+                    {
+                        _ = activeTimers.Remove(t);
+                        continue;
+                    }
+
                     var remaining = t.EndTimeUtc - now;
 
                     if (!t.EndingFired && t.Trigger?.TimerEnding != null && t.Trigger.TimerEnding.Enabled)
@@ -198,7 +317,7 @@ namespace EQTool.Services
                             endedToFire.Add(t);
                         }
 
-                        if (t.Trigger?.Timer != null && t.Trigger.Timer.TimerType == TimerType.RepeatingTimer)
+                        if (!t.IsSpellTimer && t.Trigger?.Timer != null && t.Trigger.Timer.TimerType == TimerType.RepeatingTimer)
                         {
                             // re-arm a repeating timer
                             t.EndTimeUtc = now.Add(t.Duration);
@@ -231,11 +350,11 @@ namespace EQTool.Services
 
             foreach (var t in endingToFire)
             {
-                executor.Execute(t.Trigger.TimerEnding.Output, t.Trigger.Expand);
+                executor.Execute(t.Trigger.TimerEnding.Output, text => t.Trigger.Expand(text, t.Values));
             }
             foreach (var t in endedToFire)
             {
-                executor.Execute(t.Trigger.TimerEnded.Output, t.Trigger.Expand);
+                executor.Execute(t.Trigger.TimerEnded.Output, text => t.Trigger.Expand(text, t.Values));
             }
         }
     }
