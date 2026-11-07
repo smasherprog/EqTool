@@ -6,7 +6,6 @@ using System.Windows.Media.Media3D;
 namespace EQTool.Services.Map
 {
 
-    [Serializable]
     public class MapLine
     {
         public Point3D[] Points { get; set; }
@@ -21,7 +20,6 @@ namespace EQTool.Services.Map
         Large
     }
 
-    [Serializable]
     public class MapLabel
     {
         public Point3D Point { get; set; }
@@ -30,7 +28,6 @@ namespace EQTool.Services.Map
         public LabelSize LabelSize { get; set; }
     }
 
-    [Serializable]
     public class AABB
     {
         public Point3D Min = new Point3D { X = double.MaxValue, Y = double.MaxValue, Z = double.MaxValue };
@@ -57,7 +54,6 @@ namespace EQTool.Services.Map
         public double MaxWidth => Max.X == double.MinValue || Min.X == double.MaxValue ? 600 : Max.X - Min.X;
     }
 
-    [Serializable]
     public class ParsedData
     {
         public List<MapLine> Lines { get; set; } = new List<MapLine>();

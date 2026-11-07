@@ -1041,11 +1041,6 @@ namespace EQTool.UI.SettingsComponents
 
 
 
-        private void deleteMapCache(object sender, RoutedEventArgs e)
-        {
-            MapLoad.CleanCachedMaps(true);
-        }
-
         private void openConsoleWindow(object sender, RoutedEventArgs e)
         {
             windowFactory.CreateWindow<Console>().Show();

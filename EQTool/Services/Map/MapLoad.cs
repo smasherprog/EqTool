@@ -1,6 +1,4 @@
-﻿using EQTool.ViewModels;
-using EQToolShared.Enums;
-using EQToolShared.Extensions;
+﻿using EQToolShared.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,22 +6,13 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Services.Map
 {
     public class MapLoad
     {
-        private readonly LoggingService loggingService;
-        private readonly ActivePlayer activePlayer;
-        private const string CurrentMapVersion = "cachedmaps_6";
         private const string MapResourcePrefix = "EQTool.map_files.";
-        public MapLoad(LoggingService loggingService, ActivePlayer activePlayer)
-        {
-            this.loggingService = loggingService;
-            this.activePlayer = activePlayer;
-        }
 
         private static bool IsMapFileForZone(string fileName, string zone)
         {
@@ -54,27 +43,6 @@ namespace EQTool.Services.Map
                     }
                 }
             }
-            CleanCachedMaps(false);
-            checkformanualmaps = Paths.InExecutableDirectory(CurrentMapVersion);
-            if (System.IO.File.Exists(Paths.Combine(checkformanualmaps, zone + ".json")))
-            {
-                try
-                {
-                    var data = CacheSerializer.ReadFromFile<ParsedData>(Paths.Combine(checkformanualmaps, zone + ".json"));
-                    stop.Stop();
-                    Debug.WriteLine($"Time to load map from Cache {zone} {stop.ElapsedMilliseconds}");
-                    return data;
-                }
-                catch (Exception ex)
-                {
-                    loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
-                }
-            }
-            try
-            {
-                _ = Directory.CreateDirectory(checkformanualmaps);
-            }
-            catch { }
 
             if (!lines.Any())
             {
@@ -95,36 +63,7 @@ namespace EQTool.Services.Map
             var d = Parse(lines);
             stop.Stop();
             Debug.WriteLine($"Time to load map {zone} {stop.ElapsedMilliseconds}");
-            try
-            {
-                CacheSerializer.WriteToFile(Paths.Combine(checkformanualmaps, zone + ".json"), d);
-            }
-            catch (Exception ex)
-            {
-                loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
-            }
             return d;
-        }
-
-        public static void CleanCachedMaps(bool deleteAll)
-        {
-            var oldcachedmaps = Directory.GetDirectories(Paths.ExecutableDirectory(), "cachedmaps*");
-
-            foreach (var item in oldcachedmaps)
-            {
-                if (!item.Contains(CurrentMapVersion) || deleteAll)
-                {
-                    try
-                    {
-                        Directory.Delete(item, true);
-                    }
-                    catch
-                    {
-                        Thread.Sleep(2000);
-                        Directory.Delete(item, true);
-                    }
-                }
-            }
         }
 
         public static MapLabel CreateFromString(string[] splits)

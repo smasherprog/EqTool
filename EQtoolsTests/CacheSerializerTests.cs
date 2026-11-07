@@ -1,64 +1,16 @@
 using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Map;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Media.Media3D;
 
 namespace EQtoolsTests
 {
     [TestClass]
     public class CacheSerializerTests
     {
-        [TestMethod]
-        public void MapCacheRoundTrips()
-        {
-            var aabb = new AABB();
-            aabb.Add(new Point3D(-10.5, 20.25, 3));
-            aabb.Add(new Point3D(40, -5, 7.125));
-            var map = new ParsedData
-            {
-                Lines = new List<MapLine>
-                {
-                    new MapLine { Points = new[] { new Point3D(1, 2, 3), new Point3D(-4.5, 5.25, -6) }, Color = new Colour(255, 10, 20, 30) }
-                },
-                Labels = new List<MapLabel>
-                {
-                    new MapLabel { Point = new Point3D(7, 8, 9), Color = new Colour(128, 1, 2, 3), label = "Zone_In", LabelSize = LabelSize.Large }
-                },
-                AABB = aabb,
-                Offset = new Point3D(100, 200, 0)
-            };
-
-            var copy = RoundTrip(map);
-
-            Assert.HasCount(1, copy.Lines);
-            CollectionAssert.AreEqual(map.Lines[0].Points, copy.Lines[0].Points);
-            Assert.AreEqual(map.Lines[0].Color, copy.Lines[0].Color);
-            Assert.HasCount(1, copy.Labels);
-            Assert.AreEqual(map.Labels[0].Point, copy.Labels[0].Point);
-            Assert.AreEqual(map.Labels[0].Color, copy.Labels[0].Color);
-            Assert.AreEqual("Zone_In", copy.Labels[0].label);
-            Assert.AreEqual(LabelSize.Large, copy.Labels[0].LabelSize);
-            Assert.AreEqual(aabb.Min, copy.AABB.Min);
-            Assert.AreEqual(aabb.Max, copy.AABB.Max);
-            Assert.AreEqual(map.Offset, copy.Offset);
-        }
-
-        [TestMethod]
-        public void EmptyMapCacheRoundTrips()
-        {
-            var copy = RoundTrip(new ParsedData());
-
-            Assert.IsEmpty(copy.Lines);
-            Assert.AreEqual(new AABB().Min, copy.AABB.Min);
-            Assert.AreEqual(new AABB().Max, copy.AABB.Max);
-            Assert.AreEqual(600, copy.AABB.MaxHeight);
-        }
-
         [TestMethod]
         public void SpellCacheRoundTrips()
         {
