@@ -26,7 +26,7 @@ namespace EQTool.Services.Handlers
             {
                 if (round == 2)
                 {
-                    startingtime += 7;
+                    startingtime += 6;
                 }
 
                 for (var i = 1; i <= 7; i++)
@@ -48,7 +48,7 @@ namespace EQTool.Services.Handlers
                 startingtime += 300;
                 if (round == 3)
                 {
-                    startingtime += 7;
+                    startingtime += 6;
                 }
 
                 spellWindowViewModel.TryAdd(new TimerViewModel
@@ -65,6 +65,18 @@ namespace EQTool.Services.Handlers
                 });
             }
 
+            spellWindowViewModel.TryAdd(new TimerViewModel
+            {
+                PercentLeft = 100,
+                GroupName = $" Narandi the Wretched",
+                Name = $"Narandi the Wretched",
+                Rect = spell.Rect,
+                Icon = spell.SpellIcon,
+                TotalDuration = TimeSpan.FromSeconds(5530),
+                TotalRemainingDuration = TimeSpan.FromSeconds(5530),
+                UpdatedDateTime = DateTime.Now,
+                ProgressBarColor = Brushes.MediumAquamarine
+            });
         }
     }
 }
