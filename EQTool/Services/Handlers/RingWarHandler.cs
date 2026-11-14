@@ -35,7 +35,7 @@ namespace EQTool.Services.Handlers
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        GroupName = $" Wave {round} Ring War",
+                        GroupName = $" Ring War Wave {round}",
                         Name = $"Round {i}",
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
@@ -48,13 +48,25 @@ namespace EQTool.Services.Handlers
                 startingtime += 300;
                 if (round == 3)
                 {
-                    startingtime += 6;
+                    startingtime += 6; 
+                    spellWindowViewModel.TryAdd(new TimerViewModel
+                    {
+                        PercentLeft = 100,
+                        GroupName = $" Ring War Wave 3",
+                        Name = $"Narandi the Wretched",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        TotalDuration = TimeSpan.FromSeconds(5530),
+                        TotalRemainingDuration = TimeSpan.FromSeconds(5530),
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = Brushes.MediumAquamarine
+                    });
                 }
 
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = $" Wave {round} Ring War",
+                    GroupName = $" Ring War Wave {round}",
                     Name = $"-- Break --",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
@@ -65,18 +77,7 @@ namespace EQTool.Services.Handlers
                 });
             }
 
-            spellWindowViewModel.TryAdd(new TimerViewModel
-            {
-                PercentLeft = 100,
-                GroupName = $" Narandi the Wretched",
-                Name = $"Narandi the Wretched",
-                Rect = spell.Rect,
-                Icon = spell.SpellIcon,
-                TotalDuration = TimeSpan.FromSeconds(5530),
-                TotalRemainingDuration = TimeSpan.FromSeconds(5530),
-                UpdatedDateTime = DateTime.Now,
-                ProgressBarColor = Brushes.MediumAquamarine
-            });
+ 
         }
     }
 }
