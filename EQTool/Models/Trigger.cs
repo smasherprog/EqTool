@@ -211,9 +211,7 @@ namespace EQTool.Models
                             return $"(?<{group_name}>[\\w` ]+)";
                         });
 
-                        // The match timeout is the process-wide default set in App's static ctor -
-                        // user-authored patterns are the ones most likely to backtrack catastrophically.
-                        _TriggerRegex = new Regex(convertedSearchText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                        _TriggerRegex = new Regex(convertedSearchText, RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
                     }
                     catch
                     {

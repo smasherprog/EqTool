@@ -30,7 +30,7 @@ namespace EQToolApis.Controllers
         {
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
 
-            if (allowedprefix.Any(model.Version.Contains) || model.Server == Servers.Quarm)
+            if (allowedprefix.Any(model.Version.Contains))
             {
                 _ = dbcontext.EqToolExceptions.Add(new DB.Models.EqToolException
                 {
