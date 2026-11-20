@@ -6,9 +6,6 @@ P 601.3596, 19.668, -20.998, 240, 0, 0, 2, spectral_turnkey
 P 627.3266, -100.938, 16.19, 127, 0, 0, 2, Drolvarg_Warlord(BRD1.0)
 P 751.1615, 68.6582, 6.19, 127, 0, 0, 3, Venril_Sathir
 P 554.721, 76.9241, 14.2, 127, 0, 0, 3, Venril_Sathir's_remains
-P 302.5625, -74.503, 1.5467, 127, 0, 0, 2, The_Arisen_Soldier
-P 255.1103, 17.9669, 0.1062, 127, 0, 0, 2, The_Arisen_Soldier
-P 331.161, 93.8311, 0.1062, 127, 0, 0, 2, The_Arisen_Soldier
 P 234.5036, 104.6608, 1.5718, 240, 0, 0, 2, sentry_of_sahir
 P 195.8034, 6.495, 43.5236, 240, 0, 0, 2, skeletal_captain
 P 704.1028, -69.7848, -30.4846, 240, 0, 0, 2, spectral_turnkey
