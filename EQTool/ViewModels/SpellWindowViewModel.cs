@@ -612,7 +612,7 @@ namespace EQTool.ViewModels
         private Spell RollTimerIcon = null;
         public void UpdateAPITimers()
         {
-            var s = activePlayer.Player.Server;
+            var s = activePlayer.Player?.Server;
             if (s.HasValue)
             {
                 var boatsapi = pigParseApi.GetBoatData(s.Value);
